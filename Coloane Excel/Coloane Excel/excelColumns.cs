@@ -26,16 +26,38 @@ namespace Coloane_Excel
         {
             Assert.AreEqual("AZ", excelColumnName(52));
         }
+        [TestMethod]
+        public void bbColumnTest()
+        {
+            Assert.AreEqual("BB", excelColumnName(54));
+        }
+        [TestMethod]
+        public void zzColumnTest()
+        {
+            Assert.AreEqual("ZZ", excelColumnName(702));
+        }
+        [TestMethod]
+        public void aaccolumnTest()
+        {
+            Assert.AreEqual("AAC", excelColumnName(705));
+        }
     string excelColumnName(int number)
         {
-            string[] columnChar = { "","A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
+            string[] columnChar = { "Z","A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
 
             if (number < 26)
             {
-                return columnChar[number];
+                int rest;
+                rest = number % 26;
+                return columnChar[rest];
             }else
             {
-                return "";
+                int rest,division;
+                rest = number % 26;
+                division = number / 26;
+                if (rest == 0) { division = division - 1; };
+                return columnChar[division] + columnChar[rest];
+                
             }
             
         }
