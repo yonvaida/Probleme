@@ -24,17 +24,22 @@ namespace Loto
         [TestMethod]
         public void ChanceCatI()
         {
-            Assert.AreEqual(1/13983816, LotoProbability(6));
+            Assert.AreEqual(1/13983816, LotoProbability(6,6,49));
         }
         [TestMethod]
         public void ChanceCatII()
         {
-            Assert.AreEqual(1/54201, LotoProbability(5));
+            Assert.AreEqual(1/54201, LotoProbability(5,6,49));
         }
         [TestMethod]
         public void ChanceCatIII()
         {
-            Assert.AreEqual(1/1032, LotoProbability(4));
+            Assert.AreEqual(1/1032, LotoProbability(4,6,49));
+        }
+        [TestMethod]
+        public void Chance5From40()
+        {
+            Assert.AreEqual(1 / 658008, LotoProbability(5,5,40));
         }
         int Merges(int n,int k)
         {
@@ -46,9 +51,9 @@ namespace Loto
                 return (Merges(n - 1, k - 1) + Merges(n - 1, k));
             }
         }
-        decimal LotoProbability(int numbers)
+        decimal LotoProbability(int numbers,int extr, int totalNumbers)
         {
-            return Merges(6, numbers) * Merges(43, 6 - numbers) / Merges(49, 6);
+            return Merges(extr, numbers) * Merges(totalNumbers-extr, extr - numbers) / Merges(totalNumbers, extr);
         }
 
     }
