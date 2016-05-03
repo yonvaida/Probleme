@@ -7,51 +7,53 @@ namespace Coloane_Excel
     public class excelColumns
     {
         [TestMethod]
-        public void firstColumnTest()
+        public void FirstColumnTest()
         {
-            Assert.AreEqual("A", excelColumnName(1));
+            Assert.AreEqual("A", ExcelColumnName(1));
         }
         [TestMethod]
-        public void mColumnTest()
+        public void MColumnTest()
         {
-            Assert.AreEqual("M", excelColumnName(13));
+            Assert.AreEqual("M", ExcelColumnName(13));
         }
         [TestMethod]
-        public void aaColumnTest()
+        public void AAColumnTest()
         {
-            Assert.AreEqual("AA", excelColumnName(27));
+            Assert.AreEqual("AA", ExcelColumnName(27));
         }
         [TestMethod]
-        public void azColumnTest()
+        public void AZColumnTest()
         {
-            Assert.AreEqual("AZ", excelColumnName(52));
+            Assert.AreEqual("AZ", ExcelColumnName(52));
         }
         [TestMethod]
-        public void bbColumnTest()
+        public void BBColumnTest()
         {
-            Assert.AreEqual("BB", excelColumnName(54));
+            Assert.AreEqual("BB", ExcelColumnName(54));
         }
         [TestMethod]
-        public void zzColumnTest()
+        public void ZZColumnTest()
         {
-            Assert.AreEqual("ZZ", excelColumnName(702));
+            Assert.AreEqual("ZZ", ExcelColumnName(702));
         }
         [TestMethod]
-        public void aaccolumnTest()
+        public void AAccolumnTest()
         {
-            Assert.AreEqual("AAC", excelColumnName(705));
+            Assert.AreEqual("AAC", ExcelColumnName(705));
         }
-    string excelColumnName(int number)
+    string ExcelColumnName(int number)
         {
-            string[] columnChar = { "Z","A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y"};
-            string columnName;
-            columnName = "";
-            int rest;
+            string columnName = "";
             do
             {
+                int rest, columnChar;
                 rest = number % 26;
-                columnName = columnChar[rest]+columnName;
-                if (rest == 0) { number = number - 1; };
+                if (rest == 0) {
+                    number = number - 1;
+                    rest = 26;
+                };
+                columnChar = '@' + rest;
+                columnName = (char)columnChar + columnName;
                 number = number / 26;
             } while (number > 0);
             return columnName;

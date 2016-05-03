@@ -7,8 +7,9 @@ namespace Loto
     public class loto
     {
         [TestMethod]
-        public void TestMethod1()
+        public void probabilitate6Din49()
         {
+            Assert.AreEqual()
         }
     }
 }
