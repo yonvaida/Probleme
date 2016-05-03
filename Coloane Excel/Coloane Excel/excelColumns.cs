@@ -43,23 +43,18 @@ namespace Coloane_Excel
         }
     string excelColumnName(int number)
         {
-            string[] columnChar = { "Z","A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
-
-            if (number < 26)
+            string[] columnChar = { "Z","A", "B", "C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y"};
+            string columnName;
+            columnName = "";
+            int rest;
+            do
             {
-                int rest;
                 rest = number % 26;
-                return columnChar[rest];
-            }else
-            {
-                int rest,division;
-                rest = number % 26;
-                division = number / 26;
-                if (rest == 0) { division = division - 1; };
-                return columnChar[division] + columnChar[rest];
-                
-            }
-            
+                columnName = columnChar[rest]+columnName;
+                if (rest == 0) { number = number - 1; };
+                number = number / 26;
+            } while (number > 0);
+            return columnName;
         }
     }
 }
