@@ -27,9 +27,39 @@ namespace Operatii_biti
             byte[] result = { 1, 0, 0, 0 };
             CollectionAssert.AreEqual(result, ANDOperation(ConvertTo2(12), ConvertTo2(10)));
         }
+        [TestMethod]
+        public void ANDOperationTest1()
+        {
+            byte[] result = { 0, 0, 0, 0 };
+            CollectionAssert.AreEqual(result, ANDOperation(ConvertTo2(1), ConvertTo2(12)));
+        }
+        [TestMethod]
+        public void ANDOperationTest2()
+        {
+            byte[] result = { 0, 1, 0, 0 };
+            CollectionAssert.AreEqual(result, ANDOperation(ConvertTo2(12), ConvertTo2(4)));
+        }
+
+
+        //***********************OR operation TEST*********************************
+        [TestMethod]
+        public void OROperationTest()
+        {
+            byte[] result = { 1, 0, 0, 0 };
+            CollectionAssert.AreEqual(result, OROperation(ConvertTo2(12), ConvertTo2(10)));
+        }
+        //***********************XOR operation TEST*********************************
+        [TestMethod]
+        public void XOROperationTest()
+        {
+            byte[] result = { 1, 0, 0, 0 };
+            CollectionAssert.AreEqual(result, XOROperation(ConvertTo2(12), ConvertTo2(10)));
+        }
+
+
 
         //******************Convert to byte******************************
-       byte[] ConvertTo2(int number)
+        byte[] ConvertTo2(int number)
         {
             byte[] result=new byte[1];
             int i=0;
@@ -60,8 +90,18 @@ namespace Operatii_biti
         //***********************AND operation*********************************
         byte[] ANDOperation(byte[] result,byte[] addedlist)
         {
-            if (result.Length > addedlist.Length) Array.Resize(ref addedlist, result.Length);
-            else Array.Resize(ref result, addedlist.Length);
+            if (result.Length > addedlist.Length)
+            {
+                Array.Reverse(addedlist);
+                Array.Resize(ref addedlist, result.Length);
+                Array.Reverse(addedlist);
+            }
+            else
+            {
+                Array.Reverse(result);
+                Array.Resize(ref result, addedlist.Length);
+                Array.Reverse(result);
+            }
             for (int i = 0; i < result.Length; i++)
             {
                 if (result[i] == 1 && addedlist[i] == 1) result[i] = 1;
@@ -70,6 +110,18 @@ namespace Operatii_biti
                 return result;
 
         }
+        //***********************OR operation*********************************
+        byte[] OROperation(byte[] result, byte[] addedlist)
+        {
+            return result;
 
-   }
+        }
+        //***********************XOR operation*********************************
+        byte[] XOROperation(byte[] result, byte[] addedlist)
+        {
+            return result;
+
+        }
+
+    }
 }
