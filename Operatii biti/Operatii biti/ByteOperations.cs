@@ -31,8 +31,8 @@ namespace Operatii_biti
         [TestMethod]
         public void ANDOperationTest()
         {
-            byte[] result = { 1, 0, 0, 0 };
-            CollectionAssert.AreEqual(result, ANDOperation(ConvertTo2(12), ConvertTo2(10)));
+            
+            CollectionAssert.AreEqual(ConvertTo2(12 & 10), ANDOperation(ConvertTo2(12), ConvertTo2(10)));
         }
         [TestMethod]
         public void ANDOperationTest1()
@@ -78,13 +78,13 @@ namespace Operatii_biti
         [TestMethod]
         public void LessThanOperationTest()
         {
-           
+
         }
         //***********************ADD operation TEST*********************************
         [TestMethod]
         public void ADDOperationTest()
         {
-            
+
             Assert.AreEqual(142, ConvertTo10(ADDOperation(ConvertTo2(127), ConvertTo2(15))));
         }
         //***********************Subtract operation TEST*********************************
@@ -98,11 +98,11 @@ namespace Operatii_biti
         //******************Convert to byte******************************
         byte[] ConvertTo2(int number)
         {
-            byte[] result=new byte[1];
-            int i=0;
+            byte[] result = new byte[1];
+            int i = 0;
             do
             {
-                Array.Resize(ref result,i+1);
+                Array.Resize(ref result, i + 1);
                 int tempbyte;
                 tempbyte = number % 2;
                 result[i] = (byte)tempbyte;
@@ -116,28 +116,27 @@ namespace Operatii_biti
         double ConvertTo10(byte[] result)
         {
             Array.Reverse(result);
-            double number=0;
+            double number = 0;
             for (int i = 0; i < result.Length; i++)
             {
-                number = number + Math.Pow(2, i)*(int)result[i];
+                number = number + Math.Pow(2, i) * (int)result[i];
             }
-                return number;
+            return number;
         }
 
 
         //*********************NOT operation**********************************
         byte[] NOTOperation(byte[] result)
         {
-            for(int i=0; i < result.Length; i++)
+            for (int i = 0; i < result.Length; i++)
             {
-                if (result[i] == 0) result[i] = 1;
-                else result[i] = 0;
+                result[i] = (result[i]==0) ? (byte)1 : (byte)0;
             }
             return result;
         }
 
         //***********************AND operation*********************************
-        byte[] ANDOperation(byte[] result,byte[] addedlist)
+        byte[] ANDOperation(byte[] result, byte[] addedlist)
         {
             if (result.Length > addedlist.Length)
             {
@@ -151,12 +150,13 @@ namespace Operatii_biti
                 Array.Resize(ref result, addedlist.Length);
                 Array.Reverse(result);
             }
+
             for (int i = 0; i < result.Length; i++)
             {
                 if (result[i] == 1 && addedlist[i] == 1) result[i] = 1;
                 else result[i] = 0;
             }
-                return result;
+            return result;
 
         }
         //***********************OR operation*********************************
@@ -199,7 +199,7 @@ namespace Operatii_biti
             }
             for (int i = 0; i < result.Length; i++)
             {
-                if ((result[i] == 0 && addedlist[i] == 1) || (result[i]==1 && addedlist[i]==0)) result[i] = 1;
+                if ((result[i] == 0 && addedlist[i] == 1) || (result[i] == 1 && addedlist[i] == 0)) result[i] = 1;
                 else result[i] = 0;
             }
             return result;
@@ -207,7 +207,7 @@ namespace Operatii_biti
         }
 
         //***********************LeftShift operation*********************************
-        byte[] LeftShiftOperation(byte[] result,int iteration)
+        byte[] LeftShiftOperation(byte[] result, int iteration)
         {
             byte[] resultTemp = result;
             Array.Resize(ref resultTemp, result.Length + iteration);
@@ -215,14 +215,14 @@ namespace Operatii_biti
             {
                 result[i] = resultTemp[i + iteration];
             }
-                return result;
+            return result;
         }
 
         //***********************RightShift operation*********************************
         byte[] RightShiftOperation(byte[] result, int iteration)
         {
             Array.Reverse(result);
-            result = LeftShiftOperation(result,iteration);
+            result = LeftShiftOperation(result, iteration);
             Array.Reverse(result);
             return result;
         }
@@ -230,15 +230,18 @@ namespace Operatii_biti
         //***********************LessThan operation***********************************
 
         //***********************ADD operation****************************************
-        byte[] ADDOperation(byte[] number1,byte[] number2)
+        byte[] ADDOperation(byte[] number1, byte[] number2)
         {
 
             Array.Reverse(number1);
             Array.Reverse(number2);
-            if (number1.Length > number2.Length) {
+            if (number1.Length > number2.Length)
+            {
                 Array.Resize(ref number1, number1.Length + 1);
                 Array.Resize(ref number2, number1.Length);
-            }else {
+            }
+            else
+            {
                 Array.Resize(ref number1, number2.Length + 1);
                 Array.Resize(ref number2, number2.Length + 1);
             };
