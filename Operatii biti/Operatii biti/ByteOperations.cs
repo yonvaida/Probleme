@@ -45,14 +45,14 @@ namespace Operatii_biti
         [TestMethod]
         public void OROperationTest()
         {
-            byte[] result = { 1, 0, 0, 0 };
+            byte[] result = { 1, 1, 1, 0 };
             CollectionAssert.AreEqual(result, OROperation(ConvertTo2(12), ConvertTo2(10)));
         }
         //***********************XOR operation TEST*********************************
         [TestMethod]
         public void XOROperationTest()
         {
-            byte[] result = { 1, 0, 0, 0 };
+            byte[] result = { 0, 1, 1, 0 };
             CollectionAssert.AreEqual(result, XOROperation(ConvertTo2(12), ConvertTo2(10)));
         }
 
@@ -113,12 +113,46 @@ namespace Operatii_biti
         //***********************OR operation*********************************
         byte[] OROperation(byte[] result, byte[] addedlist)
         {
+            if (result.Length > addedlist.Length)
+            {
+                Array.Reverse(addedlist);
+                Array.Resize(ref addedlist, result.Length);
+                Array.Reverse(addedlist);
+            }
+            else
+            {
+                Array.Reverse(result);
+                Array.Resize(ref result, addedlist.Length);
+                Array.Reverse(result);
+            }
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i] == 0 && addedlist[i] == 0) result[i] = 0;
+                else result[i] = 1;
+            }
             return result;
 
         }
         //***********************XOR operation*********************************
         byte[] XOROperation(byte[] result, byte[] addedlist)
         {
+            if (result.Length > addedlist.Length)
+            {
+                Array.Reverse(addedlist);
+                Array.Resize(ref addedlist, result.Length);
+                Array.Reverse(addedlist);
+            }
+            else
+            {
+                Array.Reverse(result);
+                Array.Resize(ref result, addedlist.Length);
+                Array.Reverse(result);
+            }
+            for (int i = 0; i < result.Length; i++)
+            {
+                if ((result[i] == 0 && addedlist[i] == 1) || (result[i]==1 && addedlist[i]==0)) result[i] = 1;
+                else result[i] = 0;
+            }
             return result;
 
         }
