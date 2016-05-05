@@ -275,10 +275,14 @@ namespace Operatii_biti
                 Array.Reverse(number2);
                 Array.Resize(ref number2, number1.Length);
                 Array.Reverse(number2);
-                subResult = (ADDOperation(number1, ADDOperation(NOTOperation(number2), new byte[] { 1 })));
                 
-                    
-                }
+                subResult = (ADDOperation(number1, ADDOperation(NOTOperation(number2), new byte[] { 1 })));
+
+                Array.Reverse(subResult);
+                Array.Resize(ref subResult, number1.Length);
+                Array.Reverse(subResult);
+
+            }
                 
                 return ReduceArraySize(subResult);
 
