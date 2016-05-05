@@ -27,27 +27,6 @@ namespace Operatii_biti
             byte[] result = { 0, 0, 1, 1 };
             CollectionAssert.AreEqual(result, NOTOperation(ConvertTo2(12)));
         }
-        //******************GetAt positio TEST******************************
-        [TestMethod]
-        public void GetAtTest()
-        {
-            Assert.AreEqual(0, GetAt(ConvertTo2(12), 0));
-        }
-        [TestMethod]
-        public void GetAtTest1()
-        {
-            Assert.AreEqual(0, GetAt(ConvertTo2(12), 1));
-        }
-        [TestMethod]
-        public void GetAtTest2()
-        {
-            Assert.AreEqual(1, GetAt(ConvertTo2(12), 2));
-        }
-        [TestMethod]
-        public void GetAtTest3()
-        {
-            Assert.AreEqual(1, GetAt(ConvertTo2(12), 3));
-        }
         //***********************AND operation TEST*********************************
         [TestMethod]
         public void ANDOperationTest()
@@ -58,14 +37,14 @@ namespace Operatii_biti
         [TestMethod]
         public void ANDOperationTest1()
         {
-            
-            CollectionAssert.AreEqual(ConvertTo2(1 & 12), ANDOperation(ConvertTo2(1), ConvertTo2(12)));
+            byte[] result = { 0, 0, 0, 0 };
+            CollectionAssert.AreEqual(result, ANDOperation(ConvertTo2(1), ConvertTo2(12)));
         }
         [TestMethod]
         public void ANDOperationTest2()
         {
-            
-            CollectionAssert.AreEqual(ConvertTo2(12 & 4), ANDOperation(ConvertTo2(12), ConvertTo2(4)));
+            byte[] result = { 0, 1, 0, 0 };
+            CollectionAssert.AreEqual(result, ANDOperation(ConvertTo2(12), ConvertTo2(4)));
         }
         //***********************OR operation TEST*********************************
         [TestMethod]
@@ -144,24 +123,8 @@ namespace Operatii_biti
             }
             return number;
         }
-        //**********************GetAT operation*********************
-        byte GetAt(byte[] number, int position)
-        {
-            if (position >= number.Length)
-            {
-                return (byte)0;
-            }
-            else
-            {
-                return number[number.Length - position - 1];
-            }
 
-        }
-        //*******************ReduceArraySize************************
-        byte[] ReduceArraySize(byte[] number)
-        {
-            return ConvertTo2((int)ConvertTo10(number)); 
-        }
+
         //*********************NOT operation**********************************
         byte[] NOTOperation(byte[] result)
         {
@@ -171,19 +134,29 @@ namespace Operatii_biti
             }
             return result;
         }
+
         //***********************AND operation*********************************
         byte[] ANDOperation(byte[] result, byte[] addedlist)
         {
-            int length;
-            length = result.Length > addedlist.Length ? result.Length : addedlist.Length;
-            byte[] andResult= { };
-            Array.Resize(ref andResult, length);
-            for (int i = 0; i < length; i++)
+            if (result.Length > addedlist.Length)
             {
-                if (GetAt(result,i)==1 && GetAt(addedlist,i)==1) andResult[length-i-1] = 1;
-                else andResult[length-i-1] = 0;
+                Array.Reverse(addedlist);
+                Array.Resize(ref addedlist, result.Length);
+                Array.Reverse(addedlist);
             }
-            return ReduceArraySize(andResult);
+            else
+            {
+                Array.Reverse(result);
+                Array.Resize(ref result, addedlist.Length);
+                Array.Reverse(result);
+            }
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i] == 1 && addedlist[i] == 1) result[i] = 1;
+                else result[i] = 0;
+            }
+            return result;
 
         }
         //***********************OR operation*********************************
@@ -241,10 +214,9 @@ namespace Operatii_biti
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = resultTemp[i + iteration];
-            }
+            } 
             return result;
         }
-
         //***********************RightShift operation*********************************
         byte[] RightShiftOperation(byte[] result, int iteration)
         {
