@@ -99,7 +99,7 @@ namespace Operatii_biti
         [TestMethod]
         public void LessThanOperationTest()
         {
-
+            Assert.AreEqual(true, LessThanOperation(ConvertTo2(1), ConvertTo2(10)));
         }
         //***********************ADD operation TEST*********************************
         [TestMethod]
@@ -236,15 +236,12 @@ namespace Operatii_biti
         //***********************LessThan operation***********************************
         bool LessThanOperation(byte[] first,byte[] second)
         {
-            bool result=true;
-            for(int i = Math.Max(first.Length, second.Length) - 1; i < 0; i--) {
+            bool result=false;
+            for(int i =0;i< Math.Max(first.Length, second.Length); i++) {
                 if (GetAt(first, i) < GetAt(second, i))
                 {
                     result= true;
-                    i = -1;
-                }else
-                {
-                    result=false;
+                    break;
                 };
             };
             return result;
