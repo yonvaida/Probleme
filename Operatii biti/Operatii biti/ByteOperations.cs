@@ -6,6 +6,9 @@ namespace Operatii_biti
     [TestClass]
     public class ByteOperations
     {
+
+//-----------------------------------------------------TESTS--------------------------------------------------
+
         //******************Convert to byte TEST******************************
         [TestMethod]
         public void NumberToBase2Test()
@@ -99,7 +102,7 @@ namespace Operatii_biti
         [TestMethod]
         public void LessThanOperationTest()
         {
-            Assert.AreEqual(true, LessThanOperation(ConvertTo2(1), ConvertTo2(10)));
+            Assert.AreEqual(true, LessThanOperation(ConvertTo2(10), ConvertTo2(11)));
         }
         //***********************ADD operation TEST*********************************
         [TestMethod]
@@ -112,9 +115,11 @@ namespace Operatii_biti
         [TestMethod]
         public void SubtractOperationTest()
         {
-            byte[] result = { 1, 1, 1, 0, 1 };
-            CollectionAssert.AreEqual(result, SubtractOperation(ConvertTo2(142), ConvertTo2(113)));
+            byte[] result = { 0 };
+            CollectionAssert.AreEqual(result, SubtractOperation(ConvertTo2(10), ConvertTo2(11)));
         }
+
+//-------------------------------------------------------Declaration---------------------------------------
 
         //******************Convert to byte******************************
         byte[] ConvertTo2(int number)
@@ -209,14 +214,12 @@ namespace Operatii_biti
             return ReduceArraySize(xorResult);
 
         }
-
         //***********************LeftShift operation*********************************
         byte[] LeftShiftOperation(byte[] number, int iteration)
         {
             Array.Resize(ref number, number.Length + iteration);
             return number;
         }
-
         //***********************RightShift operation*********************************
         byte[] RightShiftOperation(byte[] result, int iteration)
         {
@@ -227,27 +230,27 @@ namespace Operatii_biti
             }
             else
             {
-                Array.Resize(ref result, 1);
-                result[0] = (byte)0;
-                return result;
+                return new byte[1] { 0 };
             }            
         }
-
         //***********************LessThan operation***********************************
         bool LessThanOperation(byte[] first,byte[] second)
         {
             bool result=false;
             for(int i =0;i< Math.Max(first.Length, second.Length); i++) {
-                if (GetAt(first, i) < GetAt(second, i))
+                if (GetAt(first, Math.Max(first.Length, second.Length)-i-1) < GetAt(second, Math.Max(first.Length, second.Length)-i-1))
                 {
                     result= true;
                     break;
                 };
+                if (GetAt(first, Math.Max(first.Length, second.Length) - i - 1) > GetAt(second, Math.Max(first.Length, second.Length) - i - 1))
+                {
+                    result = false;
+                    break;
+                };
             };
             return result;
-
         }
-
         //***********************ADD operation****************************************
         byte[] ADDOperation(byte[] first, byte[] second)
         {
@@ -261,13 +264,24 @@ namespace Operatii_biti
             Array.Reverse(addResult);
             return ReduceArraySize(addResult);
         }
-
         //***********************Subtract operation*********************************
         byte[] SubtractOperation(byte[] number1, byte[] number2)
         {
-            var subResult = new byte[Math.Max(number1.Length, number2.Length) + 1];
+            var subResult = new byte[Math.Max(number1.Length, number2.Length)];
+            if (LessThanOperation(number1, number2)==true){             
+                return new byte[1]{ 0 };
+            }else
+            {
+                for(int i = 0; i < subResult.Length; i++)
+                {
+                    subResult[i] =(byte)( GetAt(number1, i) - GetAt(number2, i));
+                }
+                
+                return number1;
+
+            }
             
-            return number1;
+            
         }
 
         //***********************Multiplication operation*********************************
