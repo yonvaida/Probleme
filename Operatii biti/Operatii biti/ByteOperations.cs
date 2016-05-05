@@ -115,8 +115,8 @@ namespace Operatii_biti
         [TestMethod]
         public void SubtractOperationTest()
         {
-            byte[] result = { 0 };
-            CollectionAssert.AreEqual(result, SubtractOperation(ConvertTo2(10), ConvertTo2(11)));
+            byte[] result = { 1,1 };
+            CollectionAssert.AreEqual(result, SubtractOperation(ConvertTo2(10), ConvertTo2(7)));
         }
 
 //-------------------------------------------------------Declaration---------------------------------------
@@ -272,17 +272,20 @@ namespace Operatii_biti
                 return new byte[1]{ 0 };
             }else
             {
-                for(int i = 0; i < subResult.Length; i++)
-                {
-                    subResult[i] =(byte)( GetAt(number1, i) - GetAt(number2, i));
+                Array.Reverse(number2);
+                Array.Resize(ref number2, number1.Length);
+                Array.Reverse(number2);
+                subResult = (ADDOperation(number1, ADDOperation(NOTOperation(number2), new byte[] { 1 })));
+                
+                    
                 }
                 
-                return number1;
+                return ReduceArraySize(subResult);
 
             }
             
             
-        }
+        
 
         //***********************Multiplication operation*********************************
 
