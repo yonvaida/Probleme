@@ -116,9 +116,13 @@ namespace Operatii_biti
         public void SubtractOperationTest()
         {
             byte[] result = { 1,1 };
-            CollectionAssert.AreEqual(result, SubtractOperation(ConvertTo2(10), ConvertTo2(7)));
+            CollectionAssert.AreEqual(ConvertTo2(24), SubtractOperation(ConvertTo2(42), ConvertTo2(18)));
         }
-
+        [TestMethod]
+        public void MultiplicationOperationTest()
+        {
+            CollectionAssert.AreEqual(ConvertTo2(20), MultiplicationOperation(ConvertTo2(2), ConvertTo2(10)));
+        }
 //-------------------------------------------------------Declaration---------------------------------------
 
         //******************Convert to byte******************************
@@ -270,8 +274,7 @@ namespace Operatii_biti
             var subResult = new byte[Math.Max(number1.Length, number2.Length)];
             if (LessThanOperation(number1, number2)==true){             
                 return new byte[1]{ 0 };
-            }else
-            {
+            };
                 Array.Reverse(number2);
                 Array.Resize(ref number2, number1.Length);
                 Array.Reverse(number2);
@@ -280,19 +283,24 @@ namespace Operatii_biti
 
                 Array.Reverse(subResult);
                 Array.Resize(ref subResult, number1.Length);
-                Array.Reverse(subResult);
-
-            }
-                
+                Array.Reverse(subResult);        
                 return ReduceArraySize(subResult);
 
             }
-            
-            
-        
-
         //***********************Multiplication operation*********************************
-
+        byte[] MultiplicationOperation(byte[] number1,byte[] number2)
+        {
+            var result = new byte[number1.Length];
+            for(int i = 0; i < number2.Length; i++)
+            {
+                if (GetAt(number2, i) == 1)
+                {
+                    Array.Resize(ref result, number1.Length + i);
+                    result = ADDOperation(result, LeftShiftOperation(number1, i));
+                }    
+            }
+            return ReduceArraySize(result);
+        }
         //***********************Division operation*********************************
 
         //***********************GratherThan operation*********************************
