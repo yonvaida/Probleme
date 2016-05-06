@@ -115,15 +115,42 @@ namespace Operatii_biti
         [TestMethod]
         public void SubtractOperationTest()
         {
-            byte[] result = { 1,1 };
-            CollectionAssert.AreEqual(ConvertTo2(24), SubtractOperation(ConvertTo2(42), ConvertTo2(18)));
+            CollectionAssert.AreEqual(ConvertTo2(6), SubtractOperation(ConvertTo2(8), ConvertTo2(2)));
         }
+        //***********************Multiplication operation TEST****************************
         [TestMethod]
         public void MultiplicationOperationTest()
         {
             CollectionAssert.AreEqual(ConvertTo2(21), MultiplicationOperation(ConvertTo2(3), ConvertTo2(7)));
         }
-//-------------------------------------------------------Declaration---------------------------------------
+        //************************Division operation TEST***********************************
+        [TestMethod]
+        public void DivisionOperationTest()
+        {
+            CollectionAssert.AreEqual(ConvertTo2(2), DivisionOperation(ConvertTo2(20), ConvertTo2(7)));
+        }
+        //************************Equal operation TEST***********************************
+        [TestMethod]
+        public void EqualOperationTest()
+        {
+            Assert.AreEqual(true, EqualOperation(ConvertTo2(20), ConvertTo2(20)));
+        }
+        //************************GratherThan operation TEST***********************************
+        [TestMethod]
+        public void GratherThanOperationTest()
+        {
+            Assert.AreEqual(true, GratherThanOperation(ConvertTo2(20), ConvertTo2(5)));
+        }
+        //************************NotEqual operation TEST***********************************
+        [TestMethod]
+        public void NotEqualOperationTest()
+        {
+            Assert.AreEqual(true, NotEqualOperation(ConvertTo2(20), ConvertTo2(19)));
+        }
+
+
+        //-------------------------------------------------------Declaration---------------------------------------
+
 
         //******************Convert to byte******************************
         byte[] ConvertTo2(int number)
@@ -304,11 +331,46 @@ namespace Operatii_biti
             return ReduceArraySize(result);
         }
         //***********************Division operation*********************************
-
+        byte[] DivisionOperation(byte[] number1,byte[] number2)
+        {
+            if (LessThanOperation(number1, number2))
+            {
+                return new byte[1] { 0 };
+            }
+            var divisionResult = new byte[number1.Length];
+            byte[] tempNumber = number1;
+            while (LessThanOperation(number2, tempNumber) || EqualOperation(number2,tempNumber)) 
+            {
+                tempNumber = SubtractOperation(tempNumber, number2);
+                Array.Reverse(number2);
+                divisionResult = ADDOperation(divisionResult, new byte[1] { 1 });
+            };
+            return divisionResult;
+        }
         //***********************GratherThan operation*********************************
-
+        bool GratherThanOperation(byte[] number1, byte[] number2)
+        {
+            if (LessThanOperation(number1, number2) || EqualOperation(number1, number2)) return false;       
+            return true;
+        }
         //***********************Equal operation*********************************
-
+        bool EqualOperation(byte[] number1, byte[] number2)
+        {
+            ReduceArraySize(number1);
+            ReduceArraySize(number2);
+            if(number1.Length != number2.Length) return false;
+            for(int i = 0; i < number1.Length; i++)
+            {
+                if (GetAt(number1, i) != GetAt(number2, i)) return false;
+            }
+            return true;
+        }
         //***********************NotEqual operation*********************************
+        bool NotEqualOperation(byte[] number1, byte[] number2)
+        {
+            if (EqualOperation(number1, number2)) return false;
+            return true;
+        }
+
     }
 }
