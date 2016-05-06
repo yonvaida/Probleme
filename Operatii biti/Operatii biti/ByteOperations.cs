@@ -51,6 +51,12 @@ namespace Operatii_biti
         {
             Assert.AreEqual(1, GetAt(ConvertTo2(12), 3));
         }
+        //**********************Reduce Array Size******************************************
+        [TestMethod]
+        public void ReduceArraySizeTest()
+        {
+            CollectionAssert.AreEqual(ConvertTo2(0), ReduceArraySize(new byte[] { 0, 0, 0, 0, 0, 0 }));
+        }
         //***********************AND operation TEST*********************************
         [TestMethod]
         public void ANDOperationTest()
@@ -196,7 +202,16 @@ namespace Operatii_biti
         //*******************ReduceArraySize************************
         byte[] ReduceArraySize(byte[] number)
         {
-            return ConvertTo2((int)ConvertTo10(number));
+            int i;
+            Array.Reverse(number);
+            for(i = 0; i <number.Length; i++)
+            {
+                if (number[number.Length - i - 1]==1) break;
+            }
+            if (number.Length == i) return new byte[] { 0 };
+            Array.Resize(ref number, number.Length - i);
+            Array.Reverse(number);
+            return number;        
         }
         //*********************NOT operation**********************************
         byte[] NOTOperation(byte[] result)
@@ -318,15 +333,14 @@ namespace Operatii_biti
         byte[] MultiplicationOperation(byte[] number1,byte[] number2)
         {
             var result = new byte[number1.Length];
-            for(int i = 0; i < number2.Length; i++)
+            int i = 0;
+            foreach(byte temp in number2)
             {
                 if (GetAt(number2, i) == 1)
                 {
-                    Array.Reverse(result);
-                    Array.Resize(ref result, number1.Length + i);
-                    Array.Reverse(result);
                     result = ADDOperation(result, LeftShiftOperation(number1, i));
-                }    
+                }
+                i++;
             }
             return ReduceArraySize(result);
         }
@@ -371,6 +385,5 @@ namespace Operatii_biti
             if (EqualOperation(number1, number2)) return false;
             return true;
         }
-
     }
 }
