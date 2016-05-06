@@ -121,7 +121,7 @@ namespace Operatii_biti
         [TestMethod]
         public void MultiplicationOperationTest()
         {
-            CollectionAssert.AreEqual(ConvertTo2(20), MultiplicationOperation(ConvertTo2(2), ConvertTo2(10)));
+            CollectionAssert.AreEqual(ConvertTo2(21), MultiplicationOperation(ConvertTo2(3), ConvertTo2(7)));
         }
 //-------------------------------------------------------Declaration---------------------------------------
 
@@ -295,7 +295,9 @@ namespace Operatii_biti
             {
                 if (GetAt(number2, i) == 1)
                 {
+                    Array.Reverse(result);
                     Array.Resize(ref result, number1.Length + i);
+                    Array.Reverse(result);
                     result = ADDOperation(result, LeftShiftOperation(number1, i));
                 }    
             }
