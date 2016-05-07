@@ -13,7 +13,7 @@ namespace Operatii_biti
         [TestMethod]
         public void NumberToBase2Test()
         {
-            byte[] result = { 1, 1, 0, 0 };
+            byte[] result = { 0, 0, 1, 1 };
             CollectionAssert.AreEqual(result, ConvertTo2(12));
         }
         //******************Convert to decimal TEST******************************
@@ -27,8 +27,10 @@ namespace Operatii_biti
         [TestMethod]
         public void NOTOperationTest()
         {
-            byte[] result = { 0, 0, 1, 1 };
-            CollectionAssert.AreEqual(result, NOTOperation(ConvertTo2(12)));
+            var result = ConvertTo2(3);
+            var testresult = NOTOperation(ConvertTo2(12));
+           
+            CollectionAssert.AreEqual(result,testresult );
         }
         //******************GetAt positio TEST******************************
         [TestMethod]
@@ -67,8 +69,10 @@ namespace Operatii_biti
         [TestMethod]
         public void ANDOperationTest1()
         {
+            var result = ConvertTo2(1 & 12);
+            var tempResult = ANDOperation(ConvertTo2(1), ConvertTo2(12));
 
-            CollectionAssert.AreEqual(ConvertTo2(1 & 12), ANDOperation(ConvertTo2(1), ConvertTo2(12)));
+            CollectionAssert.AreEqual(result,tempResult );
         }
         [TestMethod]
         public void ANDOperationTest2()
@@ -81,20 +85,24 @@ namespace Operatii_biti
         public void OROperationTest()
         {
             byte[] result = {1, 1, 1, 0 };
-            CollectionAssert.AreEqual(result, OROperation(ConvertTo2(12), ConvertTo2(10)));
+            var tempResult = OROperation(ConvertTo2(12), ConvertTo2(10));
+            Array.Reverse(tempResult);
+            CollectionAssert.AreEqual(result, tempResult);
         }
         //***********************XOR operation TEST*********************************
         [TestMethod]
         public void XOROperationTest()
         {
             byte[] result = { 1, 1, 0 };
-            CollectionAssert.AreEqual(result, XOROperation(ConvertTo2(12), ConvertTo2(10)));
+            var tempResult = XOROperation(ConvertTo2(12), ConvertTo2(10));
+            Array.Reverse(tempResult);
+            CollectionAssert.AreEqual(result, tempResult);
         }
         //***********************LeftShift operation TEST*********************************
         [TestMethod]
         public void LeftShiftOperationTest()
         {
-            byte[] result = {1, 1, 0, 0, 0 };
+            byte[] result = {0, 0, 0, 1, 1 };
             CollectionAssert.AreEqual(result, LeftShiftOperation(ConvertTo2(12), 1));
         }
         //***********************RightShift operation TEST*********************************
@@ -115,7 +123,7 @@ namespace Operatii_biti
         public void ADDOperationTest()
         {
 
-            Assert.AreEqual(14, ConvertTo10(ADDOperation(ConvertTo2(12), ConvertTo2(2))));
+            CollectionAssert.AreEqual(ConvertTo2(14), ADDOperation(ConvertTo2(12), ConvertTo2(2)));
         }
         //***********************Subtract operation TEST*********************************
         [TestMethod]
@@ -172,7 +180,7 @@ namespace Operatii_biti
                 number = number / 2;
                 i++;
             } while (number > 0);
-            Array.Reverse(result);
+           
             return result;
         }
         //******************Convert to decimal******************************
@@ -195,7 +203,7 @@ namespace Operatii_biti
             }
             else
             {
-                return number[number.Length - position - 1];
+                return number[position];
             }
 
         }
@@ -203,14 +211,12 @@ namespace Operatii_biti
         byte[] ReduceArraySize(byte[] number)
         {
             int i;
-            Array.Reverse(number);
-            for(i = 0; i <number.Length; i++)
+            for(i = number.Length-1; i >=0; i--)
             {
-                if (number[number.Length - i - 1]==1) break;
+                if (number[i]==1) break;
+                Array.Resize(ref number, i);
             }
-            if (number.Length == i) return new byte[] { 0 };
-            Array.Resize(ref number, number.Length - i);
-            Array.Reverse(number);
+            if (number.Length == 0) number = new byte[] { 0 };
             return number;        
         }
         //*********************NOT operation**********************************
@@ -220,58 +226,75 @@ namespace Operatii_biti
             {
                 result[i] = (byte)(result[i] == 0 ? 1 :0);
             }
-            return result;
+            
+            return ReduceArraySize(result); 
         }
         //***********************AND operation*********************************
         byte[] ANDOperation(byte[] first, byte[] second)
         {
+                        
+            return ExecuteOperations(first,second,"and");
+
+        }
+        byte[] ExecuteOperations(byte[] first,byte[] second, string operation)
+        {
             var andResult = new byte[Math.Max(first.Length, second.Length)];
-           
+
             for (int i = 0; i < andResult.Length; i++)
             {
-                andResult[i] = (byte)(GetAt(first, i) == 1 && GetAt(second, i) == 1 ? 1 : 0);
-                
+                andResult[i] = (byte)(ConditionsOperations(GetAt(first,i),GetAt(second,i),i,operation) ? 1 : 0);
+
             }
-            Array.Reverse(andResult);
             return ReduceArraySize(andResult);
 
+        }
+        bool ConditionsOperations(byte first, byte second, int position, string operation)
+        {
+            if (operation == "and")
+            {
+                if (first == 1 && second == 1) return true;
+                else return false;
+            }
+            if (operation== "or") {
+                if (first == 0 && second == 0) return false;
+                else return true;
+            }
+            if (operation == "xor")
+            {
+                if (first == second) return false;
+                else return true;
+            }
+
+            return false;
         }
         //***********************OR operation*********************************
         byte[] OROperation(byte[] first, byte[] second)
         {
-            var orResult = new byte[Math.Max(first.Length, second.Length)];
-            for (int i = 0; i < orResult.Length; i++)
-            {
-                orResult[i] = (byte)(GetAt(first, i) == 0 && GetAt(second, i) == 0 ? 0 : 1);
-            }
-            Array.Reverse(orResult);
-            return ReduceArraySize(orResult);
+            return ExecuteOperations(first, second, "or");
 
         }
         //***********************XOR operation*********************************
         byte[] XOROperation(byte[] first, byte[] second)
         {
-            var xorResult = new byte[Math.Max(first.Length, second.Length)];
-            for (int i = 0; i < xorResult.Length; i++)
-            {
-                xorResult[i] = (byte)((GetAt(first, i) == 0 && GetAt(second, i)==1)||(GetAt(first, i) == 1 && GetAt(second, i)==0)  ? 1 : 0);
-            }
-            Array.Reverse(xorResult);
-            return ReduceArraySize(xorResult);
+            return ExecuteOperations(first, second, "xor");
 
         }
         //***********************LeftShift operation*********************************
         byte[] LeftShiftOperation(byte[] number, int iteration)
         {
+            Array.Reverse(number);
             Array.Resize(ref number, number.Length + iteration);
-            return number;
+            Array.Reverse(number);
+            return ReduceArraySize(number);
         }
         //***********************RightShift operation*********************************
         byte[] RightShiftOperation(byte[] result, int iteration)
         {
             if (result.Length > iteration)
             {
+                Array.Reverse(result);
                 Array.Resize(ref result, result.Length-iteration);
+                Array.Reverse(result);
                 return ReduceArraySize(result);
             }
             else
@@ -303,11 +326,13 @@ namespace Operatii_biti
             var addResult = new byte[Math.Max(first.Length, second.Length) + 1];
             int transp = 0;
             for(int i = 0; i < addResult.Length; i++)
-            { 
-                addResult[i] = (byte)((GetAt(first, i) + GetAt(second, i) + transp)%2);
-                transp = (GetAt(first, i) + GetAt(second, i) + transp) / 2;
+            {
+                var a = GetAt(first, i);
+                var b = GetAt(second, i);
+                addResult[i] = (byte)((a + b + transp)%2);
+                transp = (a + b + transp) / 2;
             }
-            Array.Reverse(addResult);
+           
             return ReduceArraySize(addResult);
         }
         //***********************Subtract operation*********************************
@@ -317,15 +342,15 @@ namespace Operatii_biti
             if (LessThanOperation(number1, number2)==true){             
                 return new byte[1]{ 0 };
             };
-                Array.Reverse(number2);
+                
                 Array.Resize(ref number2, number1.Length);
-                Array.Reverse(number2);
+               
                 
                 subResult = (ADDOperation(number1, ADDOperation(NOTOperation(number2), new byte[] { 1 })));
 
-                Array.Reverse(subResult);
+           
                 Array.Resize(ref subResult, number1.Length);
-                Array.Reverse(subResult);        
+             
                 return ReduceArraySize(subResult);
 
             }
@@ -347,25 +372,27 @@ namespace Operatii_biti
         //***********************Division operation*********************************
         byte[] DivisionOperation(byte[] number1,byte[] number2)
         {
-            if (LessThanOperation(number1, number2))
-            {
-                return new byte[1] { 0 };
-            }
-            var divisionResult = new byte[number1.Length];
-            byte[] tempNumber = number1;
-            while (LessThanOperation(number2, tempNumber) || EqualOperation(number2,tempNumber)) 
-            {
-                tempNumber = SubtractOperation(tempNumber, number2);
-                Array.Reverse(number2);
-                divisionResult = ADDOperation(divisionResult, new byte[1] { 1 });
-            };
-            return divisionResult;
+              if (LessThanOperation(number1, number2))
+               {
+                   return new byte[1] { 0 };
+               }
+               var divisionResult = new byte[number1.Length];
+               byte[] tempNumber = number1;
+               while (LessThanOperation(number2, tempNumber) || EqualOperation(number2,tempNumber)) 
+               {
+                   tempNumber = SubtractOperation(tempNumber, number2);
+
+                   divisionResult = ADDOperation(divisionResult, new byte[1] { 1 });
+               };
+               return divisionResult;
+            
+          
         }
         //***********************GratherThan operation*********************************
         bool GratherThanOperation(byte[] number1, byte[] number2)
         {
-            if (LessThanOperation(number1, number2) || EqualOperation(number1, number2)) return false;       
-            return true;
+            if( LessThanOperation(number2, number1) ) return true;       
+            return false;
         }
         //***********************Equal operation*********************************
         bool EqualOperation(byte[] number1, byte[] number2)
