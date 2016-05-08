@@ -135,7 +135,7 @@ namespace Operatii_biti
         [TestMethod]
         public void MultiplicationOperationTest()
         {
-            CollectionAssert.AreEqual(ConvertTo2(21), MultiplicationOperation(ConvertTo2(3), ConvertTo2(7)));
+            CollectionAssert.AreEqual(ConvertTo2(0), MultiplicationOperation(ConvertTo2(0), ConvertTo2(30)));
         }
         //************************Division operation TEST***********************************
         [TestMethod]
@@ -242,13 +242,13 @@ namespace Operatii_biti
 
             for (int i = 0; i < andResult.Length; i++)
             {
-                andResult[i] = (byte)(ConditionsOperations(GetAt(first,i),GetAt(second,i),i,operation) ? 1 : 0);
+                andResult[i] = (byte)(ConditionsOperations(GetAt(first,i),GetAt(second,i),operation) ? 1 : 0);
 
             }
             return ReduceArraySize(andResult);
 
         }
-        bool ConditionsOperations(byte first, byte second, int position, string operation)
+        bool ConditionsOperations(byte first, byte second, string operation)
         {
             if (operation == "and") return first == 1 && second == 1;
             if (operation== "or") return !(first == 0 && second == 0);
@@ -345,17 +345,12 @@ namespace Operatii_biti
         //***********************Multiplication operation*********************************
         byte[] MultiplicationOperation(byte[] number1,byte[] number2)
         {
-            var result = new byte[number1.Length];
-            int i = 0;
-            foreach(byte temp in number2)
-            {
-                if (GetAt(number2, i) == 1)
-                {
-                    result = ADDOperation(result, LeftShiftOperation(number1, i));
-                }
-                i++;
+            var result = new byte[] { 0};
+            int t = 0;
+            for(var i=new byte[] { 0}; LessThanOperation(i, number2);i= ADDOperation(i,new byte[]{ 1})){
+                result = ADDOperation(result, number1);
             }
-            return ReduceArraySize(result);
+            return result;
         }
         //***********************Division operation*********************************
         byte[] DivisionOperation(byte[] number1,byte[] number2)
