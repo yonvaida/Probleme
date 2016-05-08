@@ -141,7 +141,7 @@ namespace Operatii_biti
         [TestMethod]
         public void DivisionOperationTest()
         {
-            CollectionAssert.AreEqual(ConvertTo2(2), DivisionOperation(ConvertTo2(20), ConvertTo2(7)));
+            CollectionAssert.AreEqual(ConvertTo2(0), DivisionOperation(ConvertTo2(2), ConvertTo2(7)));
         }
         //************************Equal operation TEST***********************************
         [TestMethod]
@@ -242,18 +242,18 @@ namespace Operatii_biti
 
             for (int i = 0; i < andResult.Length; i++)
             {
-                andResult[i] = (byte)(ConditionsOperations(GetAt(first,i),GetAt(second,i),operation) ? 1 : 0);
+                andResult[i] = ConditionsOperations(GetAt(first,i),GetAt(second,i),operation) ;
 
             }
             return ReduceArraySize(andResult);
 
         }
-        bool ConditionsOperations(byte first, byte second, string operation)
+        byte ConditionsOperations(byte first, byte second, string operation)
         {
-            if (operation == "and") return first == 1 && second == 1;
-            if (operation== "or") return !(first == 0 && second == 0);
-            if (operation == "xor") return !(first == second);
-            return false;
+            if (operation == "and") return (byte)((first == 1 && second == 1)?1:0);
+            if (operation== "or") return (byte)((first == 0 && second == 0)?0:1);
+            if (operation == "xor") return (byte)((first == second)?0:1);
+            return (byte)0;
         }
         //***********************OR operation*********************************
         byte[] OROperation(byte[] first, byte[] second)
@@ -346,7 +346,6 @@ namespace Operatii_biti
         byte[] MultiplicationOperation(byte[] number1,byte[] number2)
         {
             var result = new byte[] { 0};
-            int t = 0;
             for(var i=new byte[] { 0}; LessThanOperation(i, number2);i= ADDOperation(i,new byte[]{ 1})){
                 result = ADDOperation(result, number1);
             }
@@ -354,17 +353,12 @@ namespace Operatii_biti
         }
         //***********************Division operation*********************************
         byte[] DivisionOperation(byte[] number1,byte[] number2)
-        {
-              if (LessThanOperation(number1, number2))
-               {
-                   return new byte[1] { 0 };
-               }
-               var divisionResult = new byte[number1.Length];
+        {       
+               var divisionResult = new byte[] { 0 };
                byte[] tempNumber = number1;
                while (LessThanOperation(number2, tempNumber) || EqualOperation(number2,tempNumber)) 
                {
                    tempNumber = SubtractOperation(tempNumber, number2);
-
                    divisionResult = ADDOperation(divisionResult, new byte[1] { 1 });
                };
                return divisionResult;
@@ -375,7 +369,6 @@ namespace Operatii_biti
         bool GratherThanOperation(byte[] number1, byte[] number2)
         {
             return LessThanOperation(number2, number1);
-           
         }
         //***********************Equal operation*********************************
         bool EqualOperation(byte[] number1, byte[] number2)
