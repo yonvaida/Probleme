@@ -147,7 +147,7 @@ namespace Operatii_biti
         [TestMethod]
         public void EqualOperationTest()
         {
-            Assert.AreEqual(true, EqualOperation(ConvertTo2(20), ConvertTo2(20)));
+            Assert.AreEqual(false, EqualOperation(ConvertTo2(2), ConvertTo2(20)));
         }
         //************************GratherThan operation TEST***********************************
         [TestMethod]
@@ -250,21 +250,9 @@ namespace Operatii_biti
         }
         bool ConditionsOperations(byte first, byte second, int position, string operation)
         {
-            if (operation == "and")
-            {
-                if (first == 1 && second == 1) return true;
-                else return false;
-            }
-            if (operation== "or") {
-                if (first == 0 && second == 0) return false;
-                else return true;
-            }
-            if (operation == "xor")
-            {
-                if (first == second) return false;
-                else return true;
-            }
-
+            if (operation == "and") return first == 1 && second == 1;
+            if (operation== "or") return !(first == 0 && second == 0);
+            if (operation == "xor") return !(first == second);
             return false;
         }
         //***********************OR operation*********************************
@@ -391,20 +379,13 @@ namespace Operatii_biti
         //***********************GratherThan operation*********************************
         bool GratherThanOperation(byte[] number1, byte[] number2)
         {
-            if( LessThanOperation(number2, number1) ) return true;       
-            return false;
+            return LessThanOperation(number2, number1);
+           
         }
         //***********************Equal operation*********************************
         bool EqualOperation(byte[] number1, byte[] number2)
         {
-            ReduceArraySize(number1);
-            ReduceArraySize(number2);
-            if(number1.Length != number2.Length) return false;
-            for(int i = 0; i < number1.Length; i++)
-            {
-                if (GetAt(number1, i) != GetAt(number2, i)) return false;
-            }
-            return true;
+            return !(LessThanOperation(number1, number2) || GratherThanOperation(number1, number2));
         }
         //***********************NotEqual operation*********************************
         bool NotEqualOperation(byte[] number1, byte[] number2)
