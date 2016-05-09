@@ -129,7 +129,7 @@ namespace Operatii_biti
         [TestMethod]
         public void SubtractOperationTest()
         {
-            CollectionAssert.AreEqual(ConvertTo2(6), SubtractOperation(ConvertTo2(8), ConvertTo2(2)));
+            CollectionAssert.AreEqual(ConvertTo2(18), SubtractOperation(ConvertTo2(24), ConvertTo2(6)));
         }
         //***********************Multiplication operation TEST****************************
         [TestMethod]
@@ -141,7 +141,7 @@ namespace Operatii_biti
         [TestMethod]
         public void DivisionOperationTest()
         {
-            CollectionAssert.AreEqual(ConvertTo2(0), DivisionOperation(ConvertTo2(2), ConvertTo2(7)));
+            CollectionAssert.AreEqual(ConvertTo2(4), DivisionOperation(ConvertTo2(24), ConvertTo2(6)));
         }
         //************************Equal operation TEST***********************************
         [TestMethod]
@@ -161,7 +161,12 @@ namespace Operatii_biti
         {
             Assert.AreEqual(true, NotEqualOperation(ConvertTo2(20), ConvertTo2(19)));
         }
-
+        [TestMethod]
+        public void FactorialOperationTest()
+        {
+         // CollectionAssert.AreEqual(ConvertTo2(49),DivisionOperation(FactorialOperation(ConvertTo2(49)),FactorialOperation(ConvertTo2(48))));
+           CollectionAssert.AreEqual(ConvertTo2(49), DivisionOperation(FactorialOperation(ConvertTo2(49)),FactorialOperation(ConvertTo2(48))));
+        }
 
         //-------------------------------------------------------Declaration---------------------------------------
 
@@ -334,7 +339,7 @@ namespace Operatii_biti
                 var a = GetAt(first, i);
                 var b = GetAt(second, i);
                 subResult[i] = (byte)((2+a - b - transp) % 2);
-                transp = (subResult[i] == (byte)1) ? 1 : 0;
+                transp = ((2 + a - b - transp)<2) ? 1 : 0;
             }
             return ReduceArraySize(subResult);
 
@@ -378,6 +383,15 @@ namespace Operatii_biti
         {
             return !(EqualOperation(number1, number2));
             
+        }
+        byte[] FactorialOperation(byte[] number)
+        {
+            var factorialResult = new byte[] {1 };
+            for(var i = new byte[] { 1 };!GratherThanOperation(i,number);i=ADDOperation(i,new byte[] { 1 }))
+            {
+                factorialResult = MultiplicationOperation(factorialResult, i);
+            }
+            return factorialResult;
         }
     }
 }
