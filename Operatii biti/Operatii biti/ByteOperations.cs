@@ -334,9 +334,10 @@ namespace Operatii_biti
         {
             var result = new byte[number1.Length];
             int i = 0;
+            Array.Reverse(number2);
             foreach(byte temp in number2)
             {
-                if (GetAt(number2, i) == 1)
+                if (temp == (byte)1 )
                 {
                     result = ADDOperation(result, LeftShiftOperation(number1, i));
                 }
