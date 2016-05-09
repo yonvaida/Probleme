@@ -326,7 +326,7 @@ namespace Operatii_biti
                 Array.Reverse(subResult);
                 Array.Resize(ref subResult, number1.Length);
                 Array.Reverse(subResult);        
-                return ReduceArraySize(subResult);
+                return ReduceArraySize(subResult); 
 
             }
         //***********************Multiplication operation*********************************
