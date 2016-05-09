@@ -376,8 +376,8 @@ namespace Operatii_biti
         //***********************NotEqual operation*********************************
         bool NotEqualOperation(byte[] number1, byte[] number2)
         {
-            if (EqualOperation(number1, number2)) return false;
-            return true;
+            return !(EqualOperation(number1, number2));
+            
         }
     }
 }
