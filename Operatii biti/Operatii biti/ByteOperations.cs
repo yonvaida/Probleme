@@ -338,8 +338,9 @@ namespace Operatii_biti
             {
                 var a = GetAt(first, i);
                 var b = GetAt(second, i);
-                subResult[i] = (byte)((2+a - b - transp) % 2);
-                transp = ((2 + a - b - transp)<2) ? 1 : 0;
+                var temp = 2 + a - b - transp;
+                subResult[i] = (byte)(temp % 2);
+                transp = (temp<2) ? 1 : 0;
             }
             return ReduceArraySize(subResult);
 
