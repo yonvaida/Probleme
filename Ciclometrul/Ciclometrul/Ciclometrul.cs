@@ -42,16 +42,42 @@ namespace Ciclometrul
         [TestMethod]
         public void QuickSortTest()
         {
-            int[] list = new int[] { 6, 8, 18, 3, 22, 19, 58, 10 };
+            /*int[] list = new int[] { 6, 8, 18, 3, 22, 19, 58, 10 };
             int[] sortlist = new int[] { 3, 6, 8, 10, 18, 19, 22, 58 };
-           // Assert.AreEqual(3, SplitList(list, 0, list.Length - 1));
-           QuickSort(list, 0, list.Length-1);
+           Assert.AreEqual(3, SplitList(list, 0, list.Length - 1));*/
+            var competitor1 = new Competitor(new int[] { 9, 2, 6, 3, 8 }, 1, "Popescu", 2);
+            var competitor2 = new Competitor(new int[] { 8, 6, 7, 1, 3 }, 2, "Ionescu", 2);
+            var competitor3 = new Competitor(new int[] { 9, 6, 5, 2, 2 }, 3, "Daniel", 2);
+            var competitor4 = new Competitor(new int[] { 10, 5, 1, 3, 10 }, 4, "Grigore", 2);
+            var competitor5 = new Competitor(new int[] { 4, 8, 9, 8, 11 }, 5, "Adrian", 2);
+
+            Competitor[] contender = new Competitor[] { competitor1, competitor2, competitor3, competitor4, competitor5 };
+            Competitor[] sortByDistance = new Competitor[] { competitor3, competitor2, competitor1, competitor4, competitor5 };
+            QuickSort(contender, 0, contender.Length - 1, "Distance");
+            CollectionAssert.AreEqual(sortByDistance, contender);
+        }
+        //***************************************Average Top Test**********************************************
+        [TestMethod]
+        public void AverageTopTest()
+        {
+            /*int[] list = new int[] { 6, 8, 18, 3, 22, 19, 58, 10 };
+            int[] sortlist = new int[] { 3, 6, 8, 10, 18, 19, 22, 58 };
+           Assert.AreEqual(3, SplitList(list, 0, list.Length - 1));*/
+            var competitor1 = new Competitor(new int[] { 9, 2, 6, 3, 8 }, 1, "Popescu", 2);
+            var competitor2 = new Competitor(new int[] { 8, 6, 7, 1, 3 }, 2, "Ionescu", 2);
+            var competitor3 = new Competitor(new int[] { 9, 6, 5, 2, 2 }, 3, "Daniel", 2);
+            var competitor4 = new Competitor(new int[] { 10, 5, 1, 3, 10 }, 4, "Grigore", 2);
+            var competitor5 = new Competitor(new int[] { 4, 8, 9, 8, 11 }, 5, "Adrian", 2);
+
+            Competitor[] contender = new Competitor[] { competitor1, competitor2, competitor3, competitor4, competitor5 };
+
+
         }
 
         //**********************************************Declaration******************************************
 
         //**************************************Competitor struct***********************************************
-        struct Competitor
+        public struct Competitor
         {
             public int[] rotations;
             public string name;
@@ -112,33 +138,30 @@ namespace Ciclometrul
         }
 
         //*********************************************Average speed top**********************************************
-        int[] AverageSpeedTop(Competitor[] competitor)
+        Competitor[] AverageSpeedTop(Competitor[] competitor)
         {
-            int[] averageSpeed = new int[] { };
-            
-            for (int i = 0; i < competitor.Length; i++)
-            {
-                averageSpeed[i] = competitor[i].averageSpeed;
-            }
-            return averageSpeed;
-            
+            QuickSort(competitor, 0, competitor.Length - 1, "Max Speed");
+            return competitor;
         }
         //*********************************************Distance top***************************************************
 
-        Competitor[] SortbyProperty(Competitor[] competitor,int first,int last, string criteria,string typeOfSort)
+        bool CaseCriteria(Competitor listElement,Competitor pivotElement,string criteria)
         {
-            Competitor tempCompetitor;
-            return competitor;
-
+            if (listElement.distance <= pivotElement.distance && criteria == "Distance") return true;
+            if (listElement.maxSpeed <= pivotElement.maxSpeed && criteria == "Max Speed") return true;
+            if (listElement.startNumber <= pivotElement.startNumber && criteria == "Start Position") return true;
+            return false;
         }
-        int SplitList(int[] list,int first,int last)
+        int SplitList(Competitor[] list,int first,int last,string criteria)
         {
-            int pivot = list[last];
+            Competitor pivot = list[last];
             int pivotPosition = first;
-            int temp=0,i;
+            Competitor temp;
+            int i;
+           
             for ( i = first; i < last; i++)
             {
-                if (list[i] <= pivot)
+                if (CaseCriteria(list[i],pivot,criteria))
                 {
                     temp = list[i];
                     list[i] = list[pivotPosition];
@@ -151,15 +174,12 @@ namespace Ciclometrul
             list[pivotPosition] = temp;
             return pivotPosition;
         }
-        public void QuickSort(int[] list, int first,int last)
-        {
-            
-            int positionPivot = SplitList(list, first, last);
-            if (positionPivot > first)  QuickSort(list, first, positionPivot - 1); 
-            if (positionPivot < last)  QuickSort(list, positionPivot + 1 ,last); 
-       
-           
+        public void QuickSort(Competitor[] list, int first,int last, string criteria)
+        {  
+            int positionPivot = SplitList(list, first, last,criteria);
+            if (positionPivot > first)  QuickSort(list, first, positionPivot - 1, criteria); 
+            if (positionPivot < last)  QuickSort(list, positionPivot + 1 ,last, criteria);        
         }
-   
+
     }
 }
