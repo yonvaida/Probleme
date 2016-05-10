@@ -10,7 +10,7 @@ namespace Ciclometrul
 
         //**********************************************Distance Test******************************************
         [TestMethod]
-        public void DistanceTest()
+        public void TotalDistanceTest()
         {
             var competitor1 = new Competitor(new int[] { 9,2,6,3,8 }, 1, "Popescu",2);
             var competitor2 = new Competitor(new int[] { 8,6,7,1,3 }, 2, "Ionescu",2);
@@ -21,7 +21,7 @@ namespace Ciclometrul
             Competitor[] contender = new Competitor[] {competitor1,competitor2,competitor3,competitor4,competitor5};
  
             int[] result = { 56, 50, 48, 58, 80 };
-           CollectionAssert.AreEqual(result, Distance(contender));
+           CollectionAssert.AreEqual(result, TotalDistance(contender));
         }
         //**********************************************Distance Test******************************************
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Ciclometrul
         }
         //***************************************Average Top Test**********************************************
         [TestMethod]
-        public void AverageTopTest()
+        public void AverageSpeedTopTest()
         {
             /*int[] list = new int[] { 6, 8, 18, 3, 22, 19, 58, 10 };
             int[] sortlist = new int[] { 3, 6, 8, 10, 18, 19, 22, 58 };
@@ -70,8 +70,6 @@ namespace Ciclometrul
             var competitor5 = new Competitor(new int[] { 4, 8, 9, 8, 11 }, 5, "Adrian", 2);
 
             Competitor[] contender = new Competitor[] { competitor1, competitor2, competitor3, competitor4, competitor5 };
-
-
         }
 
         //**********************************************Declaration******************************************
@@ -82,36 +80,55 @@ namespace Ciclometrul
             public int[] rotations;
             public string name;
             public int startNumber;
-            public int lengthWheel;
-            public int distance;
-            public int maxSpeed;
-            public int averageSpeed;
-            public Competitor(int[] rotations, int startNumber, string name,int lengthWheel)
+            int lengthWheel;
+            
+            int averageSpeed;
+            public Competitor(int[] rotations, int startNumber, string name, int lengthWheel)
             {
                 this.rotations = rotations;
                 this.startNumber = startNumber;
                 this.name = name;
                 this.lengthWheel = lengthWheel;
                 this.averageSpeed = 0;
-                this.distance = 0;
-                this.maxSpeed = 0;
-
-                for(int i = 0; i < rotations.Length; i++)
-                {
-                    this.maxSpeed = maxSpeed < rotations[i] ? rotations[i] : maxSpeed;
-                    this.averageSpeed += rotations[i];
-                    this.distance += rotations[i] * this.lengthWheel;
-                }
-                this.averageSpeed = this.averageSpeed / rotations.Length;
+              
             }
+            public int distance()
+            {
+                int result = 0;
+                for (int i = 0; i < rotations.Length; i++)
+                {
+                    result += rotations[i] * lengthWheel;
+                }
+                return result;
+            }
+            public int[] maxSpeed()
+            {
+                var result = new int[2] {0,0};
+                for (int i = 0; i < rotations.Length; i++)
+                {
+                    if (rotations[i] > result[1])
+                    {
+                        result[0] = i;
+                        result[1] = rotations[i];
+                    }
+                    
+                }
+                return result;
+            }
+            
+               
         
          }
-        //*******************************************Distance calculation*******************************************
-        int[] Distance(Competitor[] competitor){
+        //******************************************Competitor Distance**************************************************
+    
+
+
+        //*******************************************Total Distance calculation*******************************************
+        int[] TotalDistance(Competitor[] competitor){
             var result = new int[competitor.Length];
             for (int i = 0; i < competitor.Length; i++)
             {
-                result[i] = competitor[i].distance;
+                result[i] = competitor[i].distance();
                
             }
             return result;
@@ -119,22 +136,12 @@ namespace Ciclometrul
         //*********************************************Max speed******************************************************
         string[] MaxSpeedName(Competitor[] competitor)
         {
-            int MaxSpeed=0;
-            string MaxSpeedPosition="",Name="";
+            var MaxSpeed=new string[competitor.Length] ;
             for (int i = 0; i < competitor.Length; i++)
             {
-                var temp = 1;
-                foreach (int rot in competitor[i].rotations)
-                {
-                    if (rot > MaxSpeed)
-                    {
-                        MaxSpeedPosition = temp.ToString();
-                        Name = competitor[i].name;
-                    }
-                    temp++;
-                }
-            }
-            return new string[] {MaxSpeedPosition,Name};
+                MaxSpeed[i] = competitor[i].maxSpeed()[1].ToString(); 
+                }            
+            return MaxSpeed;
         }
 
         //*********************************************Average speed top**********************************************
@@ -145,10 +152,10 @@ namespace Ciclometrul
         }
         //*********************************************Distance top***************************************************
 
-        bool CaseCriteria(Competitor listElement,Competitor pivotElement,string criteria)
+        bool CaseCriteria(Competitor listElement, Competitor pivotElement, string criteria)
         {
-            if (listElement.distance <= pivotElement.distance && criteria == "Distance") return true;
-            if (listElement.maxSpeed <= pivotElement.maxSpeed && criteria == "Max Speed") return true;
+            if (listElement.distance() <= pivotElement.distance() && criteria == "Distance") return true;
+            if (listElement.maxSpeed()[1] <= pivotElement.maxSpeed()[1] && criteria == "Max Speed") return true;
             if (listElement.startNumber <= pivotElement.startNumber && criteria == "Start Position") return true;
             return false;
         }
