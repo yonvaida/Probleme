@@ -35,7 +35,7 @@ namespace Ciclometrul
 
             Competitor[] contender = new Competitor[] { competitor1, competitor2, competitor3, competitor4, competitor5 };
 
-            string[] result = {"5","Adrian"};
+            string[] result = { "9", "8", "9", "10", "11" };
             CollectionAssert.AreEqual(result, MaxSpeedName(contender));
         }
         //***************************************QuickSort Test**********************************************
@@ -60,9 +60,7 @@ namespace Ciclometrul
         [TestMethod]
         public void AverageSpeedTopTest()
         {
-            /*int[] list = new int[] { 6, 8, 18, 3, 22, 19, 58, 10 };
-            int[] sortlist = new int[] { 3, 6, 8, 10, 18, 19, 22, 58 };
-           Assert.AreEqual(3, SplitList(list, 0, list.Length - 1));*/
+
             var competitor1 = new Competitor(new int[] { 9, 2, 6, 3, 8 }, 1, "Popescu", 2);
             var competitor2 = new Competitor(new int[] { 8, 6, 7, 1, 3 }, 2, "Ionescu", 2);
             var competitor3 = new Competitor(new int[] { 9, 6, 5, 2, 2 }, 3, "Daniel", 2);
@@ -70,6 +68,8 @@ namespace Ciclometrul
             var competitor5 = new Competitor(new int[] { 4, 8, 9, 8, 11 }, 5, "Adrian", 2);
 
             Competitor[] contender = new Competitor[] { competitor1, competitor2, competitor3, competitor4, competitor5 };
+            string[] result = {  };
+            CollectionAssert.AreEqual(result, AverageSpeedTop(contender));
         }
 
         //**********************************************Declaration******************************************
@@ -82,14 +82,14 @@ namespace Ciclometrul
             public int startNumber;
             int lengthWheel;
             
-            int averageSpeed;
+        
             public Competitor(int[] rotations, int startNumber, string name, int lengthWheel)
             {
                 this.rotations = rotations;
                 this.startNumber = startNumber;
                 this.name = name;
                 this.lengthWheel = lengthWheel;
-                this.averageSpeed = 0;
+               
               
             }
             public int distance()
@@ -115,7 +115,15 @@ namespace Ciclometrul
                 }
                 return result;
             }
-            
+            public int averageSpeed()
+            {
+                int average = 0;
+                for(int i = 0; i < rotations.Length; i++)
+                {
+                    average += rotations[i];
+                }
+                return average / rotations.Length;
+            }
                
         
          }
@@ -147,7 +155,7 @@ namespace Ciclometrul
         //*********************************************Average speed top**********************************************
         Competitor[] AverageSpeedTop(Competitor[] competitor)
         {
-            QuickSort(competitor, 0, competitor.Length - 1, "Max Speed");
+            QuickSort(competitor, 0, competitor.Length - 1, "Average Speed");
             return competitor;
         }
         //*********************************************Distance top***************************************************
@@ -157,6 +165,7 @@ namespace Ciclometrul
             if (listElement.distance() <= pivotElement.distance() && criteria == "Distance") return true;
             if (listElement.maxSpeed()[1] <= pivotElement.maxSpeed()[1] && criteria == "Max Speed") return true;
             if (listElement.startNumber <= pivotElement.startNumber && criteria == "Start Position") return true;
+            if (listElement.averageSpeed() <= pivotElement.averageSpeed() && criteria == "Average Speed") return true;
             return false;
         }
         int SplitList(Competitor[] list,int first,int last,string criteria)
