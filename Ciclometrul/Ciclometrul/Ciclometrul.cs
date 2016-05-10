@@ -38,6 +38,15 @@ namespace Ciclometrul
             string[] result = {"5","Adrian"};
             CollectionAssert.AreEqual(result, MaxSpeedName(contender));
         }
+        //***************************************QuickSort Test**********************************************
+        [TestMethod]
+        public void QuickSortTest()
+        {
+            int[] list = new int[] { 6, 8, 18, 3, 22, 19, 58, 10 };
+            int[] sortlist = new int[] { 3, 6, 8, 10, 18, 19, 22, 58 };
+           // Assert.AreEqual(3, SplitList(list, 0, list.Length - 1));
+           QuickSort(list, 0, list.Length-1);
+        }
 
         //**********************************************Declaration******************************************
 
@@ -105,17 +114,52 @@ namespace Ciclometrul
         //*********************************************Average speed top**********************************************
         int[] AverageSpeedTop(Competitor[] competitor)
         {
-            for(int i = 0; i < competitor.Length; i++)
+            int[] averageSpeed = new int[] { };
+            
+            for (int i = 0; i < competitor.Length; i++)
             {
-                AverageSpeedTop[i]
+                averageSpeed[i] = competitor[i].averageSpeed;
             }
+            return averageSpeed;
+            
         }
         //*********************************************Distance top***************************************************
 
-        Competitor[] SortbyProperty(Competitor[] competitor, string criteria)
+        Competitor[] SortbyProperty(Competitor[] competitor,int first,int last, string criteria,string typeOfSort)
         {
             Competitor tempCompetitor;
+            return competitor;
 
         }
+        int SplitList(int[] list,int first,int last)
+        {
+            int pivot = list[last];
+            int pivotPosition = first;
+            int temp=0,i;
+            for ( i = first; i < last; i++)
+            {
+                if (list[i] <= pivot)
+                {
+                    temp = list[i];
+                    list[i] = list[pivotPosition];
+                    list[pivotPosition] =temp;
+                    pivotPosition++;
+                }   
+            }
+            temp = list[i];
+            list[i] = list[pivotPosition];
+            list[pivotPosition] = temp;
+            return pivotPosition;
+        }
+        public void QuickSort(int[] list, int first,int last)
+        {
+            
+            int positionPivot = SplitList(list, first, last);
+            if (positionPivot > first)  QuickSort(list, first, positionPivot - 1); 
+            if (positionPivot < last)  QuickSort(list, positionPivot + 1 ,last); 
+       
+           
+        }
+   
     }
 }
