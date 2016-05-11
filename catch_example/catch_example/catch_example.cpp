@@ -14,25 +14,19 @@ double factorial(int a) {
 
 	SCENARIO("factorial Test","[factorial]"){
 		GIVEN("Factorial values") {
-			int a = 0;
-			int b = 1;
-			int c = 10;
 			WHEN("factorial 0") {
-				double factorialTemp=factorial(a);
 				THEN("calcul factorial corect"){
-					REQUIRE(factorialTemp == 1);
+					REQUIRE(factorial(0) == 1);
 				}
 			}
 			WHEN("factorial 1") {
-				double factorialTemp = factorial(b);
 				THEN("calcul factorial corect") {
-					REQUIRE(factorialTemp == 1);
+					REQUIRE(factorial(1) == 1);
 				}
 			}
 			WHEN("factorial 10") {
-				double factorialTemp = factorial(c);
 				THEN("calcul factorial corect") {
-					REQUIRE(factorialTemp == 3628800);
+					REQUIRE(factorial(10) == 3628800);
 				}
 			}
 	}
