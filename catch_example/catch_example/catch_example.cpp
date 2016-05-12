@@ -4,13 +4,7 @@
 #include "stdafx.h"
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-
-double factorial(int a) {
-	if (a == 0 || a == 1) return 1;
-	double factorialTemp = a*factorial(a - 1);
-	return factorialTemp;
-
-}
+#include "functions.h"
 
 	SCENARIO("factorial Test","[factorial]"){
 		GIVEN("Factorial values") {
@@ -30,6 +24,5 @@ double factorial(int a) {
 				}
 			}
 	}
-
-}
+	}
 
