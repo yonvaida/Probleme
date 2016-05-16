@@ -38,13 +38,32 @@ int Total(vector<Product> prod) {
 
 Product MinPrice(vector<Product> prod) {
 	Product minPriceProduct=prod[0];
-	for (int i = 0; i<prod.size()-1; i++) {
+	for (int i = 0; i<prod.size(); i++) {
 		if (minPriceProduct.getPrice() > prod[i].getPrice()) {
 			minPriceProduct = prod[i];
 		};
 	}
 	return minPriceProduct;
 }
+
+int RemoveMax(vector<Product> prod) {
+	Product minPriceProduct = prod[0];
+	int temp;
+	for (int i = 0; i<prod.size(); i++) {
+		if (minPriceProduct.getPrice() < prod[i].getPrice()) {
+			minPriceProduct = prod[i];
+			temp = i;
+		}
+		;
+	}
+	prod.erase(prod.begin() + temp);
+	for (int i = 0; i < prod.size(); i++) {
+		cout << prod[i].getName() << endl;
+	}
+	return prod.size();
+}
+
+
 
 
 
@@ -60,6 +79,7 @@ SCENARIO("Products in cart") {
 			THEN("Calculate"){
 				CHECK(Total(prodTemp) == 240);
 				CHECK(MinPrice(prodTemp).getPrice() == 13);
+				CHECK( RemoveMax(prodTemp) == 4);
 			}
 			}
 	}
