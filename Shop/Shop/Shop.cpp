@@ -32,8 +32,10 @@ double Calculate(std::vector<Product> prod, std::string operation) {
 	for (prodIter = prod.begin(); prodIter != prod.end(); prodIter++) {
 		totalPrice += (*prodIter).getPrice();
 		minPrice = (minPrice > (*prodIter).getPrice()) ? (*prodIter).getPrice() : minPrice;
-		maxPrice = (maxPrice < (*prodIter).getPrice()) ? (*prodIter).getPrice() : maxPrice;
-		temp = (maxPrice < (*prodIter).getPrice()) ? i : temp;	
+		if (maxPrice < (*prodIter).getPrice()) {
+			maxPrice = (*prodIter).getPrice();
+			temp = i;
+		}
 		i++;
 	}	
 	if (operation == "total") return totalPrice;
