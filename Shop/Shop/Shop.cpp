@@ -63,7 +63,13 @@ int RemoveMax(vector<Product> prod) {
 	return prod.size();
 }
 
-
+double AveragePrice(vector<Product> prod) {
+	int average = 0;
+	for (int i = 0; i < prod.size(); i++) {
+		average += prod[i].getPrice();
+	}
+	return average / prod.size();
+}
 
 
 
@@ -79,7 +85,8 @@ SCENARIO("Products in cart") {
 			THEN("Calculate"){
 				CHECK(Total(prodTemp) == 240);
 				CHECK(MinPrice(prodTemp).getPrice() == 13);
-				CHECK( RemoveMax(prodTemp) == 4);
+				CHECK(RemoveMax(prodTemp) == 4);
+				CHECK(AveragePrice(prodTemp) == 48);
 			}
 			}
 	}
