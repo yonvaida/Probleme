@@ -27,51 +27,32 @@ private:
 
 };
 
-int Total(vector<Product> prod) {
-	int totalPrice=0;
-	for (int i=0; i<prod.size(); i++) {
-		totalPrice += prod[i].getPrice();
-	}	
-	cout << totalPrice<<endl;
-	return totalPrice;	
-}
-
-Product MinPrice(vector<Product> prod) {
-	Product minPriceProduct=prod[0];
-	for (int i = 0; i<prod.size(); i++) {
-		if (minPriceProduct.getPrice() > prod[i].getPrice()) {
-			minPriceProduct = prod[i];
-		};
-	}
-	return minPriceProduct;
-}
-
-int RemoveMax(vector<Product> prod) {
-	Product minPriceProduct = prod[0];
-	int temp;
-	for (int i = 0; i<prod.size(); i++) {
-		if (minPriceProduct.getPrice() < prod[i].getPrice()) {
-			minPriceProduct = prod[i];
+double Calculate(vector<Product> prod, string operation) {
+	vector<Product>::iterator prodIter;
+	int totalPrice = 0;
+	int temp=0,i=0;
+	int minPrice = prod[0].getPrice();
+	int maxPrice = minPrice;
+	double averagePrice = 0;
+	for (prodIter = prod.begin(); prodIter != prod.end(); prodIter++) {
+		totalPrice += (*prodIter).getPrice();
+		minPrice = (minPrice > (*prodIter).getPrice()) ? (*prodIter).getPrice() : minPrice;
+		if (maxPrice < (*prodIter).getPrice()) {
+			maxPrice = (*prodIter).getPrice();
 			temp = i;
-		}
-		;
-	}
+				}
+		i++;
+	}	
+	if (operation == "total") return totalPrice;
+	if (operation == "min") return minPrice;
+	if (operation == "average")return totalPrice / prod.size();
 	prod.erase(prod.begin() + temp);
 	for (int i = 0; i < prod.size(); i++) {
 		cout << prod[i].getName() << endl;
 	}
-	return prod.size();
+	if (operation == "remove") return prod.size();
+	return 0;
 }
-
-double AveragePrice(vector<Product> prod) {
-	int average = 0;
-	for (int i = 0; i < prod.size(); i++) {
-		average += prod[i].getPrice();
-	}
-	return average / prod.size();
-}
-
-
 
 SCENARIO("Products in cart") {
 	GIVEN("Shoping cart") {
@@ -83,10 +64,10 @@ SCENARIO("Products in cart") {
 		prodTemp.push_back(Product{ 78, "Product 5" });
 		WHEN("Shopping finished") {
 			THEN("Calculate"){
-				CHECK(Total(prodTemp) == 240);
-				CHECK(MinPrice(prodTemp).getPrice() == 13);
-				CHECK(RemoveMax(prodTemp) == 4);
-				CHECK(AveragePrice(prodTemp) == 48);
+				CHECK(Calculate(prodTemp,"total") == 240);
+				CHECK(Calculate(prodTemp,"min") == 13);
+				CHECK(Calculate(prodTemp,"remove") == 4);
+				CHECK(Calculate(prodTemp,"average") == 48);
 			}
 			}
 	}
