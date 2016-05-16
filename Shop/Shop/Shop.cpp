@@ -32,9 +32,19 @@ int Total(vector<Product> prod) {
 	for (int i=0; i<prod.size(); i++) {
 		totalPrice += prod[i].getPrice();
 	}	
+	cout << totalPrice<<endl;
 	return totalPrice;	
 }
 
+Product MinPrice(vector<Product> prod) {
+	Product minPriceProduct=prod[0];
+	for (int i = 0; i<prod.size()-1; i++) {
+		if (minPriceProduct.getPrice() > prod[i].getPrice()) {
+			minPriceProduct = prod[i];
+		};
+	}
+	return minPriceProduct;
+}
 
 
 
@@ -49,6 +59,7 @@ SCENARIO("Products in cart") {
 		WHEN("Shopping finished") {
 			THEN("Calculate"){
 				CHECK(Total(prodTemp) == 240);
+				CHECK(MinPrice(prodTemp).getPrice() == 13);
 			}
 			}
 	}
