@@ -7,6 +7,7 @@
 #include <iostream>
 
 
+
 class Product {
 public:
 	Product(int prodPrice,std::string prodName){
@@ -27,21 +28,18 @@ private:
 
 double Calculate(std::vector<Product> prod, std::string operation) {
 	std::vector<Product>::iterator prodIter;
-	int totalPrice = 0, temp = 0, i = 0, minPrice = prod[0].getPrice(), maxPrice = prod[0].getPrice();
+	
+	int  totalPrice = 0, temp = 0, i = 0;
 	double averagePrice = 0;
 	for (prodIter = prod.begin(); prodIter != prod.end(); prodIter++) {
 		totalPrice += (*prodIter).getPrice();
-		minPrice = (minPrice > (*prodIter).getPrice()) ? (*prodIter).getPrice() : minPrice;
-		if (maxPrice < (*prodIter).getPrice()) {
-			maxPrice = (*prodIter).getPrice();
-			temp = i;
-		}
-		i++;
-	}	
+	}
+	auto minPrice = (*min_element(prod.begin(), prod.end(), [](Product i, Product j) {return i.getPrice() < j.getPrice(); })).getPrice();
+	auto maxPrice = max_element(prod.begin(), prod.end(), [](Product i, Product j) {return i.getPrice() < j.getPrice(); });
 	if (operation == "total") return totalPrice;
 	if (operation == "min") return minPrice;
 	if (operation == "average")return totalPrice / prod.size();
-	prod.erase(prod.begin() + temp);
+	prod.erase(maxPrice);
 	for (int i = 0; i < prod.size(); i++) {
 		std::cout << prod[i].getName() << std::endl;
 	}
