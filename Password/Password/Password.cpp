@@ -5,32 +5,35 @@
 
 class Password {
 public:
-	Password(std::string pass,int low,int up,int number,int symb) {
+	Password(std::string pass) {
 		passwordValue = pass;
-		upCase = up;
-		numbers = number;
-		symbols = symb;
+		
 	
 	};
 	
 		bool PasswordChecked() {
-		for (int i = 0; i < passwordValue.length(); i++) {
-			
+			int countLowerCase = 0, countUpCase = 0, countNumbers = 0, countSymbols = 0;
+			for (int i = 0; i < passwordValue.length(); i++) {
+				if(unacceptedChar.find(passwordValue[i]) != std::string::npos)return false;
+				countLowerCase += islower(passwordValue[i]) ? 1 : 0;
+				countUpCase += isupper(passwordValue[i]) ? 1 : 0;
+				countNumbers += isdigit(passwordValue[i]) ? 1 : 0;
+				countSymbols += isalnum(passwordValue[i]) ? 0 : 1;
 		}
-		if (lowerCase < 1) return true;
-		else return false;
+			return (lowerCase<=countLowerCase && upCase<=countUpCase && numbers<=countNumbers&& symbols <= countSymbols)?true:false;
 	}
 private:
 	std::string passwordValue;
-	int lowerCase;
-	int upCase;
-	int numbers;
-	int symbols;
+	int lowerCase=2;
+	int upCase=1;
+	int numbers=1;
+	int symbols=1;
+	std::string unacceptedChar = "~{}[]()/\',;.<>";
 };
 
 SCENARIO("Check if password is valid") {
 	GIVEN("Give password, number of lowercase,number of uppercase,number of numbers and number of symbols") {
-		Password pass("ionut", 2, 1, 1, 0);
+		Password pass("Ionut*23");
 		WHEN("password given") {
 			THEN("check password") {
 				CHECK(pass.PasswordChecked() == true);
