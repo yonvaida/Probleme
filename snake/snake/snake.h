@@ -10,4 +10,7 @@ public:
 	void keyPressEvent(QKeyEvent * event);
 	public slots:
 	void move();
+
+
+	
 };
