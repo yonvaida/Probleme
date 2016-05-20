@@ -14,13 +14,10 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	QGraphicsScene * scene = new QGraphicsScene();
-	QGraphicsRectItem *layout=new QGraphicsRectItem;
-	//shared_ptr<QGraphicsRectItem> layout;
-	//snakeRect * snake = new snakeRect;
-
-	layout->setRect(-200, -200, 400, 400);
-	scene->addItem(layout);
+	std::shared_ptr<QGraphicsScene> scene(new QGraphicsScene());
+	std::shared_ptr<QGraphicsRectItem> layout(new QGraphicsRectItem());
+	layout.get()->setRect(-200, -200, 400, 400);
+	scene->addItem(layout.get());
 	snakeRect *snake = new snakeRect;
 	scene->addItem(snake);
 	snake->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -29,21 +26,17 @@ int main(int argc, char *argv[])
 	scene->addItem(random);
 	QTimer * timer = new QTimer();
 	QObject::connect(timer, &QTimer::timeout, [=]() {
-		
 		if (snake->pos() == random->pos()) {
-			qDebug("kkkkkk");
-			
+			qDebug("kkkkkk");	
 		}
 		else {
 			qDebug("ccccccc");
 		}
-		
 		snake->move();
-
 	});
 	timer->start(1000);
-	QGraphicsView * view = new QGraphicsView(scene);
-	view->setFixedSize(500, 500);
-	view->show();
+	std::shared_ptr<QGraphicsView> view (new QGraphicsView(scene.get()));
+	view.get()->setFixedSize(500, 500);
+	view.get()->show();
 	return a.exec();
 }
