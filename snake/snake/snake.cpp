@@ -3,6 +3,7 @@
 #include <qstring.h>
 #include <qobject.h>
 #include <qdebug.h>
+#include <vector>
 
 snakeRect::snakeRect() {
 	setRect(0, 0, 5, 5);
@@ -26,13 +27,20 @@ void snakeRect::keyPressEvent(QKeyEvent* event) {
 void snakeRect::move() {
 	if (direction == "up") {
 		setPos(x(), y() - 10);
-	}else if(direction=="down"){
+	}
+	else if (direction == "down") {
 		setPos(x(), y() + 10);
 	}
 	else if (direction == "left") {
-		setPos(x()-10, y() );
+		setPos(x() - 10, y());
 	}
 	else if (direction == "right") {
-		setPos(x()+10, y());
+		setPos(x() + 10, y());
 	}
-}
+};
+
+	void snakeRect::elongate() {
+	
+
+	};
+

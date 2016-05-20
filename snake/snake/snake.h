@@ -1,9 +1,9 @@
 #pragma once
 #include <QGraphicsRectItem>
 #include <qobject.h>
-#include <string.h>
-#include <string>
-#include <stdlib.h>
+
+
+#include <qdebug.h>
 class snakeRect : public QObject,public QGraphicsRectItem {
 Q_OBJECT
 public:
@@ -11,13 +11,6 @@ public:
 	void keyPressEvent(QKeyEvent * event);
 	public slots:
 	void move();
-	
+	void elongate();
 };
-class randomRect :public QGraphicsRectItem {
-public:
-	randomRect(){
-		int x = rand()%10*10;
-		int y = rand()%10*10;
-		setRect(x,y, 5, 5);
-	}
-};
+
