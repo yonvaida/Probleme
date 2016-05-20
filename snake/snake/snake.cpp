@@ -1,6 +1,6 @@
 #include "snake.h"
 #include <QKeyEvent>
-#include <QTimer>
+#include <qstring.h>
 #include <qobject.h>
 #include <qdebug.h>
 
@@ -8,35 +8,31 @@ snakeRect::snakeRect() {
 	setRect(0, 0, 5, 5);
 	
 }
+QString direction;
 void snakeRect::keyPressEvent(QKeyEvent* event) {
-	int temp;
 	if (event->key() == Qt::Key_Up) {
-		temp = 1;
+		direction = "up";
 	}
 	if (event->key() == Qt::Key_Down) {
-		temp = 2;
+		direction = "down";
 	}
-
-		QTimer * timer = new QTimer();
-		QObject::connect(timer, &QTimer::timeout, [=]() {
-			if (temp==1) {
-				moveBy(0, -10);
-			};
-			if (temp==2) {
-				moveBy(0,10);
-			};
-		
-		});
-		timer->start(1000);
-		
-		
-
+	if (event->key() == Qt::Key_Left) {
+		direction = "left";
+	}
+	if (event->key() == Qt::Key_Right) {
+		direction = "right";
+	}	
 }
 void snakeRect::move() {
-	
-		setPos(x() + 10, y());
-	
-		
-	
-	
+	if (direction == "up") {
+		setPos(x(), y() - 10);
+	}else if(direction=="down"){
+		setPos(x(), y() + 10);
+	}
+	else if (direction == "left") {
+		setPos(x()-10, y() );
+	}
+	else if (direction == "right") {
+		setPos(x()+10, y());
+	}
 }
