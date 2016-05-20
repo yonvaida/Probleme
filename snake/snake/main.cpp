@@ -26,8 +26,10 @@ int main(int argc, char *argv[])
 	scene->addItem(random);
 	QTimer * timer = new QTimer();
 	QObject::connect(timer, &QTimer::timeout, [=]() {
-		if (snake->pos() == random->pos()) {
-			qDebug("kkkkkk");	
+		if (snake->pos().x() == random->pos().x()) {
+			//double temp = random->pos().x();
+			//QString::number(temp)
+			qDebug("ddd");	
 		}
 		else {
 			qDebug("ccccccc");
