@@ -41,9 +41,6 @@
     <ClCompile Include="GeneratedFiles\qrc_snake.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="snake.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SnakeHead.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -51,6 +48,9 @@
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="snakeHead.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="snakeBody.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,10 +66,10 @@
     <ClInclude Include="snakeFood.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="snake.h">
+    <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="main.h">
+    <ClInclude Include="snakeBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

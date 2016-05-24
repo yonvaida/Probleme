@@ -13,33 +13,35 @@
 #include <vector>
 #include <iostream>
 #include "main.h"
-#include "snake.h"
+#include "snakeBody.h"
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	std::unique_ptr<QGraphicsScene> scene(new QGraphicsScene());
-	std::unique_ptr<QGraphicsRectItem> layout(new QGraphicsRectItem());
-	layout.get()->setRect(-200, -200, 400, 400);
-	scene->addItem(layout.get());
-	snakeRect *snakeHead = new snakeRect;
+	std::unique_ptr<QGraphicsRectItem> grid(new QGraphicsRectItem());
+	std::shared_ptr<snakeRect> snakeHead(new snakeRect());
+	std::shared_ptr<snakeBodyRect> snake(new snakeBodyRect());
+	grid.get()->setRect(-240, -240, 480, 480);
+	scene->addItem(grid.get());
+	scene->addItem(snakeHead.get());
+	snakeHead.get()->setFlag(QGraphicsItem::ItemIsFocusable);
+	snakeHead.get()->setFocus();
+	randomRect * snakeFood = new randomRect;
+	scene.get()->addItem(snakeFood);
 	//std::vector<QPoint> snake;
 	//snake.push_back(snakeHead->pos());
-	scene->addItem(snakeHead);
-	snakeHead->setFlag(QGraphicsItem::ItemIsFocusable);
-	snakeHead->setFocus();
-	randomRect * snakeFood = new randomRect;
-	scene->addItem(snakeFood);
+	std::cout << snakeHead.get()->pos().x()<< std::endl;
+	std::vector<QGraphicsRectItem> snakeBody;
+
 	QTimer * timer = new QTimer();
 	QObject::connect(timer, &QTimer::timeout, [=]() {
-		snakeHead->move();
-		int temp=1;
-		//snake->at(0) = snakeHead->pos();
-		if (snakeHead->pos().x() == snakeFood->rect().left()&&
-			snakeHead->pos().y() == snakeFood->rect().top()) {
-			//std::cout << snakeBody->elongate(snakeHead) << std::endl;
-			//snake.push_back(snakeHead->pos());
+		snakeHead.get()->move();
+		//snake.get()->move();
+		if (snakeHead.get()->pos().x() == snakeFood->rect().left()&&
+			snakeHead.get()->pos().y() == snakeFood->rect().top()) {
 			std::cout << "intersect" << std::endl;
+			snake.get()->add(snakeBody,snakeHead.get());
 		}
 		else {
 			qDebug("diferent");

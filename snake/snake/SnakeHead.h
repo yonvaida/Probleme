@@ -9,8 +9,9 @@ Q_OBJECT
 public:
 	snakeRect();
 	void keyPressEvent(QKeyEvent * event);
-	public slots:
 	void move();
+
+	
 	
 };
 
