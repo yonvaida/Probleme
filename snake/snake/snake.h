@@ -1,16 +1,13 @@
 #pragma once
 #include <QGraphicsRectItem>
-#include <qobject.h>
+#include "SnakeHead.h"
+#include <memory.h>
 
 
-#include <qdebug.h>
-class snakeRect : public QObject,public QGraphicsRectItem {
-Q_OBJECT
+class snakeBody :public QGraphicsRectItem {
 public:
-	snakeRect();
-	void keyPressEvent(QKeyEvent * event);
-	public slots:
+	snakeBody();
+	int elongate();
 	void move();
-	void elongate();
-};
 
+};

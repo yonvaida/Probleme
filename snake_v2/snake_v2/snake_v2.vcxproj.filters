@@ -24,12 +24,12 @@
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{0f5048d7-876f-439a-96be-3442325d3efb}</UniqueIdentifier>
+      <UniqueIdentifier>{5f335941-6198-4c4d-ab00-66f57055a5cb}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{92b24f16-a958-474b-aab9-a1b9d415e468}</UniqueIdentifier>
+      <UniqueIdentifier>{ec66576e-7977-4320-aa73-0affca7d55e1}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -38,39 +38,33 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_snake.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="snake.cpp">
+    <ClCompile Include="snake_v2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SnakeHead.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_snake_v2.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SnakeHead.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_snake_v2.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="snakeHead.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GeneratedFiles\qrc_snake_v2.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="snake.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SnakeHead.h">
+    <CustomBuild Include="snake_v2.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="snake_v2.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="snake_v2.qrc">
+      <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="snakeFood.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="snake.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GeneratedFiles\ui_snake_v2.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
