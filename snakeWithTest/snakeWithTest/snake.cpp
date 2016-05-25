@@ -1,20 +1,29 @@
 #include "snake.h"
+#include <iostream>
 
-Snake::Snake(int x, int y, int w, int h) {
+SnakeRect::SnakeRect(int x, int y, int w, int h) {
 
 };
 
-void Snake::move(enum direction) {
-	if (direction::up) {
+void SnakeRect::move(direction dir) {
+	if (dir==direction::up) {
 		yCoord -= 10;
 	}
-	else if (direction::down) {
+	else if (dir==direction::down) {
 		yCoord += 10;
 	}
-	else if (direction::left) {
+	else if (dir==direction::left) {
 		xCoord -= 10;
 	}
-	else if (direction::right) {
-		yCoord += 10;
+	else if (dir==direction::right) {
+		xCoord += 10;
 	};
+}
+
+bool SnakeRect::findFood(int x,int y) {
+	std::cout << xCoord << "--" << yCoord << std::endl;
+	if (xCoord == x && yCoord == y) {
+		return true;
+	}
+		return false;
 }

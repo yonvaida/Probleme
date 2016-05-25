@@ -1,13 +1,14 @@
 #pragma once
 #include <string.h>
 
-class Snake
+class SnakeRect
 {
-	enum direction { left, right, up, down };
+	
 public:
-	Snake(int x, int y, int w, int h);
+	enum direction { left, right, up, down };
+	SnakeRect(int x, int y, int w, int h);
 	void move(enum direction);
-
+	bool findFood(int x, int y);
 private:
 	int xCoord;
 	int yCoord;
