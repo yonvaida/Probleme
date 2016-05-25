@@ -41,6 +41,12 @@
     <ClCompile Include="GeneratedFiles\qrc_snakewithtest.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="snake.test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="snakewithtest.qrc">
@@ -48,7 +54,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="snakeRect.h">
+    <ClInclude Include="snake.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
