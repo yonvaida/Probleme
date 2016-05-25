@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "snakeRect.h"
-#include <vector>
+#include <deque>
 bool validSnakePosition(SnakeRect table, SnakeRect snakehead) {
 	if (snakehead.getXCoord() > table.getXCoord()
 		&& snakehead.getXCoord() < table.getXCoord()+table.getWidth()
@@ -11,13 +11,18 @@ bool validSnakePosition(SnakeRect table, SnakeRect snakehead) {
 	}
 	else return false;
 }
+std::deque<SnakeRect> elongateSnake(SnakeRect head, std::deque<SnakeRect> snakeBody) {
+	snakeBody.push_front(head);
+	return snakeBody;
+}
 
 
 SCENARIO("") {
 	GIVEN("") {
 		SnakeRect table(0,0,500,500);
 		SnakeRect snakeHead(0, 0, 10, 10);
-		std::vector<SnakeRect> snakebody;
+		std::deque<SnakeRect> snakebody;
+		SnakeRect snakeFood(40, 20, 10, 10);
 		WHEN("") {
 			table.createTable();
 			THEN("") {
@@ -53,6 +58,12 @@ SCENARIO("") {
 			snakeHead.setCoord(-300, 300);
 			THEN("Return GAME OVER") {
 				CHECK(validSnakePosition(table,snakeHead) == false);
+			}
+		}
+		WHEN("Snake eat food") {
+			snakebody=elongateSnake(snakeHead, snakebody);
+			THEN("Snake elongate") {
+				CHECK(snakebody.size() == 1);
 			}
 		}
 	}
