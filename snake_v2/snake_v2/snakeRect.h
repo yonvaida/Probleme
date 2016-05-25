@@ -13,4 +13,5 @@ public:
 	void keyPressEvent(QKeyEvent * event);
 	void move();
 	void add(QPoint * snakeHead);
+	void randomMove();
 };

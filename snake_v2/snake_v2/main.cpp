@@ -21,9 +21,9 @@ int main(int argc, char *argv[])
 	std::unique_ptr<QGraphicsView> view(new QGraphicsView(scene.get()));
 	std::unique_ptr<QGraphicsRectItem> gridTable(new QGraphicsRectItem(-250, -250, 500, 500));
 	std::shared_ptr<snakeRect> snakeHead(new snakeRect(0, 0, 5, 5));
-	std::shared_ptr<snakeRect> snakeFood(new snakeRect(rand()%10*10, rand()%10*10, 5, 5));
+	std::shared_ptr<snakeRect> snakeFood(new snakeRect(0, 0, 5, 5));
+	snakeFood->randomMove();
 	std::vector<std::shared_ptr<snakeRect>> snake ;
-
 	//snakePoint snakeTemp;
 	//snakeBody.push_back(snakeRect(0,0,5,5));
 	snake.push_back(snakeHead);
@@ -40,15 +40,15 @@ int main(int argc, char *argv[])
 	snakeHead->move();
 	//snake[0].setPoint(snakeHead.get()->pos().toPoint().x(), snakeHead.get()->pos().toPoint().y());
 	std::cout << snake[0].get()->pos().x() << std::endl;
-	if (snakeHead.get()->pos().x() == snakeFood.get()->rect().left()&& snakeHead.get()->pos().y() == snakeFood.get()->rect().top()) {
+	if (snakeHead.get()->pos().x() == snakeFood.get()->pos().x() && snakeHead.get()->pos().y() == snakeFood.get()->pos().y()) {
 		std::cout << "dddddddddd" << std::endl;
 		std::shared_ptr<snakeRect> newSnakeRect(new snakeRect(0, 0, 5, 5));
-		snakeFood->setPos(rand()%10*10,rand()%10*10);
-		std::cout << "Snake food position x= " << snakeFood.get()->rect().left() << " -> y= " << snakeFood.get()->rect().top() << std::endl;
+		snakeFood->randomMove();
+		std::cout << "Snake food position x= " << snakeFood.get()->pos().x() << " -> y= " << snakeFood.get()->pos().y() << std::endl;
 		snake.push_back(newSnakeRect);
 		scene->addItem(newSnakeRect.get());
 	}
-	std::cout << "Snake food position x= " << snakeFood.get()->rect().left() <<" -> y= "<< snakeFood.get()->rect().top() << std::endl;
+	std::cout << "Snake food position x= " << snakeFood.get()->pos().x() <<" -> y= "<< snakeFood.get()->pos().y() << std::endl;
 	});
 	timer->start(1000);
 

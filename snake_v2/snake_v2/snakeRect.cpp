@@ -37,6 +37,6 @@ void snakeRect::move() {
 		setPos(x() + 10, y());
 	}
 }
-void snakeRect::add(QPoint * snakeHead) {
-
+void snakeRect::randomMove() {
+	setPos(rand() % 10 * 10, rand() % 10 * 10);
 }
