@@ -50,6 +50,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_snakeRect.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="snakePoints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="snake_v2.qrc">
@@ -58,5 +61,10 @@
     <CustomBuild Include="snakeRect.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="snakePoints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
