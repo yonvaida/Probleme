@@ -1,14 +1,16 @@
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 #include "snake.h"
-#include "snakeGUI.h"
+#include <qapplication.h>
 
 
 int main(int argc, char *argv[])
 {
 	int result = Catch::Session().run(argc, argv);
-	
-	snakeGUI(argc,argv);
+	QApplication a(argc, argv);
+
+
+	return a.exec();
 
 
 }

@@ -27,6 +27,12 @@ bool SnakeRect::findFood(int x,int y) {
 	}
 		return false;
 }
+bool SnakeRect::onTable(table snakeTable) {
+	if (xCoord > snakeTable.left() && xCoord<snakeTable.right() && 
+		yCoord>snakeTable.top() && yCoord<snakeTable.bottom()) return true;
+		return false;
+}
+
 std::deque<SnakeRect> elongate(std::deque<SnakeRect> snake, SnakeRect snakeHead) {
 	snake.push_front(snakeHead);
 	return snake;

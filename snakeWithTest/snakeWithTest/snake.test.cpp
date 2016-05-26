@@ -4,8 +4,6 @@
 #include <deque>
 #include <iostream>
 
-
-
 SCENARIO("") {
 	GIVEN("") {
 		SnakeRect snakeHead(0, 0, 10, 10);
@@ -46,6 +44,21 @@ SCENARIO("") {
 			}
 			THEN("Eat food and elongate") {
 			CHECK(snake.size() == 1);
+			}
+		}
+		WHEN("Snake is on table") {
+			table snakeTable(200, 200);
+			THEN("continue game"){
+				CHECK(snakeHead.onTable(snakeTable) == true);
+			}
+		}
+		WHEN("Snake go out form table") {
+			table snakeTable(20, 20);
+			for (int i = 0; i < 10; i++) {
+				snakeHead.move(SnakeRect::left);
+			}
+			THEN("Game is over") {
+				CHECK(snakeHead.onTable(snakeTable) == false);
 			}
 		}
 	}
