@@ -24,12 +24,12 @@
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{eca3826c-5e12-46b4-ae15-073c0ebdadae}</UniqueIdentifier>
+      <UniqueIdentifier>{e7cf9118-1ad8-47f5-8de7-221d56a017ab}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{13ce894f-bc9d-41ef-998b-b2add5258ff4}</UniqueIdentifier>
+      <UniqueIdentifier>{a69372a7-2248-44a7-b045-4e36dd773e29}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -38,32 +38,29 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_snake_v2.cpp">
+    <ClCompile Include="GeneratedFiles\qrc_snakewithtest.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="snakeRect.cpp">
+    <ClCompile Include="snake.test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_snakeRect.cpp">
-      <Filter>Generated Files\Debug</Filter>
+    <ClCompile Include="snake.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_snakeRect.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="snakePoints.cpp">
+    <ClCompile Include="snakeGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="snake_v2.qrc">
+    <CustomBuild Include="snakewithtest.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="snakeRect.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="snakePoints.h">
+    <ClInclude Include="snake.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="snakeGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
