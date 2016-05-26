@@ -47,6 +47,9 @@
     <ClCompile Include="snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="snakeGUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="snakewithtest.qrc">
@@ -55,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="snake.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="snakeGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

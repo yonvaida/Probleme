@@ -1,5 +1,6 @@
 #include "snake.h"
 #include <iostream>
+#include <deque>
 
 SnakeRect::SnakeRect(int x, int y, int w, int h) {
 
@@ -21,9 +22,12 @@ void SnakeRect::move(direction dir) {
 }
 
 bool SnakeRect::findFood(int x,int y) {
-	std::cout << xCoord << "--" << yCoord << std::endl;
-	if (xCoord == x && yCoord == y) {
+		if (xCoord == x && yCoord == y) {
 		return true;
 	}
 		return false;
+}
+std::deque<SnakeRect> elongate(std::deque<SnakeRect> snake, SnakeRect snakeHead) {
+	snake.push_front(snakeHead);
+	return snake;
 }

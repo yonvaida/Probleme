@@ -1,5 +1,6 @@
 #pragma once
 #include <string.h>
+#include <deque>
 
 class SnakeRect
 {
@@ -15,4 +16,4 @@ private:
 	int width;
 	int height;
 };
-
+std::deque<SnakeRect> elongate(std::deque<SnakeRect> snake, SnakeRect snakeHead);

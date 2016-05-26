@@ -1,11 +1,9 @@
+
 #include "snake.h"
 #include "catch.hpp"
 #include <deque>
 #include <iostream>
-std::deque<SnakeRect> elongate(std::deque<SnakeRect> snake, SnakeRect snakeHead) {
-	 snake.push_front(snakeHead);
-	 return snake;
-}
+
 
 
 SCENARIO("") {
@@ -26,20 +24,20 @@ SCENARIO("") {
 			}
 		}
 		WHEN("Move up") {
-			//snakeHead.move(SnakeRect::up);
+			snakeHead.move(SnakeRect::up);
 			THEN("") {
-				//CHECK(snakeHead.findFood(0, -10) == true);
+				CHECK(snakeHead.findFood(0, -10) == true);
 			}
 		}
 		WHEN("Move down") {
-			//snakeHead.move(SnakeRect::down);
+			snakeHead.move(SnakeRect::down);
 			THEN("") {
-				//CHECK(snakeHead.findFood(0, 0) == true);
+				CHECK(snakeHead.findFood(0, 0) == true);
 			}
 		}
 		WHEN("Coord of snake is same as food coord's") {
 			THEN("Eat food") {
-				//CHECK(snakeHead.findFood(0,0) == true);
+				CHECK(snakeHead.findFood(0,0) == true);
 			}
 		}
 		WHEN("Find food") {
@@ -47,7 +45,7 @@ SCENARIO("") {
 				snake = elongate(snake, snakeHead);
 			}
 			THEN("Eat food and elongate") {
-			//	CHECK(snake.size() == 1);
+			CHECK(snake.size() == 1);
 			}
 		}
 	}
