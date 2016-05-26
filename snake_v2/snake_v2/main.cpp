@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 	std::unique_ptr<QGraphicsView> view(new QGraphicsView(scene.get()));
 	std::unique_ptr<QGraphicsRectItem> gridTable(new QGraphicsRectItem(-250, -250, 500, 500));
 	std::shared_ptr<snakeRect> snakeHead(new snakeRect(0, 0, 5, 5));
-	std::vector<snakeRect> snakeBody;
-	//snakeBody.push_back(snakeRect(0,0,5,5));
+	std::vector<QPointF> snakeBody;
+	snakeBody.push_back(snakeHead.get->pos());
 	scene->addItem(gridTable.get());
 	scene->addItem(snakeHead.get());
 	snakeHead->setFlag(QGraphicsItem::ItemIsFocusable);
