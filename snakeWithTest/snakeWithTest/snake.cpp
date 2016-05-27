@@ -19,10 +19,12 @@ void Snake::move(std::string dir) {
 }
 
 bool Snake::findFood(Rect snakeFood) {
-		if (snakebody.end()->findFood(snakeFood)) return true;
+		if (snakeFood.findCollision(snakebody.at(snakebody.size()-1))) return true;
 		return false;
 }
 bool Snake::onTable(table snakeTable) {
+	
+	
 	/*if (snakebody.begin.xCoord ) return true;*/
 		return false;
 } 
@@ -36,10 +38,12 @@ void Snake::elongate(Rect snakeRect,std::string dir) {
 }
 bool Snake::collision() {
 	std::vector<Rect>::iterator it;
-	std::vector<Rect>::iterator snakehead=snakebody.end();
+	
+
 	for (it = snakebody.begin(); it < snakebody.end() - 1; it++) {
-		if (it == snakehead)return false;
-			
+		
+		if (snakebody.at(snakebody.size()-1).findCollision(*it)) return true;
+	
 	}
-	return true;
+	return false;
 }

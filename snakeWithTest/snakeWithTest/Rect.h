@@ -8,7 +8,7 @@ public:
 	void setRectDimPos(int x, int y, int w, int h);
 	void move();
 	std::string nextMove;
-	bool findFood(Rect snakefood);
+	bool findCollision(Rect it);
 private:
 	int xCoord;
 	int yCoord;

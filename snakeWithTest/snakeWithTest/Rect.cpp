@@ -22,7 +22,7 @@ void Rect::move() {
 		xCoord += 5;
 	};
 }
-bool Rect::findFood(Rect snakeFood) {
-	if (xCoord == snakeFood.xCoord && yCoord == snakeFood.yCoord) return true;
+bool Rect::findCollision(Rect it) {
+	if (xCoord == it.xCoord && yCoord == it.yCoord) return true;
 	return false;
 }

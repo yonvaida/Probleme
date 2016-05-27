@@ -16,19 +16,23 @@ SCENARIO("") {
 		snake.elongate(snakeRect2,"left");
 		snake.elongate(snakeRect3,"left");
 		Rect snakeFood;
-		snakeFood.setRectDimPos(-10, 0, 5, 5);
-		snake.move("right");
+		snakeFood.setRectDimPos(-20, -5, 5, 5);
+		//snake.move("right");
 		
 		WHEN("Create snake") {
-
+			snake.move("up");
+			snake.move("left");
 			THEN("") {
-			//CHECK(snake.findFood(snakeFood));
+			CHECK(snake.findFood(snakeFood));
 			}
 		}
 		WHEN("Move left") {
-			//snake.move("left");
+			snake.move("left");
+			snake.move("left");
+			snake.move("left");
+			snakeFood.setRectDimPos(-30, 0, 5, 5);
 			THEN("Change snake position") {
-
+			CHECK(snake.findFood(snakeFood));
 			}
 		}
 		WHEN("Move right") {
@@ -36,7 +40,6 @@ SCENARIO("") {
 			
 			THEN("Change snake position") {
 				CHECK(snake.collision() == true);
-
 			}
 		}
 		WHEN("Move up") {
