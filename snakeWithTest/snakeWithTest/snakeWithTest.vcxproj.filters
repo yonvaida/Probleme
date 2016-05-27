@@ -47,7 +47,13 @@
     <ClCompile Include="snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="snakeGUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,7 +66,13 @@
     <ClInclude Include="snake.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="snakeGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

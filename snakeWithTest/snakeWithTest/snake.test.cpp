@@ -1,52 +1,55 @@
-
 #include "snake.h"
 #include "catch.hpp"
-#include <deque>
+#include <vector>
 #include <iostream>
-
-
 
 SCENARIO("") {
 	GIVEN("") {
-		SnakeRect snakeHead(0, 0, 10, 10);
-		std::deque<SnakeRect>snake;
-		WHEN("Move left") {
-			snakeHead.move(SnakeRect::left);
+		Snake snake;
+		Rect snakeRect1;
+		snakeRect1.setRectDimPos(0, 0, 5, 5);
+		Rect snakeRect2;
+		snakeRect2.setRectDimPos(-5, 0, 5, 5);
+		Rect snakeRect3;
+		snakeRect3.setRectDimPos(-10, 0, 5, 5);
+		snake.elongate(snakeRect1,"left");
+		snake.elongate(snakeRect2,"left");
+		snake.elongate(snakeRect3,"left");
+		Rect snakeFood;
+		snakeFood.setRectDimPos(-10, 0, 5, 5);
+		snake.move("right");
+		
+		WHEN("Create snake") {
+
 			THEN("") {
-				CHECK(snakeHead.findFood(-10, 0));
+			//CHECK(snake.findFood(snakeFood));
+			}
+		}
+		WHEN("Move left") {
+			//snake.move("left");
+			THEN("Change snake position") {
+
 			}
 		}
 		WHEN("Move right") {
-			snakeHead.move(SnakeRect::right);
+			snake.move("right");
 			
-			THEN("") {
-				CHECK(snakeHead.findFood(0, 0));
+			THEN("Change snake position") {
+				CHECK(snake.collision() == true);
+
 			}
 		}
 		WHEN("Move up") {
-			snakeHead.move(SnakeRect::up);
-			THEN("") {
-				CHECK(snakeHead.findFood(0, -10) == true);
+			THEN("Change snake position") {
+				//snake.move("up");
 			}
 		}
 		WHEN("Move down") {
-			snakeHead.move(SnakeRect::down);
-			THEN("") {
-				CHECK(snakeHead.findFood(0, 0) == true);
+			THEN("Change snake position") {
+				//snake.move("left");
 			}
 		}
-		WHEN("Coord of snake is same as food coord's") {
-			THEN("Eat food") {
-				CHECK(snakeHead.findFood(0,0) == true);
-			}
-		}
-		WHEN("Find food") {
-			if (snakeHead.findFood(0, 0)) {
-				snake = elongate(snake, snakeHead);
-			}
-			THEN("Eat food and elongate") {
-			CHECK(snake.size() == 1);
-			}
-		}
+		
 	}
 }
+	
