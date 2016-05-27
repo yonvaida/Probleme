@@ -25,7 +25,7 @@ bool Snake::findFood(Rect snakeFood) {
 bool Snake::onTable(table snakeTable) {
 	/*if (snakebody.begin.xCoord ) return true;*/
 		return false;
-}
+} 
 
 void Snake::elongate(Rect snakeRect,std::string dir) {
 	snakeRect.nextMove = dir;
