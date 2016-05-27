@@ -30,9 +30,10 @@ bool Snake::onTable(table snakeTable) {
 } 
 
 void Snake::elongate(Rect snakeRect,std::string dir) {
+	snakebody.push_back(snakeRect);
 	snakeRect.nextMove = dir;
 	snakeRect.move();
-	snakebody.push_back(snakeRect);
+	
 	
 	
 }

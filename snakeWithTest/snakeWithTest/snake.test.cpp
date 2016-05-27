@@ -8,15 +8,18 @@ SCENARIO("") {
 		Snake snake;
 		Rect snakeRect1;
 		snakeRect1.setRectDimPos(0, 0, 5, 5);
+		snakeRect1.nextMove = "left";
 		Rect snakeRect2;
 		snakeRect2.setRectDimPos(-5, 0, 5, 5);
+		snakeRect2.nextMove = "left";
 		Rect snakeRect3;
 		snakeRect3.setRectDimPos(-10, 0, 5, 5);
+		snakeRect3.nextMove = "left";
 		snake.elongate(snakeRect1,"left");
 		snake.elongate(snakeRect2,"left");
 		snake.elongate(snakeRect3,"left");
 		Rect snakeFood;
-		snakeFood.setRectDimPos(-20, -5, 5, 5);
+		snakeFood.setRectDimPos(-15, -5, 5, 5);
 		//snake.move("right");
 		
 		WHEN("Create snake") {
@@ -30,7 +33,7 @@ SCENARIO("") {
 			snake.move("left");
 			snake.move("left");
 			snake.move("left");
-			snakeFood.setRectDimPos(-30, 0, 5, 5);
+			snakeFood.setRectDimPos(-25, 0, 5, 5);
 			THEN("Change snake position") {
 			CHECK(snake.findFood(snakeFood));
 			}
