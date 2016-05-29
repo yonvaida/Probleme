@@ -10,7 +10,7 @@ class SnakeRect
 {
 	
 public:
-	enum direction { left, right, up, down };
+	
 	SnakeRect(int x, int y, int w, int h);
 	void move(enum direction);
 	bool findFood(int x, int y);
