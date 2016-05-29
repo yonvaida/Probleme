@@ -1,39 +1,50 @@
 #include "snake.h"
 #include <iostream>
-#include <deque>
+#include <vector>
 
-SnakeRect::SnakeRect(int x, int y, int w, int h) {
+Snake::Snake() {
 
 };
 
-void SnakeRect::move(direction dir) {
-	if (dir==direction::up) {
-		yCoord -= 10;
+void Snake::move(std::string dir) {
+	int i;
+	std::vector<Rect>::iterator it;
+
+	for (it=snakebody.begin(); it < snakebody.end()-1; it++) {
+		it->nextMove = (it + 1)->nextMove;
+		it->move();
 	}
-	else if (dir==direction::down) {
-		yCoord += 10;
-	}
-	else if (dir==direction::left) {
-		xCoord -= 10;
-	}
-	else if (dir==direction::right) {
-		xCoord += 10;
-	};
+	it->nextMove =dir;
+	it->move();
 }
 
-bool SnakeRect::findFood(int x,int y) {
-		if (xCoord == x && yCoord == y) {
-		return true;
-	}
+bool Snake::findFood(Rect snakeFood) {
+		if (snakeFood.findCollision(snakebody.at(snakebody.size()-1))) return true;
 		return false;
 }
-bool SnakeRect::onTable(table snakeTable) {
-	if (xCoord > snakeTable.left() && xCoord<snakeTable.right() && 
-		yCoord>snakeTable.top() && yCoord<snakeTable.bottom()) return true;
+bool Snake::onTable(table snakeTable) {
+	
+	
+	/*if (snakebody.begin.xCoord ) return true;*/
 		return false;
-}
+} 
 
-std::deque<SnakeRect> elongate(std::deque<SnakeRect> snake, SnakeRect snakeHead) {
-	snake.push_front(snakeHead);
-	return snake;
+void Snake::elongate(Rect snakeRect,std::string dir) {
+	snakebody.push_back(snakeRect);
+	snakeRect.nextMove = dir;
+	snakeRect.move();
+	
+	
+	
+}
+bool Snake::collision() {
+	std::vector<Rect>::iterator it;
+	
+
+	for (it = snakebody.begin(); it < snakebody.end() - 1; it++) {
+		
+		if (snakebody.at(snakebody.size()-1).findCollision(*it)) return true;
+	
+	}
+	return false;
 }

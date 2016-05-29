@@ -148,12 +148,11 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="snake.cpp" />
     <ClCompile Include="snake.test.cpp" />
-    <ClCompile Include="snakeFood.cpp" />
-    <ClCompile Include="snakeFood.test.cpp" />
+    <ClCompile Include="snakeGUI.cpp" />
     <ClCompile Include="table.cpp" />
-    <ClCompile Include="table.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="snakewithtest.qrc">
@@ -176,9 +175,9 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="snake.h" />
-    <ClInclude Include="snakeFood.h" />
+    <ClInclude Include="snakeGUI.h" />
     <ClInclude Include="table.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,24 +2,21 @@
 #include <string.h>
 #include <deque>
 #include "table.h"
+#include "Rect.h"
 #include <qapplication.h>
 #include <QGraphicsRectItem>
 #include <qgraphicsitem.h>
+enum class Direction { left, right, up, down };
 
-class SnakeRect
+class Snake: public Rect
 {
-	
 public:
-	
-	SnakeRect(int x, int y, int w, int h);
-	void move(enum direction);
-	bool findFood(int x, int y);
+	Snake();
+	void elongate(Rect snakeRect,std::string dir);
+	void move(std::string dir);
+	bool findFood(Rect snakeRect);
 	bool onTable(table snakeArea);
-	direction nextMove;
+	bool collision();
 private:
-	int xCoord;
-	int yCoord;
-	int width;
-	int height;
+	std::vector<Rect> snakebody;
 };
-std::deque<SnakeRect> elongate(std::deque<SnakeRect> snake, SnakeRect snakeHead);

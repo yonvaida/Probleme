@@ -1,65 +1,61 @@
-
 #include "snake.h"
 #include "catch.hpp"
-#include <deque>
+#include <vector>
 #include <iostream>
 
 SCENARIO("") {
 	GIVEN("") {
-		SnakeRect snakeHead(0, 0, 10, 10);
-		std::deque<SnakeRect>snake;
-		WHEN("Move left") {
-			snakeHead.move(SnakeRect::left);
+		Snake snake;
+		Rect snakeRect1;
+		snakeRect1.setRectDimPos(0, 0, 5, 5);
+		snakeRect1.nextMove = "left";
+		Rect snakeRect2;
+		snakeRect2.setRectDimPos(-5, 0, 5, 5);
+		snakeRect2.nextMove = "left";
+		Rect snakeRect3;
+		snakeRect3.setRectDimPos(-10, 0, 5, 5);
+		snakeRect3.nextMove = "left";
+		snake.elongate(snakeRect1,"left");
+		snake.elongate(snakeRect2,"left");
+		snake.elongate(snakeRect3,"left");
+		Rect snakeFood;
+		snakeFood.setRectDimPos(-15, -5, 5, 5);
+		//snake.move("right");
+		
+		WHEN("Create snake") {
+			snake.move("up");
+			snake.move("left");
 			THEN("") {
-				CHECK(snakeHead.findFood(-10, 0));
+			CHECK(snake.findFood(snakeFood));
+			}
+		}
+		WHEN("Move left") {
+			snake.move("left");
+			snake.move("left");
+			snake.move("left");
+			snakeFood.setRectDimPos(-25, 0, 5, 5);
+			THEN("Change snake position") {
+			CHECK(snake.findFood(snakeFood));
 			}
 		}
 		WHEN("Move right") {
-			snakeHead.move(SnakeRect::right);
+			snake.move("right");
 			
-			THEN("") {
-				CHECK(snakeHead.findFood(0, 0));
+			THEN("Change snake position") {
+				CHECK(snake.collision() == true);
 			}
 		}
 		WHEN("Move up") {
-			snakeHead.move(SnakeRect::up);
-			THEN("") {
-				CHECK(snakeHead.findFood(0, -10) == true);
+			THEN("Change snake position") {
+				//snake.move("up");
 			}
 		}
 		WHEN("Move down") {
-			snakeHead.move(SnakeRect::down);
-			THEN("") {
-				CHECK(snakeHead.findFood(0, 0) == true);
+			THEN("Change snake position") {
+				//snake.move("left");
 			}
 		}
-		WHEN("Coord of snake is same as food coord's") {
-			THEN("Eat food") {
-				CHECK(snakeHead.findFood(0,0) == true);
-			}
-		}
-		WHEN("Find food") {
-			if (snakeHead.findFood(0, 0)) {
-				snake = elongate(snake, snakeHead);
-			}
-			THEN("Eat food and elongate") {
-			CHECK(snake.size() == 1);
-			}
-		}
-		WHEN("Snake is on table") {
-			table snakeTable(200, 200);
-			THEN("continue game"){
-				CHECK(snakeHead.onTable(snakeTable) == true);
-			}
-		}
-		WHEN("Snake go out form table") {
-			table snakeTable(20, 20);
-			for (int i = 0; i < 10; i++) {
-				snakeHead.move(SnakeRect::left);
-			}
-			THEN("Game is over") {
-				CHECK(snakeHead.onTable(snakeTable) == false);
-			}
-		}
+		
 	}
 }
+	
