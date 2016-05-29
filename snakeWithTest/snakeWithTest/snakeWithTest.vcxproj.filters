@@ -50,15 +50,6 @@
     <ClCompile Include="table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="snakeFood.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="snakeFood.test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="table.test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,12 +64,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="table.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="snakeFood.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
