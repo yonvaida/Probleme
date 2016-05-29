@@ -7,16 +7,19 @@
 #include <QGraphicsRectItem>
 #include <qgraphicsitem.h>
 enum class Direction { left, right, up, down };
-
-class Snake: public Rect
+struct point {
+	int x;
+	int y;
+};
+class Snake
 {
 public:
 	Snake();
-	void elongate(Rect snakeRect,std::string dir);
-	void move(std::string dir);
-	bool findFood(Rect snakeRect);
-	bool onTable(table snakeArea);
+	void elongate(point food);
+	void move(Direction direction);
+	bool findFood();
+	bool onTable();
 	bool collision();
 private:
-	std::vector<Rect> snakebody;
+	std::vector<point> snakebody;
 };
