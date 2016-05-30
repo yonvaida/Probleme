@@ -3,48 +3,63 @@
 #include <vector>
 
 Snake::Snake() {
-
+	
 };
 
-void Snake::move(std::string dir) {
-	int i;
-	std::vector<Rect>::iterator it;
+void Snake::move(Direction direction) {
+	for (int index = 0; index < snakebody.size() - 1; index++) {
+		if (snakeBodyMoves[index + 1] == Direction::left) {
+			snakebody[index].x--;
+			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
+		}
+		else if (snakeBodyMoves[index + 1] == Direction::right) {
+			snakebody[index].x++;
+			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
 
-	for (it=snakebody.begin(); it < snakebody.end()-1; it++) {
-		it->nextMove = (it + 1)->nextMove;
-		it->move();
+		}else if(snakeBodyMoves[index + 1] == Direction::up){
+			snakebody[index].y--;
+			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
+		
+		}
+		else if (snakeBodyMoves[index + 1] == Direction::down) {
+			snakebody[index].y++;
+			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
+		}
 	}
-	it->nextMove =dir;
-	it->move();
+	if (direction == Direction::left) {
+		snakebody.back().x--;
+		snakeBodyMoves.back() = Direction::left;
+	}else if(direction==Direction::right){
+		snakebody.back().x++;
+		snakeBodyMoves.back() = Direction::right;
+	}
+	else if (direction == Direction::up) {
+		snakebody.back().y--;
+		snakeBodyMoves.back() = Direction::up;
+	}
+	else if (direction == Direction::down) {
+		snakebody.back().y++;
+		snakeBodyMoves.back() = Direction::down;
+	}
 }
 
-bool Snake::findFood(Rect snakeFood) {
-		if (snakeFood.findCollision(snakebody.at(snakebody.size()-1))) return true;
+bool Snake::findFood(int x, int y) {
+	if (snakebody.back().x == x && snakebody.back().y == y) return true;
 		return false;
 }
-bool Snake::onTable(table snakeTable) {
+bool Snake::onTable(int w,int h) {
 	
-	
-	/*if (snakebody.begin.xCoord ) return true;*/
+		
 		return false;
 } 
 
-void Snake::elongate(Rect snakeRect,std::string dir) {
-	snakebody.push_back(snakeRect);
-	snakeRect.nextMove = dir;
-	snakeRect.move();
-	
-	
-	
+void Snake::elongate(point elongatePoint,Direction direction) {
+	snakebody.push_back(elongatePoint);
+	snakeBodyMoves.push_back(direction);
 }
-bool Snake::collision() {
-	std::vector<Rect>::iterator it;
-	
 
-	for (it = snakebody.begin(); it < snakebody.end() - 1; it++) {
-		
-		if (snakebody.at(snakebody.size()-1).findCollision(*it)) return true;
-	
-	}
+
+bool Snake::collision() {
+
 	return false;
 }

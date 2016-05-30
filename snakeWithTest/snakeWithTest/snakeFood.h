@@ -1,18 +1,14 @@
-#pragma once
-#include <qapplication.h>
-#include <qgraphicsscene.h>
-#include <qgraphicsview.h>
-#include <QGraphicsRectItem>
-#include <memory>
+#include "main.h"
+#include <stdlib.h>
+#include <time.h>
 
-class snakeGUI {
-	
+
+class snakeFood {
+
 public:
-	snakeGUI() {};
-int startGUI(int argc, char *argv[]);
-void addRectangle(int x, int y);
+	snakeFood();
+	void randomize(int tableWidth, int tableHeight);
+	boost::property_tree::ptree getData();
 private:
-	
-	std::unique_ptr<QGraphicsScene> scene;
-	std::unique_ptr<QGraphicsView> view;
+	point foodPosition;
 };
