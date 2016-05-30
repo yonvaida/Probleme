@@ -8,12 +8,15 @@ SCENARIO("") {
 		point tempPoint;
 		point tempPoint1;
 		point tempPoint2;
+		point foodpoint;
 		tempPoint.x = -2;
 		tempPoint.y = 0;
 		tempPoint1.x = -1;
 		tempPoint1.y = 0;
 		tempPoint2.x = 0;
 		tempPoint2.y = 0;	
+		foodpoint.x = -4;
+		foodpoint.y = 0;
 		Snake snake;
 		snake.elongate(tempPoint2, Direction::left);
 		snake.elongate(tempPoint1, Direction::left);
@@ -28,18 +31,17 @@ SCENARIO("") {
 		WHEN("Move left") {
 			snake.move(Direction::left);
 			snake.move(Direction::left);
-			THEN("Change snake position") {
-			//CHECK();
+			THEN("Change snake position and find if snakehead is on foodpoint") {
+				CHECK(snake.findFood(foodpoint));
 			}
 		}
 		WHEN("Move right") {
-			
-			
-			THEN("Change snake position") {
-			//	CHECK(snake.collision() == true);
+			snake.move(Direction::right);
+			THEN("Change snake position to right and check collision") {
+			//CHECK(snake.collision() == true);
 			}
 		}
-		WHEN("Move up") {
+		WHEN("Snake ") {
 			THEN("Change snake position") {
 				//snake.move("up");
 			}

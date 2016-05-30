@@ -1,6 +1,7 @@
 #include "snake.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 Snake::Snake() {
 	
@@ -43,8 +44,8 @@ void Snake::move(Direction direction) {
 	}
 }
 
-bool Snake::findFood(int x, int y) {
-	if (snakebody.back().x == x && snakebody.back().y == y) return true;
+bool Snake::findFood(point foodPoint) {
+	if (snakebody.back().x == foodPoint.x && snakebody.back().y == foodPoint.y) return true;
 		return false;
 }
 bool Snake::onTable(int w,int h) {
@@ -60,6 +61,8 @@ void Snake::elongate(point elongatePoint,Direction direction) {
 
 
 bool Snake::collision() {
-
-	return false;
+	point temppoint = snakebody.back();
+	std::vector<point>::iterator collisionResult = std::find_if(snakebody.begin(), snakebody.end() - 1, [&](point compare) {return ((compare.x == temppoint.x) && (compare.y == temppoint.y)); });
+	return ((*collisionResult).x == snakebody.back().x&& (*collisionResult).y == snakebody.back().y) ? true : false;
+	return true;
 }
