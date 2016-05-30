@@ -8,40 +8,27 @@ Snake::Snake() {
 };
 
 void Snake::move(Direction direction) {
-	for (int index = 0; index < snakebody.size() - 1; index++) {
-		if (snakeBodyMoves[index + 1] == Direction::left) {
+	for (int index = 0; index < snakebody.size(); index++) {
+		snakeBodyMoves[index] = (index<snakebody.size() - 1) ? snakeBodyMoves[index + 1] : direction;
+		switch (snakeBodyMoves[index])
+		{
+		case Direction::left:
 			snakebody[index].x--;
-			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
-		}
-		else if (snakeBodyMoves[index + 1] == Direction::right) {
+			break;
+		case Direction::right:
 			snakebody[index].x++;
-			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
-
-		}else if(snakeBodyMoves[index + 1] == Direction::up){
+			break;
+		case Direction::up:
 			snakebody[index].y--;
-			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
-		
-		}
-		else if (snakeBodyMoves[index + 1] == Direction::down) {
-			snakebody[index].y++;
-			snakeBodyMoves[index] = snakeBodyMoves[index + 1];
-		}
+			break;
+		case Direction::down:
+			snakebody[index].y++; 
+			break;
+		default:
+			break;
+		};
 	}
-	if (direction == Direction::left) {
-		snakebody.back().x--;
-		snakeBodyMoves.back() = Direction::left;
-	}else if(direction==Direction::right){
-		snakebody.back().x++;
-		snakeBodyMoves.back() = Direction::right;
-	}
-	else if (direction == Direction::up) {
-		snakebody.back().y--;
-		snakeBodyMoves.back() = Direction::up;
-	}
-	else if (direction == Direction::down) {
-		snakebody.back().y++;
-		snakeBodyMoves.back() = Direction::down;
-	}
+	
 }
 
 bool Snake::findFood(point foodPoint) {
