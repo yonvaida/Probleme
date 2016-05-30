@@ -38,6 +38,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>C:\Program Files\boost\boost_1_61_0;C:\Qt\Qt5.6.0\5.6\msvc2015;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\boost\boost_1_61_0\stage\lib;C:\Qt\Qt5.6.0\5.6\msvc2015\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
