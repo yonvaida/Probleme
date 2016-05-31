@@ -5,10 +5,7 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "snakeWithTest", "snakeWithTest\snakeWithTest.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "snakeGUI", "snakeGUI\snakeGUI.vcxproj", "{BEF5F8D8-A1E5-4FE3-A404-6121343B3C6F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B12702AD-ABFB-343A-A199-8E24837244A3} = {B12702AD-ABFB-343A-A199-8E24837244A3}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "snakeRender", "snakeRender\snakeRender.vcxproj", "{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,12 +23,14 @@ Global
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.Build.0 = Release|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|Win32
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.Build.0 = Release|Win32
-		{BEF5F8D8-A1E5-4FE3-A404-6121343B3C6F}.Debug|x64.ActiveCfg = Debug|Win32
-		{BEF5F8D8-A1E5-4FE3-A404-6121343B3C6F}.Debug|x86.ActiveCfg = Debug|Win32
-		{BEF5F8D8-A1E5-4FE3-A404-6121343B3C6F}.Debug|x86.Build.0 = Debug|Win32
-		{BEF5F8D8-A1E5-4FE3-A404-6121343B3C6F}.Release|x64.ActiveCfg = Release|Win32
-		{BEF5F8D8-A1E5-4FE3-A404-6121343B3C6F}.Release|x86.ActiveCfg = Release|Win32
-		{BEF5F8D8-A1E5-4FE3-A404-6121343B3C6F}.Release|x86.Build.0 = Release|Win32
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Debug|x64.ActiveCfg = Debug|x64
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Debug|x64.Build.0 = Debug|x64
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Debug|x86.ActiveCfg = Debug|Win32
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Debug|x86.Build.0 = Debug|Win32
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Release|x64.ActiveCfg = Release|x64
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Release|x64.Build.0 = Release|x64
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Release|x86.ActiveCfg = Release|Win32
+		{BDD33EAF-5ED1-428F-B560-6F1845B63E9F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
