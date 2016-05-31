@@ -8,7 +8,7 @@ class snakeFood {
 public:
 	snakeFood();
 	void randomize(int tableWidth, int tableHeight);
-	boost::property_tree::ptree getData();
+	void getData(boost::property_tree::ptree &data);
 private:
 	point foodPosition;
 };

@@ -3,9 +3,10 @@
 
 class table {
 public:
+	table();
 	table(int w,int h);
 	void resizeTable(int scale);
-		
+	void getData(boost::property_tree::ptree &data);
 private:
 	int width;
 	int height;

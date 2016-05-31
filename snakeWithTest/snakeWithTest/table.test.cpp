@@ -3,8 +3,10 @@
 
 
 SCENARIO("Test for table class") {
+
 	GIVEN("") {
-		WHEN("") {
+		WHEN("Create table without dimensions create a default table dimension (100X100)") {
+	
 			THEN("") {
 				
 			}
