@@ -41,10 +41,12 @@ bool Snake::findFood(point foodPoint) {
 	if (snakebody.back().x == foodPoint.x && snakebody.back().y == foodPoint.y) return true;
 		return false;
 }
-bool Snake::onTable(int w,int h) {
-	
-		
-		return false;
+bool Snake::onTable(table board) {
+	boost::property_tree::ptree data;
+	board.getData(data);
+	auto width = data.get<int>("table.width");
+	auto height = data.get<int>("table.height");
+	return (snakebody.back().x<0 || snakebody.back().y<0 || snakebody.back().x>width || snakebody.back().y>height) ? false : true;
 } 
 
 void Snake::elongate(point elongatePoint,Direction direction) {
