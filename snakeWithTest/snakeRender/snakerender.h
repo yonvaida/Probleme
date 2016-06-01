@@ -8,5 +8,5 @@ class boardGui :public QGraphicsRectItem {
 	//Q_OBJECT
 public:
 	void keyPressEvent(QKeyEvent * event);
-	Direction direction;
+	Direction direction=Direction::right;
 };

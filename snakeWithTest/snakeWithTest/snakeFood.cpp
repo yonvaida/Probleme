@@ -2,8 +2,8 @@
 
 snakeFood::snakeFood() {
 	srand(time(NULL));
-	foodPosition.x = rand() % 100;
-	foodPosition.y = rand() % 100;
+	foodPosition.x = rand() % 50;
+	foodPosition.y = rand() % 50;
 }
 
 void snakeFood::getData(boost::property_tree::ptree &data) {
@@ -13,6 +13,6 @@ void snakeFood::getData(boost::property_tree::ptree &data) {
 }
 
 void snakeFood::randomize(int tableWidth,int tableHeight){
-	foodPosition.x = rand() % 100;
-	foodPosition.y = rand() % 100;
+	foodPosition.x = rand() % tableWidth;
+	foodPosition.y = rand() % tableHeight;
 }
