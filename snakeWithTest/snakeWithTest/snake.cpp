@@ -38,8 +38,33 @@ void Snake::changeDirection(Direction direction) {
 
 
 bool Snake::findFood(point foodPoint) {
-	if (snakebody.back().x == foodPoint.x && snakebody.back().y == foodPoint.y) return true;
+	point nextPosition;
+	nextPosition = snakebody.back();
+	switch (snakeBodyMoves.back())
+	{
+	case Direction::left:
+		nextPosition.x--;
+		break;
+	case Direction::right:
+		nextPosition.x++;
+		break;
+	case Direction::up:
+		nextPosition.y--;
+		break;
+	case Direction::down:
+		nextPosition.y++;
+		break;
+	default:
+		break;
+	};
+	if (nextPosition.x == foodPoint.x && nextPosition.y == foodPoint.y) {
+		elongate(nextPosition, snakeBodyMoves.back());
+		return true;
+	}
+	else {
 		return false;
+	}
+	
 }
 bool Snake::onTable(table board) {
 	boost::property_tree::ptree data;

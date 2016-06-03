@@ -2,7 +2,7 @@
 void boardGui::keyPressEvent(QKeyEvent * event) {
 	if (event->key() == Qt::Key_Up) {
 		direction = Direction::up;
-		//std::cout << direction << std::endl;
+		std::cout << "up" << std::endl;
 	}
 	if (event->key() == Qt::Key_Down) {
 		direction = Direction::down;
