@@ -11,9 +11,49 @@
 #include "snakeWithTest\table.h"
 #include "snakeWithTest\snake.h"
 #include "snakeWithTest\snakeFood.h"
+#include <QLabel>
+#include <QPicture>
+#include <QPainter>
+
 
 int main(int argc, char *argv[])
-{
+{	QApplication a(argc, argv);
+label* l=new label;
+QPixmap* pixmap = new QPixmap(500,500);
+QPainter * painter = new QPainter(pixmap);
+	painter->setPen(*(new QColor(255, 34, 255, 255)));
+//painter->drawRect(15, 15, 100, 100);
+
+table board(50, 50);
+Snake snake;
+snakeFood snakefood;
+point snakehead;
+point foodpoint;
+snakehead.x = 0;
+snakehead.y = 0;
+snake.elongate(snakehead, Direction::right);
+boost::property_tree::ptree data;
+board.getData(data);
+snake.getData(data);
+snakefood.randomize(50, 50);
+snakefood.getData(data);
+
+std::unique_ptr<QTimer> timer(new QTimer());
+QObject::connect(timer.get(), &QTimer::timeout, [&]() {
+	painter->eraseRect(0, 0, 500, 500);
+	snake.changeDirection(l->direction);
+	snake.getData(data);
+	painter->drawRect(data.get<int>("snakebody.point0.x")*5, data.get<int>("snakebody.point0.y")*5, 5, 5);
+	l->setPixmap(*pixmap);
+	
+});
+timer->start(200);
+
+
+
+l->setGeometry(300, 300, 500, 500);
+l->show();
+/*
 	table board(50,50);
 	Snake snake;
 	snakeFood snakefood;
@@ -22,7 +62,7 @@ int main(int argc, char *argv[])
 	snakehead.x = 0;
 	snakehead.y = 0;
 	snake.elongate(snakehead, Direction::right);
-	QApplication a(argc, argv);
+
 	std::unique_ptr<boardGui> snakeBoardGui(new boardGui());
 	std::unique_ptr<QGraphicsRectItem> snakeFoodGui(new QGraphicsRectItem());
 	QGraphicsScene * scene=new QGraphicsScene();
@@ -47,7 +87,6 @@ int main(int argc, char *argv[])
 	scene->addItem(snakeFoodGui.get());
 	scene->addItem(snakeBoardGui.get());
 	scene->addItem(snakeBodyGui.at(0).get());
-
 	std::unique_ptr<QTimer> timer(new QTimer());
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		snakefood.getData(data);
@@ -56,7 +95,7 @@ int main(int argc, char *argv[])
 		if(snake.findFood(foodpoint)){
 			std::shared_ptr<QGraphicsRectItem> snakeGUI1(new QGraphicsRectItem());
 			snakeBodyGui << std::move(snakeGUI1);
-			scene->addItem(snakeBodyGui.at(1).get());
+			scene->addItem(snakeBodyGui.back().get());
 			std::cout << "fffffffff" << std::endl;
 		}
 		else {
@@ -76,6 +115,8 @@ int main(int argc, char *argv[])
 	timer->start(200);
 
 
-	view->show();
+	view->show();*/
+
+
 	return a.exec();
 }
