@@ -55,8 +55,14 @@ QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 	for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
 		painter->fillRect(data.get<int>("snakebody.point"+std::to_string(i)+".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10,10,10,Qt::Dense2Pattern);
 	}
-	if (snake.findFood(foodpoint)) {
-		snakefood.randomize(50, 50);
+	if (snake.findFood(foodpoint)) snakefood.randomize(50, 50);
+	if (snake.collision() || !snake.onTable(board)) {
+		QFont font;
+		font.setPixelSize(50);
+		font.setBold(true);
+		painter->setFont(font);	
+		painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "GAME OVER");
+		timer->stop();
 	}
 	l->setPixmap(*pixmap);
 });

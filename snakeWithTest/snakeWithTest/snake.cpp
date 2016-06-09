@@ -4,11 +4,9 @@
 #include <algorithm>
 
 Snake::Snake() {
-	
 };
 
 void Snake::move() {
-	
 	if (nextHeadPosition().x == food.x && nextHeadPosition().y==food.y) {
 		elongate(food, snakeBodyMoves.back());
 	}
@@ -34,9 +32,6 @@ void Snake::move() {
 			snakeBodyMoves[index] = (index<snakebody.size() - 1) ? snakeBodyMoves[index + 1] : snakeBodyMoves[index];
 		}
 	}
-
-	
-	
 }
 point Snake::nextHeadPosition() {
 	point position;
@@ -55,28 +50,24 @@ point Snake::nextHeadPosition() {
 		position.y++;
 		break;
 	}
-
 	return position;
 };
-
 
 void Snake::changeDirection(Direction direction) {
 	snakeBodyMoves.back() = direction;
 	move();
 }
 
-
 bool Snake::findFood(point foodPoint) {
 	if (snakebody.back().x == food.x && snakebody.back().y == food.y) {
-		std::cout << "snake food find" << std::endl;
-		
+		std::cout << "snake food find" << std::endl;	
 		return true;
 	}
 	else {
 		return false;
 	}
-	
 }
+
 bool Snake::onTable(table board) {
 	boost::property_tree::ptree data;
 	board.getData(data);
@@ -90,12 +81,13 @@ void Snake::elongate(point elongatePoint,Direction direction) {
 	snakeBodyMoves.push_back(direction);
 }
 
-
 bool Snake::collision() {
 	point temppoint = snakebody.back();
-	std::vector<point>::iterator collisionResult = std::find_if(snakebody.begin(), snakebody.end() - 1, [&](point compare) {return ((compare.x == temppoint.x) && (compare.y == temppoint.y)); });
-	return ((*collisionResult).x == snakebody.back().x&& (*collisionResult).y == snakebody.back().y) ? true : false;
-	return true;
+	for (int i = 0; i < snakebody.size() - 1; i++) {
+		if (temppoint.x == snakebody.at(i).x && temppoint.y == snakebody.at(i).y) return true;
+	}
+	//std::vector<point>::iterator collisionResult = std::find_if(snakebody.begin(), snakebody.end() - 2, [&](point compare) {return ((compare.x == temppoint.x) && (compare.y == temppoint.y)); });
+	return false;	
 }
 
 void Snake::getData(boost::property_tree::ptree &data) {
@@ -106,6 +98,7 @@ void Snake::getData(boost::property_tree::ptree &data) {
 		data.put("snakebody.length", snakebody.size());
 	}
 }
+
 void Snake::setFoodPoint(point foodpoint) {
 	food = foodpoint;
 }
