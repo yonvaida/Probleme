@@ -8,28 +8,57 @@ Snake::Snake() {
 };
 
 void Snake::move() {
-	for (int index = 0; index < snakebody.size(); index++) {
-		switch (snakeBodyMoves[index])
-		{
-		case Direction::left:
-			snakebody[index].x--;
-			break;
-		case Direction::right:
-			snakebody[index].x++;
-			break;
-		case Direction::up:
-			snakebody[index].y--;
-			break;
-		case Direction::down:
-			snakebody[index].y++; 
-			break;
-		default:
-			break;
-		};
-		snakeBodyMoves[index] = (index<snakebody.size() - 1) ? snakeBodyMoves[index + 1] : snakeBodyMoves[index];
+	
+	if (nextHeadPosition().x == food.x && nextHeadPosition().y==food.y) {
+		elongate(food, snakeBodyMoves.back());
 	}
+	else {
+		for (int index = 0; index < snakebody.size(); index++) {
+			switch (snakeBodyMoves[index])
+			{
+			case Direction::left:
+				snakebody[index].x--;
+				break;
+			case Direction::right:
+				snakebody[index].x++;
+				break;
+			case Direction::up:
+				snakebody[index].y--;
+				break;
+			case Direction::down:
+				snakebody[index].y++;
+				break;
+			default:
+				break;
+			};
+			snakeBodyMoves[index] = (index<snakebody.size() - 1) ? snakeBodyMoves[index + 1] : snakeBodyMoves[index];
+		}
+	}
+
+	
 	
 }
+point Snake::nextHeadPosition() {
+	point position;
+	position = snakebody.back();
+	switch (snakeBodyMoves.back()) {
+	case Direction::left:
+		position.x--;
+		break;
+	case Direction::right:
+		position.x++;
+		break;
+	case Direction::up:
+		position.y--;
+		break;
+	case Direction::down:
+		position.y++;
+		break;
+	}
+
+	return position;
+};
+
 
 void Snake::changeDirection(Direction direction) {
 	snakeBodyMoves.back() = direction;
@@ -38,27 +67,9 @@ void Snake::changeDirection(Direction direction) {
 
 
 bool Snake::findFood(point foodPoint) {
-	point nextPosition;
-	nextPosition = snakebody.back();
-	switch (snakeBodyMoves.back())
-	{
-	case Direction::left:
-		nextPosition.x--;
-		break;
-	case Direction::right:
-		nextPosition.x++;
-		break;
-	case Direction::up:
-		nextPosition.y--;
-		break;
-	case Direction::down:
-		nextPosition.y++;
-		break;
-	default:
-		break;
-	};
-	if (nextPosition.x == foodPoint.x && nextPosition.y == foodPoint.y) {
-		elongate(nextPosition, snakeBodyMoves.back());
+	if (snakebody.back().x == food.x && snakebody.back().y == food.y) {
+		std::cout << "snake food find" << std::endl;
+		
 		return true;
 	}
 	else {
@@ -92,5 +103,9 @@ void Snake::getData(boost::property_tree::ptree &data) {
 	for (int i = 0; i < snakebody.size(); i++) {
 		data.put("snakebody.point"+ std::to_string(i)+".x", snakebody[i].x);
 		data.put("snakebody.point" + std::to_string(i) + ".y", snakebody[i].y);
+		data.put("snakebody.length", snakebody.size());
 	}
+}
+void Snake::setFoodPoint(point foodpoint) {
+	food = foodpoint;
 }

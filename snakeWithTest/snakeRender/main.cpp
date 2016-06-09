@@ -18,13 +18,16 @@
 
 int main(int argc, char *argv[])
 {	QApplication a(argc, argv);
+boost::property_tree::ptree data;
+table board(50, 50);
+board.getData(data);
 label* l=new label;
-QPixmap* pixmap = new QPixmap(500,500);
+QPixmap* pixmap = new QPixmap(data.get<int>("table.width")*5, data.get<int>("table.height") * 5);
 QPainter * painter = new QPainter(pixmap);
 	painter->setPen(*(new QColor(255, 34, 255, 255)));
 //painter->drawRect(15, 15, 100, 100);
 
-table board(50, 50);
+
 Snake snake;
 snakeFood snakefood;
 point snakehead;
@@ -32,90 +35,32 @@ point foodpoint;
 snakehead.x = 0;
 snakehead.y = 0;
 snake.elongate(snakehead, Direction::right);
-boost::property_tree::ptree data;
-board.getData(data);
 snake.getData(data);
 snakefood.randomize(50, 50);
-snakefood.getData(data);
 
+int i = 1;
 std::unique_ptr<QTimer> timer(new QTimer());
 QObject::connect(timer.get(), &QTimer::timeout, [&]() {
-	painter->eraseRect(0, 0, 500, 500);
+	snakefood.getData(data);
+	foodpoint.x = data.get<int>("snakefood.x");
+	foodpoint.y = data.get<int>("snakefood.y");
+	snake.setFoodPoint(foodpoint);
+	painter->eraseRect(0, 0, data.get<int>("table.width") * 5, data.get<int>("table.height") * 5);
 	snake.changeDirection(l->direction);
 	snake.getData(data);
-	painter->drawRect(data.get<int>("snakebody.point0.x")*5, data.get<int>("snakebody.point0.y")*5, 5, 5);
+	painter->drawRect(data.get<int>("snakefood.x") * 5, data.get<int>("snakefood.y") * 5, 5, 5);
+	for (int temp = 0; temp < data.get<int>("snakebody.length"); temp++) {
+		painter->drawRect(data.get<int>("snakebody.point"+std::to_string(temp)+".x") * 5, data.get<int>("snakebody.point" + std::to_string(temp) + ".y") * 5, 5, 5);
+	}
+	if (snake.findFood(foodpoint)) {
+		snakefood.randomize(50, 50);
+	}
 	l->setPixmap(*pixmap);
-	
 });
 timer->start(200);
-
-
-
-l->setGeometry(300, 300, 500, 500);
+l->setGeometry(300, 300, data.get<int>("table.width") * 5, data.get<int>("table.height") * 5);
 l->show();
-/*
-	table board(50,50);
-	Snake snake;
-	snakeFood snakefood;
-	point snakehead;
-	point foodpoint;
-	snakehead.x = 0;
-	snakehead.y = 0;
-	snake.elongate(snakehead, Direction::right);
 
-	std::unique_ptr<boardGui> snakeBoardGui(new boardGui());
-	std::unique_ptr<QGraphicsRectItem> snakeFoodGui(new QGraphicsRectItem());
-	QGraphicsScene * scene=new QGraphicsScene();
-	std::shared_ptr<QGraphicsRectItem> snakeGUI(new QGraphicsRectItem());
-	std::unique_ptr<QGraphicsView> view(new QGraphicsView(scene));
-	//std::vector<std::unique_ptr<QGraphicsRectItem>> snakeBodyGUI;
-	QVector<std::shared_ptr<QGraphicsRectItem>> snakeBodyGui;
-	snakeBoardGui->setFlag(QGraphicsItem::ItemIsFocusable);
-	snakeBoardGui->setFocus();
-	boost::property_tree::ptree data;
-	board.getData(data);
-	snake.getData(data);
-	snakefood.randomize(50,50);
-	snakefood.getData(data);
-	snakeGUI->setRect(data.get<int>("snakebody.point0.x") * 5, data.get<int>("snakebody.point0.y") * 5, 5, 5);
-	//snakeBodyGui << new QGraphicsRectItem(data.get<int>("snakebody.point0.x") * 5, data.get<int>("snakebody.point0.y") * 5, 5, 5);
-	snakeBodyGui << std::move(snakeGUI);
-	view->setFixedSize(data.get<int>("table.width")*5 + 10, data.get<int>("table.height")*5 + 10);
-	//snakeGUI->setRect(data.get<int>("snakebody.point0.x")*5, data.get<int>("snakebody.point0.y")*5, 5, 5);
-	snakeBoardGui->setRect(0, 0, data.get<int>("table.width")*5,data.get<int>("table.height")*5);
-	snakeFoodGui ->setRect(data.get<int>("snakefood.x") * 5, data.get<int>("snakefood.y") * 5, 5, 5);
-	scene->addItem(snakeFoodGui.get());
-	scene->addItem(snakeBoardGui.get());
-	scene->addItem(snakeBodyGui.at(0).get());
-	std::unique_ptr<QTimer> timer(new QTimer());
-	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
-		snakefood.getData(data);
-		foodpoint.x = data.get<int>("snakefood.x");
-		foodpoint.y = data.get<int>("snakefood.y");
-		if(snake.findFood(foodpoint)){
-			std::shared_ptr<QGraphicsRectItem> snakeGUI1(new QGraphicsRectItem());
-			snakeBodyGui << std::move(snakeGUI1);
-			scene->addItem(snakeBodyGui.back().get());
-			std::cout << "fffffffff" << std::endl;
-		}
-		else {
-			snake.changeDirection(snakeBoardGui->direction);
-		}
-
-	
-		snake.getData(data);
-		for (int i = 0; i < snakeBodyGui.size(); i++) {
-			snakeBodyGui.at(i).get()->setPos(data.get<int>("snakebody.point"+std::to_string(i) +".x") * 5, data.get<int>("snakebody.point"+ std::to_string(i) +".y") * 5);
-		}
-
-		
-		//std::cout << snakeBoardGui->direction << std::endl;
-		
-	});
-	timer->start(200);
-
-
-	view->show();*/
 
 
 	return a.exec();
