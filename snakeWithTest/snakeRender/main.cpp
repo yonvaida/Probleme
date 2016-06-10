@@ -46,7 +46,7 @@ QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 	foodpoint.x = data.get<int>("snakefood.x");
 	foodpoint.y = data.get<int>("snakefood.y");
 	snake.setFoodPoint(foodpoint);
-	painter->drawRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10);
+	painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10,Qt::gray);
 	snake.changeDirection(l->direction);
 	snake.getData(data);
 	painter->drawPixmap(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10,QPixmap("strawberry.png"));
