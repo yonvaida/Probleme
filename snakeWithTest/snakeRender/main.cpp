@@ -22,8 +22,9 @@ boost::property_tree::ptree data;
 table board(50, 50);
 board.getData(data);
 label* l=new label;
-QPixmap* pixmap = new QPixmap(data.get<int>("table.width")*10, data.get<int>("table.height") * 10);
+QPixmap* pixmap = new QPixmap(data.get<int>("table.width")*10+50, data.get<int>("table.height") * 10);
 QPainter * painter = new QPainter(pixmap);
+QPainter * gameResults = new QPainter(pixmap);
 painter->HighQualityAntialiasing;
 painter->setBrush(Qt::cyan);
 //painter->drawRect(15, 15, 100, 100);
@@ -38,36 +39,43 @@ snakehead.y = 0;
 snake.elongate(snakehead, Direction::right);
 snake.getData(data);
 snakefood.randomize(50, 50);
-
+int score=0;
 std::unique_ptr<QTimer> timer(new QTimer());
 QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 	snakefood.getData(data);
 	foodpoint.x = data.get<int>("snakefood.x");
 	foodpoint.y = data.get<int>("snakefood.y");
 	snake.setFoodPoint(foodpoint);
-	//painter->eraseRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10);
-	painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10, Qt::lightGray);
+	painter->drawRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10);
 	snake.changeDirection(l->direction);
 	snake.getData(data);
-	//painter->drawPixmap(0,0,250,250,QPixmap("background.jpg"));
 	painter->drawPixmap(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10,QPixmap("strawberry.png"));
-	//painter->drawEllipse(data.get<int>("snakebody.point0.x") * 10, data.get<int>("snakebody.point0.y") * 10, 10, 10);
+	//gameResults->drawText(20, 20, "5555");
 	for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
 		painter->fillRect(data.get<int>("snakebody.point"+std::to_string(i)+".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10,10,10,Qt::Dense2Pattern);
 	}
-	if (snake.findFood(foodpoint)) snakefood.randomize(50, 50);
+	
+	painter->fillRect(data.get<int>("table.width") * 10, 0,50, data.get<int>("table.height") * 10,Qt::lightGray);
+	painter->drawText(data.get<int>("table.width") * 10+5, 10, "SCORE:");
+	painter->drawText(data.get<int>("table.width") * 10+20, 10+20, QString::number(score));
+	if (snake.findFood(foodpoint)) { 
+		score++;
+		snakefood.randomize(50, 50);
+	};
 	if (snake.collision() || !snake.onTable(board)) {
 		QFont font;
 		font.setPixelSize(50);
 		font.setBold(true);
 		painter->setFont(font);	
 		painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "GAME OVER");
+		painter->drawText(data.get<int>("table.width") * 2+60, data.get<int>("table.height") * 2+50, "SCORE:");
+		painter->drawText(data.get<int>("table.width") * 2+130, data.get<int>("table.height") * 2+100, QString::number(score));
 		timer->stop();
 	}
 	l->setPixmap(*pixmap);
 });
 timer->start(100);
-l->setGeometry(300, 300, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10);
+l->setGeometry(300, 300, data.get<int>("table.width") * 10+50, data.get<int>("table.height") * 10);
 l->show();
 	return a.exec();
 }

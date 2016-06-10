@@ -73,7 +73,7 @@ bool Snake::onTable(table board) {
 	board.getData(data);
 	auto width = data.get<int>("table.width");
 	auto height = data.get<int>("table.height");
-	return (snakebody.back().x<0 || snakebody.back().y<0 || snakebody.back().x>width || snakebody.back().y>height) ? false : true;
+	return (snakebody.back().x<0 || snakebody.back().y<0 || snakebody.back().x>width-1 || snakebody.back().y>height-1) ? false : true;
 } 
 
 void Snake::elongate(point elongatePoint,Direction direction) {
