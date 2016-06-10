@@ -40,6 +40,7 @@ snake.elongate(snakehead, Direction::right);
 snake.getData(data);
 snakefood.randomize(50, 50);
 int score=0;
+int speed = 200;
 std::unique_ptr<QTimer> timer(new QTimer());
 QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 	snakefood.getData(data);
@@ -54,7 +55,6 @@ QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 	for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
 		painter->fillRect(data.get<int>("snakebody.point"+std::to_string(i)+".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10,10,10,Qt::Dense2Pattern);
 	}
-	
 	painter->fillRect(data.get<int>("table.width") * 10, 0,50, data.get<int>("table.height") * 10,Qt::lightGray);
 	painter->drawText(data.get<int>("table.width") * 10+5, 10, "SCORE:");
 	painter->drawText(data.get<int>("table.width") * 10+20, 10+20, QString::number(score));
@@ -73,8 +73,10 @@ QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		timer->stop();
 	}
 	l->setPixmap(*pixmap);
+	if(speed>10) speed = 500 - (score*2);
+	timer->setInterval(speed);
 });
-timer->start(100);
+timer->start(speed);
 l->setGeometry(300, 300, data.get<int>("table.width") * 10+50, data.get<int>("table.height") * 10);
 l->show();
 	return a.exec();
