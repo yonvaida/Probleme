@@ -15,7 +15,6 @@
 #include <QPicture>
 #include <QPainter>
 
-
 int main(int argc, char *argv[])
 {	QApplication a(argc, argv);
 boost::property_tree::ptree data;
@@ -27,9 +26,6 @@ QPainter * painter = new QPainter(pixmap);
 QPainter * gameResults = new QPainter(pixmap);
 painter->HighQualityAntialiasing;
 painter->setBrush(Qt::cyan);
-//painter->drawRect(15, 15, 100, 100);
-
-
 Snake snake;
 snakeFood snakefood;
 point snakehead;

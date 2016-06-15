@@ -7,6 +7,8 @@
 #include <qtimer.h>
 #include <qobject.h>
 #include <qapplication.h>
+//#include <boost\asio.hpp>
+
 
 
 int main(int argc, char *argv[])
