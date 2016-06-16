@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
 		else {
 			system("cls");
 			std::cout << "Connection is ok" << std::endl;
+
 		}
 		if (socket->waitForReadyRead(3000)) {
 			temp = socket->readAll();
