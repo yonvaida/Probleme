@@ -34,21 +34,34 @@ int main()
 			std::string serverResponse;
 			std::string clientResponse;
 			snakefood.randomize(50, 50);
+			int score = 0;
 			while (true) {
 				server snakeServer;
 				clientResponse = snakeServer.readSnakeMove();
-				snake.changeDirection(Direction(std::stoi(clientResponse))); // client response is a string that represent the index of direction value
+				 // client response is a string that represent the index of direction value
 				table.getData(data);
 				snake.getData(data);
 				snakefood.getData(data);
 				foodpoint.x = data.get<int>("snakefood.x");
 				foodpoint.y = data.get<int>("snakefood.y");
 				snake.setFoodPoint(foodpoint);
+
 				if (snake.findFood(foodpoint)) {
 					snakefood.randomize(50, 50);
+					score++;
 				};
+				data.put("game_score", score);
 				if (snake.collision() || !snake.onTable(table)) {
-					snakeServer.serverShutdown();
+					//snakeServer.serverShutdown();
+					//snake.changeDirection(Direction::stay);
+					data.put("game_status","GAME OVER");
+					
+					serverResponse = snakeServer.sendSnakeData(data);
+				}
+				else {
+					data.put("game_status", "Plaing");
+					snake.changeDirection(Direction(std::stoi(clientResponse)));
+					serverResponse = snakeServer.sendSnakeData(data);
 				}
 				system("cls");
 				std::cout << "Server is running ..." << std::endl;

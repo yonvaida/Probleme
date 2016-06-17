@@ -13,10 +13,9 @@ std::string server::readSnakeMove() {
 		socket.read_some(boost::asio::buffer(readBuffer));
 		return readBuffer.data();
 	
-
 };
 server::server():socket(io_service) {
-	boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 1200));
+	boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 32560));
 	//boost::asio::ip::tcp::no_delay option(true);
 	acceptor.accept(socket);
 	socket.set_option(boost::asio::ip::tcp::no_delay(true));
