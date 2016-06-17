@@ -28,34 +28,47 @@ int main()
 	head.x = 0;
 	head.y = 0;
 	snake.elongate(head, Direction::right);
-
-	
 	boost::property_tree::ptree data;
-	
-
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 1200));
 	std::vector<char> buf(2054);
 	std::string serverResponse;
 	std::string clientResponse;
+	boost::asio::ip::tcp::no_delay option(true);
 	
 	//acceptor.accept(socket);
 
 	for (;;) {
 		boost::asio::ip::tcp::socket socket(io_service);
+		//socket.set_option(boost::asio::ip::tcp::no_delay(true));
 		acceptor.accept(socket);
-		snake.move();
+
+
+		if (clientResponse == "down") {
+			snake.changeDirection(Direction::down);
+		}
+		else if (clientResponse == "left") {
+			snake.changeDirection(Direction::left);
+		}
+		else if (clientResponse == "up") {
+			snake.changeDirection(Direction::up);
+		}else if (clientResponse == "right") {
+			snake.changeDirection(Direction::right);
+		}
+
+
+		//snake.changeDirection(clientResponse);
 		snakefood.randomize(100, 100);
 		table.getData(data);
 		snake.getData(data);
 		system("cls");
 		std::cout << "Server is running ..." << std::endl;
 		std::cout <<"Server : " <<serverResponse << std::endl;
-		std::cout <<"Client : "<< clientResponse << std::endl;
-		
-		//clientResponse = readSnakeMove(socket);
-
+		//std::cout <<"Client : "<< clientResponse << std::endl;
 		serverResponse=sendSnakeData(socket,data);
+		clientResponse = readSnakeMove(socket);
+
+		
 
 	}
 

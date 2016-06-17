@@ -1,5 +1,6 @@
 #pragma once
 #include <string.h>
+#include "main.h"
 #include <boost\asio.hpp>
 #include <boost\property_tree\ptree.hpp>
 #include <boost\property_tree\json_parser.hpp>
