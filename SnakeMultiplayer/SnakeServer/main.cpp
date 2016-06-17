@@ -20,40 +20,51 @@
 
 int main()
 {
-
-	table table(50, 50);
-	snakeFood snakefood;
-	Snake snake;
-	point head;
-	head.x = 0;
-	head.y = 0;
-	snake.elongate(head, Direction::right);
-	boost::property_tree::ptree data;
-	point foodpoint;
-	std::vector<char> buf(2054);
-	std::string serverResponse;
-	std::string clientResponse;
-	boost::asio::ip::tcp::no_delay option(true);
-	snakefood.randomize(50, 50);
-	for (;;) {
-		server snakeServer;
-		clientResponse = snakeServer.readSnakeMove();
-		snake.changeDirection(Direction(std::stoi(clientResponse))); // client response is a string that represent the index of direction value
-		table.getData(data);
-		snake.getData(data);
-		snakefood.getData(data);
-		foodpoint.x = data.get<int>("snakefood.x");
-		foodpoint.y = data.get<int>("snakefood.y");
-		snake.setFoodPoint(foodpoint);
-		if (snake.findFood(foodpoint)) {
+		try {
+			table table(50, 50);
+			snakeFood snakefood;
+			Snake snake;
+			point head;
+			head.x = 0;
+			head.y = 0;
+			snake.elongate(head, Direction::right);
+			boost::property_tree::ptree data;
+			point foodpoint;
+			std::vector<char> buf(2054);
+			std::string serverResponse;
+			std::string clientResponse;
 			snakefood.randomize(50, 50);
-		};
-		system("cls");
-		std::cout << "Server is running ..." << std::endl;
-		std::cout <<"Server : " <<serverResponse << std::endl;
-		std::cout << "Client : " << clientResponse << std::endl;
-		serverResponse=snakeServer.sendSnakeData(data);
-	}
+			while (true) {
+				server snakeServer;
+				clientResponse = snakeServer.readSnakeMove();
+				snake.changeDirection(Direction(std::stoi(clientResponse))); // client response is a string that represent the index of direction value
+				table.getData(data);
+				snake.getData(data);
+				snakefood.getData(data);
+				foodpoint.x = data.get<int>("snakefood.x");
+				foodpoint.y = data.get<int>("snakefood.y");
+				snake.setFoodPoint(foodpoint);
+				if (snake.findFood(foodpoint)) {
+					snakefood.randomize(50, 50);
+				};
+				system("cls");
+				std::cout << "Server is running ..." << std::endl;
+				std::cout << "Server response : " << serverResponse << std::endl;
+				std::cout << "Client response : " << clientResponse << std::endl;
+				serverResponse = snakeServer.sendSnakeData(data);
+
+
+
+			}
+
+		}catch(std::exception& e) {
+			std::cout << "Exception: " << e.what() << "\n";
+		}
+
+	
+	
+		
+	
 	return 0;
 }
 
