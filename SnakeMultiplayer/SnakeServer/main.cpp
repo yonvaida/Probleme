@@ -47,6 +47,9 @@ int main()
 				if (snake.findFood(foodpoint)) {
 					snakefood.randomize(50, 50);
 				};
+				if (snake.collision() || !snake.onTable(table)) {
+					snakeServer.serverShutdown();
+				}
 				system("cls");
 				std::cout << "Server is running ..." << std::endl;
 				std::cout << "Server response : " << serverResponse << std::endl;

@@ -14,6 +14,8 @@ void label::keyPressEvent(QKeyEvent * event) {
 		direction = Direction::right;
 	}
 }
+
+
 QByteArray moveSnake(Direction direction) {
 	//direction is converted in it's index as string to be sent
 	switch (direction) {

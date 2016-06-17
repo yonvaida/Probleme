@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	std::unique_ptr<QTimer> timer(new QTimer());
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		socket->socketOption(QAbstractSocket::LowDelayOption);
-		socket->connectToHost("localhost", 1200);
+		socket->connectToHost("127.0.0.1", 1200);
 
 		if (!socket->waitForConnected(2000))
 		{
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 		
 		
 	});
-	timer->start(200);
+	timer->start(100);
 	
 	
 	//std::cout << data.at(0) << std::endl;

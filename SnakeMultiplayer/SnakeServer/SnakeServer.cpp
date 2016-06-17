@@ -25,3 +25,6 @@ server::server():socket(io_service) {
 void server::serverAccept() {
 	
 }
+void server::serverShutdown() {
+	socket.close();
+}

@@ -11,6 +11,7 @@ public:
 	std::string sendSnakeData(boost::property_tree::ptree data);
 	std::string readSnakeMove();
 	void serverAccept();
+	void serverShutdown();
 private:
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::socket socket;
