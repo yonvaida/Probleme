@@ -4,11 +4,12 @@
 #include <qlabel.h>
 //#include "snakeWithTest\main.h"
 #include <iostream>
-enum class Direction{left,right,up,down};
+enum class Direction{left,right,up,down,stay};
 
 class label :public QLabel {
 	//Q_OBJECT
 public:
 	void keyPressEvent(QKeyEvent * event);
-	Direction direction = Direction::right;
+	Direction direction=Direction::right;
 };
+QByteArray moveSnake(Direction direction);

@@ -21,7 +21,7 @@
 int main()
 {
 
-	table table(100, 100);
+	table table(50, 50);
 	snakeFood snakefood;
 	Snake snake;
 	point head;
@@ -29,50 +29,31 @@ int main()
 	head.y = 0;
 	snake.elongate(head, Direction::right);
 	boost::property_tree::ptree data;
-	boost::asio::io_service io_service;
-	boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 1200));
+	point foodpoint;
 	std::vector<char> buf(2054);
 	std::string serverResponse;
 	std::string clientResponse;
 	boost::asio::ip::tcp::no_delay option(true);
-	
-	//acceptor.accept(socket);
-
+	snakefood.randomize(50, 50);
 	for (;;) {
-		boost::asio::ip::tcp::socket socket(io_service);
-		//socket.set_option(boost::asio::ip::tcp::no_delay(true));
-		acceptor.accept(socket);
-
-
-		if (clientResponse == "down") {
-			snake.changeDirection(Direction::down);
-		}
-		else if (clientResponse == "left") {
-			snake.changeDirection(Direction::left);
-		}
-		else if (clientResponse == "up") {
-			snake.changeDirection(Direction::up);
-		}else if (clientResponse == "right") {
-			snake.changeDirection(Direction::right);
-		}
-
-
-		//snake.changeDirection(clientResponse);
-		snakefood.randomize(100, 100);
+		server snakeServer;
+		clientResponse = snakeServer.readSnakeMove();
+		snake.changeDirection(Direction(std::stoi(clientResponse))); // client response is a string that represent the index of direction value
 		table.getData(data);
 		snake.getData(data);
+		snakefood.getData(data);
+		foodpoint.x = data.get<int>("snakefood.x");
+		foodpoint.y = data.get<int>("snakefood.y");
+		snake.setFoodPoint(foodpoint);
+		if (snake.findFood(foodpoint)) {
+			snakefood.randomize(50, 50);
+		};
 		system("cls");
 		std::cout << "Server is running ..." << std::endl;
 		std::cout <<"Server : " <<serverResponse << std::endl;
-		//std::cout <<"Client : "<< clientResponse << std::endl;
-		serverResponse=sendSnakeData(socket,data);
-		clientResponse = readSnakeMove(socket);
-
-		
-
+		std::cout << "Client : " << clientResponse << std::endl;
+		serverResponse=snakeServer.sendSnakeData(data);
 	}
-
-
 	return 0;
 }
 

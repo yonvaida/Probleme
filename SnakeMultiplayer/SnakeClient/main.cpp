@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
 	QPainter * painter = new QPainter(pixmap);
 	QTcpSocket* socket = new QTcpSocket();
 	std::unique_ptr<QTimer> timer(new QTimer());
-	QByteArray moveSnake;
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		socket->connectToHost("localhost", 1200);
 		if (!socket->waitForConnected(3000))
@@ -49,38 +48,24 @@ int main(int argc, char *argv[])
 		else {
 			system("cls");
 			std::cout << "Connection is ok" << std::endl;
-
+			socket->write(moveSnake(l->direction));
+			
 		}
 		if (socket->waitForReadyRead(3000)) {
 			temp = socket->readAll();
 			readvar.str(temp);
-			boost::property_tree::read_json(readvar, data);  
-			switch (l->direction) {
-			case Direction::left:
-				moveSnake = "left";
-				break;
-			case Direction::right:
-				moveSnake = "right";
-				break;
-			case Direction::up:
-				moveSnake = "up";
-				break;
-			case Direction::down:
-				moveSnake = "down";
-				break;
-			}
+			boost::property_tree::read_json(readvar, data);  	
+			painter->fillRect(0, 0, 500, 500, Qt::lightGray);
+			painter->fillRect(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10, Qt::Dense2Pattern);
+			for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
+				painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
+			};
+			l->setPixmap(*pixmap);
 
 
-
-
-
-			socket->write(moveSnake);
 		}
-		painter->fillRect(0, 0, 500, 500, Qt::lightGray);
-		for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
-			painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
-		};
-		l->setPixmap(*pixmap);
+		
+		
 	});
 	timer->start(100);
 	

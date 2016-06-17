@@ -3,7 +3,7 @@
 
 
 
-enum class Direction { left, right, up, down };
+enum class Direction { left, right, up, down,stay };
 struct point {
 	int x;
 	int y;
