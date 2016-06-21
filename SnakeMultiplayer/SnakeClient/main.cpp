@@ -55,17 +55,23 @@ int main(int argc, char * argv[])
 		boost::array<char, 1> sentmove;
 		sentmove.at(0)=	moveSnake(l->direction);
 		dataSocket.write_some(boost::asio::buffer(sentmove));
-		dataSocket.read_some(boost::asio::buffer(buf),error);
-		std::string readvar=buf.data();
-		std::cout << readvar<< std::endl;
-		//std::cout << buf.data() << std::endl;
+		size_t length= dataSocket.read_some(boost::asio::buffer(buf),error);
+		std::string readvar = "";
+		//std::cout << readvar<< std::endl;
+		for (i = 0; i < length; i++) {
+			readvar += buf.data()[i];
+		}
+		boost::property_tree::ptree data;
+		
+		std::cout << readvar << std::endl;
+		//std::cout.write(buf.data(), length);
 		if (error == 0) {
-			//boost::property_tree::ptree data;
-			//convertToPtree(readvar, data);
+			
+			convertToPtree(readvar, data);
 			//std::cout << data.get<int>("snakebody.point0.x") << std::endl;
 		}
 		//
-		/*		
+		
 		if (data.get<std::string>("game_status") == "GAME OVER") {
 			QFont font;
 			font.setPixelSize(50);
@@ -87,7 +93,7 @@ int main(int argc, char * argv[])
 			};
 		}
 		
-		*/
+		
 		l->setPixmap(*pixmap);
 	});
 	timer->start(300);

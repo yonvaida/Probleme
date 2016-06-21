@@ -44,6 +44,9 @@
     <ClCompile Include="GeneratedFiles\qrc_snakeclient.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_system.error_code.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="snakeclient.h">
