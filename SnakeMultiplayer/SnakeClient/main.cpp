@@ -48,8 +48,6 @@ int main(int argc, char * argv[])
 	int i=0;
 	QTimer * timer= new QTimer();
 	QObject::connect(timer, &QTimer::timeout, [&]() {
-		boost::property_tree::ptree data;
-		std::stringstream readvar;
 		boost::array<char, 3000> buf;
 		system("cls");
 		boost::asio::ip::tcp::socket dataSocket(ioService);
@@ -58,11 +56,13 @@ int main(int argc, char * argv[])
 		sentmove.at(0)=	moveSnake(l->direction);
 		dataSocket.write_some(boost::asio::buffer(sentmove));
 		dataSocket.read_some(boost::asio::buffer(buf),error);
-		readvar.str(buf.data());
-		std::cout << readvar.str() << std::endl;
+		std::string readvar=buf.data();
+		std::cout << readvar<< std::endl;
 		//std::cout << buf.data() << std::endl;
 		if (error == 0) {
-			boost::property_tree::read_json(readvar, data);
+			//boost::property_tree::ptree data;
+			//convertToPtree(readvar, data);
+			//std::cout << data.get<int>("snakebody.point0.x") << std::endl;
 		}
 		//
 		/*		
