@@ -1,43 +1,9 @@
 #include <boost\array.hpp>
 #include "snakeclient.h"
 
-void label::keyPressEvent(QKeyEvent * event) {
-	if (event->key() == Qt::Key_Up) {
-		direction = Direction::up;
-		std::cout << "up" << std::endl;
-	}
-	if (event->key() == Qt::Key_Down) {
-		direction = Direction::down;
-	}
-	if (event->key() == Qt::Key_Left) {
-		direction = Direction::left;
-	}
-	if (event->key() == Qt::Key_Right) {
-		direction = Direction::right;
-	}
-}
 
-
-char moveSnake(Direction direction) {
-	//direction is converted in it's index as string to be sent
-	switch (direction) {
-	case Direction::left:
-		return '0';
-	case Direction::right:
-		return '1';
-	case Direction::up:
-		return '2';
-	case Direction::down:
-		return '3';
-	default:
-		return '4';
-}
-
-
-}
-
-void convertToPtree(std::string bufferValue, boost::property_tree::ptree &data) {
+void convertToPtree(std::string bufferValue,std::size_t length, boost::property_tree::ptree &data) {
 	std::stringstream temp;
-	temp.str(bufferValue);
+	temp.str(bufferValue.substr(0,length));
 	boost::property_tree::read_json(temp, data);
 };

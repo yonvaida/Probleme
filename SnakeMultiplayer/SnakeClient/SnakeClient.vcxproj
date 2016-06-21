@@ -161,6 +161,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="snakeclient.cpp" />
+    <ClCompile Include="snakeclientGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="snakeclient.h">
@@ -213,6 +214,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="snakeclientGUI.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\SnakeServer\packages\boost.1.60.0.0\build\native\boost.targets" Condition="Exists('..\SnakeServer\packages\boost.1.60.0.0\build\native\boost.targets')" />
@@ -251,6 +255,7 @@
     <Import Project="..\SnakeServer\packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets" Condition="Exists('..\SnakeServer\packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets')" />
     <Import Project="..\SnakeServer\packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets" Condition="Exists('..\SnakeServer\packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets')" />
     <Import Project="..\SnakeServer\packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets" Condition="Exists('..\SnakeServer\packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets')" />
+    <Import Project="..\SnakeServer\packages\protobuf.2.5.0.0\build\native\protobuf.targets" Condition="Exists('..\SnakeServer\packages\protobuf.2.5.0.0\build\native\protobuf.targets')" />
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
@@ -297,5 +302,6 @@
     <Error Condition="!Exists('..\SnakeServer\packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\SnakeServer\packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets'))" />
     <Error Condition="!Exists('..\SnakeServer\packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\SnakeServer\packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets'))" />
     <Error Condition="!Exists('..\SnakeServer\packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\SnakeServer\packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets'))" />
+    <Error Condition="!Exists('..\SnakeServer\packages\protobuf.2.5.0.0\build\native\protobuf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\SnakeServer\packages\protobuf.2.5.0.0\build\native\protobuf.targets'))" />
   </Target>
 </Project>

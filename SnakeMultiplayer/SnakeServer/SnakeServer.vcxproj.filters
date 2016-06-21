@@ -36,6 +36,9 @@
     <ClInclude Include="snakeServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="snakedata.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SnakeServer.cpp">

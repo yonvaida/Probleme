@@ -22,7 +22,7 @@
 #include "snakeclient.h"
 #include "qabstracteventdispatcher.h"
 #include <QTcpSocket>
-
+#include "snakeclientGUI.h"
 
 
 
@@ -30,24 +30,19 @@
 int main(int argc, char * argv[])
 {
 	QApplication a(argc, argv);
-
-	
-
 	boost::asio::io_service ioService;
 	boost::asio::ip::tcp::resolver resolver(ioService);
 	boost::asio::ip::tcp::resolver::iterator endpoint;
 	boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
 	endpoint = resolver.resolve(query);
 	boost::system::error_code error;
-	
-	label* l = new label;
-	QPixmap* pixmap = new QPixmap(500, 500);
-	QPainter * painter = new QPainter(pixmap);
-	QPainter * gameResults = new QPainter(pixmap);
-	std::string dataread;
-	int i=0;
-	QTimer * timer= new QTimer();
-	QObject::connect(timer, &QTimer::timeout, [&]() {
+	std::unique_ptr<label> l (new label);
+	std::unique_ptr<QPixmap> pixmap (new QPixmap(500, 500));
+	std::unique_ptr<QPainter> painter (new QPainter(pixmap.get()));
+	//QPainter * gameResults = new QPainter(pixmap);
+	boost::property_tree::ptree data;
+	std::unique_ptr<QTimer> timer(new QTimer());
+	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		boost::array<char, 3000> buf;
 		system("cls");
 		boost::asio::ip::tcp::socket dataSocket(ioService);
@@ -56,22 +51,9 @@ int main(int argc, char * argv[])
 		sentmove.at(0)=	moveSnake(l->direction);
 		dataSocket.write_some(boost::asio::buffer(sentmove));
 		size_t length= dataSocket.read_some(boost::asio::buffer(buf),error);
-		std::string readvar = "";
-		//std::cout << readvar<< std::endl;
-		for (i = 0; i < length; i++) {
-			readvar += buf.data()[i];
-		}
-		boost::property_tree::ptree data;
-		
-		std::cout << readvar << std::endl;
-		//std::cout.write(buf.data(), length);
 		if (error == 0) {
-			
-			convertToPtree(readvar, data);
-			//std::cout << data.get<int>("snakebody.point0.x") << std::endl;
+			convertToPtree(buf.data(),length, data);
 		}
-		//
-		
 		if (data.get<std::string>("game_status") == "GAME OVER") {
 			QFont font;
 			font.setPixelSize(50);
@@ -92,11 +74,9 @@ int main(int argc, char * argv[])
 				painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
 			};
 		}
-		
-		
 		l->setPixmap(*pixmap);
 	});
-	timer->start(300);
+	timer->start(100);
 	l->setPixmap(*pixmap);
 	l->setGeometry(300, 300, 50 * 11, 50 * 10);
 	l->show();
