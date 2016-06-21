@@ -17,13 +17,17 @@
 #include "table.h"
 #include "main.h"
 #include "snakeServer.h"
-//#include "snakedata.pb.h"
+#include "snakedata.pb.h"
 
 
 int main()
 {
+	GOOGLE_PROTOBUF_VERIFY_VERSION;
 		try {
+			//snakedata::snakebody snakebodydata;
+			
 			table table(50, 50);
+			
 			snakeFood snakefood;
 			Snake snake;
 			point head;
@@ -38,14 +42,18 @@ int main()
 			snakefood.randomize(50, 50);
 			int score = 0;
 			while (true) {
+				snakedata::table * tabledata=new snakedata::table;
 				server snakeServer;
 				clientResponse = snakeServer.readSnakeMove();
 				 // client response is a string that represent the index of direction value
 				table.getData(data);
 				snake.getData(data);
 				snakefood.getData(data);
+				tabledata->set_tablex(data.get<int>("table.x"));
+				tabledata->set_tabley(data.get<int>("table.y"));
 				foodpoint.x = data.get<int>("snakefood.x");
 				foodpoint.y = data.get<int>("snakefood.y");
+				
 				snake.setFoodPoint(foodpoint);
 
 				if (snake.findFood(foodpoint)) {
@@ -66,6 +74,7 @@ int main()
 					serverResponse = snakeServer.sendSnakeData(data);
 				}
 				system("cls");
+				//std::cout << "size "<<tabledata.GetCachedSize() << std::endl;
 				std::cout << "Server is running ..." << std::endl;
 				std::cout << "Server response : " << serverResponse << std::endl;
 				std::cout << "Client response : " << clientResponse << std::endl;

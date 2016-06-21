@@ -1,40 +1,15 @@
-========================================================================
-    CONSOLE APPLICATION : SnakeServer Project Overview
-========================================================================
+Protocol Buffers - Google's data interchange format
+Copyright 2008 Google Inc.
+http://code.google.com/p/protobuf/
 
-AppWizard has created this SnakeServer application for you.
+This package contains a precompiled Win32 binary version of the protocol buffer
+compiler (protoc).  This binary is intended for Windows users who want to
+use Protocol Buffers in Java or Python but do not want to compile protoc
+themselves.  To install, simply place this binary somewhere in your PATH.
 
-This file contains a summary of what you will find in each of the files that
-make up your SnakeServer application.
+This binary was built using MinGW, but the output is the same regardless of
+the C++ compiler used.
 
-
-SnakeServer.vcxproj
-    This is the main project file for VC++ projects generated using an Application Wizard.
-    It contains information about the version of Visual C++ that generated the file, and
-    information about the platforms, configurations, and project features selected with the
-    Application Wizard.
-
-SnakeServer.vcxproj.filters
-    This is the filters file for VC++ projects generated using an Application Wizard. 
-    It contains information about the association between the files in your project 
-    and the filters. This association is used in the IDE to show grouping of files with
-    similar extensions under a specific node (for e.g. ".cpp" files are associated with the
-    "Source Files" filter).
-
-SnakeServer.cpp
-    This is the main application source file.
-
-/////////////////////////////////////////////////////////////////////////////
-Other standard files:
-
-StdAfx.h, StdAfx.cpp
-    These files are used to build a precompiled header (PCH) file
-    named SnakeServer.pch and a precompiled types file named StdAfx.obj.
-
-/////////////////////////////////////////////////////////////////////////////
-Other notes:
-
-AppWizard uses "TODO:" comments to indicate parts of the source code you
-should add to or customize.
-
-/////////////////////////////////////////////////////////////////////////////
+You will still need to download the source code package in order to obtain the
+Java or Python runtime libraries.  Get it from:
+  http://code.google.com/p/protobuf/downloads/
