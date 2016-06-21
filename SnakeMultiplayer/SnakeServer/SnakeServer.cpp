@@ -1,9 +1,15 @@
 #include "snakeServer.h"
 #include "main.h"
+#include <iostream>
 
 std::string  server::sendSnakeData(boost::property_tree::ptree data) {
 	std::ostringstream dataToSend;
+	
 	boost::property_tree::write_json(dataToSend, data);
+	data.put("size", dataToSend.str().size());
+	dataToSend.str("");
+	boost::property_tree::write_json(dataToSend, data);
+	std::cout << dataToSend.str().length() << std::endl;
 	boost::asio::async_write(socket, boost::asio::buffer(dataToSend.str()), boost::asio::transfer_all());
 	return dataToSend.str();
 };

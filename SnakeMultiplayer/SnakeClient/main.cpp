@@ -8,6 +8,7 @@
 #include <string.h>
 #include <boost\property_tree\ptree.hpp>
 #include <boost\property_tree\json_parser.hpp>
+#include <boost\array.hpp>
 #include <stdlib.h>
 #include <QLabel>
 #include <QPicture>
@@ -19,80 +20,84 @@
 #include <memory>
 #include <qdebug.h>
 #include "snakeclient.h"
-//#include "qabstracteventdispatcher.h"
+#include "qabstracteventdispatcher.h"
 #include <QTcpSocket>
 
 
 
 
 
-int main(int argc, char *argv[])
+int main(int argc, char * argv[])
 {
-	
 	QApplication a(argc, argv);
-	//QByteArray data;
-	std::string temp;
-	std::istringstream readvar;
-	boost::property_tree::ptree data;
+
+	
+
+	boost::asio::io_service ioService;
+	boost::asio::ip::tcp::resolver resolver(ioService);
+	boost::asio::ip::tcp::resolver::iterator endpoint;
+	boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
+	endpoint = resolver.resolve(query);
+	boost::system::error_code error;
+	
 	label* l = new label;
-	QPixmap* pixmap = new QPixmap(500,500);
+	QPixmap* pixmap = new QPixmap(500, 500);
 	QPainter * painter = new QPainter(pixmap);
 	QPainter * gameResults = new QPainter(pixmap);
-	QTcpSocket* socket = new QTcpSocket();
-	
-	std::unique_ptr<QTimer> timer(new QTimer());
-	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
-		socket->socketOption(QAbstractSocket::LowDelayOption);
-		socket->connectToHost("127.0.0.1", 32560);
-
-		if (!socket->waitForConnected(2000))
-		{
-			qDebug() << "Error: " << socket->errorString();
+	std::string dataread;
+	int i=0;
+	QTimer * timer= new QTimer();
+	QObject::connect(timer, &QTimer::timeout, [&]() {
+		boost::property_tree::ptree data;
+		std::stringstream readvar;
+		boost::array<char, 3000> buf;
+		system("cls");
+		boost::asio::ip::tcp::socket dataSocket(ioService);
+		boost::asio::connect(dataSocket, endpoint);
+		boost::array<char, 1> sentmove;
+		sentmove.at(0)=	moveSnake(l->direction);
+		dataSocket.write_some(boost::asio::buffer(sentmove));
+		dataSocket.read_some(boost::asio::buffer(buf),error);
+		readvar.str(buf.data());
+		std::cout << readvar.str() << std::endl;
+		//std::cout << buf.data() << std::endl;
+		if (error == 0) {
+			boost::property_tree::read_json(readvar, data);
+		}
+		//
+		/*		
+		if (data.get<std::string>("game_status") == "GAME OVER") {
+			QFont font;
+			font.setPixelSize(50);
+			font.setBold(true);
+			painter->setFont(font);
+			painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "GAME OVER");
+			painter->drawText(data.get<int>("table.width") * 2 + 60, data.get<int>("table.height") * 2 + 50, "SCORE:");
+			painter->drawText(data.get<int>("table.width") * 2 + 130, data.get<int>("table.height") * 2 + 100, QString::number(data.get<int>("game_score")));
+			timer->stop();
 		}
 		else {
-			system("cls");
-			std::cout << "Connection is ok" << std::endl;
-			socket->write(moveSnake(l->direction));
-			
-		}
-		if (socket->waitForReadyRead(2000)) {
-			temp = socket->readAll();
-			readvar.str(temp);
-			boost::property_tree::read_json(readvar, data);  	
-			painter->fillRect(0, 0, 500, 500, Qt::lightGray);
-			std::cout << data.get<std::string>("game_status") << std::endl;
-			if (data.get<std::string>("game_status") == "GAME OVER") {
-				QFont font;
-				font.setPixelSize(50);
-				font.setBold(true);
-				painter->setFont(font);
-				painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "GAME OVER");
-				painter->drawText(data.get<int>("table.width") * 2 + 60, data.get<int>("table.height") * 2 + 50, "SCORE:");
-				painter->drawText(data.get<int>("table.width") * 2 + 130, data.get<int>("table.height") * 2 + 100, QString::number(data.get<int>("game_score")));
-				timer->stop();
-			}
-			else {
-				painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10, Qt::gray);
-				painter->drawPixmap(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10, QPixmap("strawberry.png"));
-				painter->fillRect(data.get<int>("table.width") * 10, 0, 50, data.get<int>("table.height") * 10, Qt::darkCyan);
-				painter->drawText(data.get<int>("table.width") * 10 + 5, 10, "SCORE:");
-				painter->drawText(data.get<int>("table.width") * 10 + 20, 10 + 20, QString::number(data.get<int>("game_score")));
-				for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
-					painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
-				};
-				}
-		
-	
-			l->setPixmap(*pixmap);
-
-
+			painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10, Qt::gray);
+			painter->drawPixmap(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10, QPixmap("strawberry.png"));
+			painter->fillRect(data.get<int>("table.width") * 10, 0, 50, data.get<int>("table.height") * 10, Qt::darkCyan);
+			painter->drawText(data.get<int>("table.width") * 10 + 5, 10, "SCORE:");
+			painter->drawText(data.get<int>("table.width") * 10 + 20, 10 + 20, QString::number(data.get<int>("game_score")));
+			for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
+				painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
+			};
 		}
 		
-		
+		*/
+		l->setPixmap(*pixmap);
 	});
-	timer->start(100);
+	timer->start(300);
 	l->setPixmap(*pixmap);
 	l->setGeometry(300, 300, 50 * 11, 50 * 10);
 	l->show();
+
 	return a.exec();
+
+
+
+
 }

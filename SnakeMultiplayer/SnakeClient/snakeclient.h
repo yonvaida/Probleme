@@ -12,4 +12,4 @@ public:
 	void keyPressEvent(QKeyEvent * event);
 	Direction direction=Direction::right;
 };
-QByteArray moveSnake(Direction direction);
+char moveSnake(Direction direction);
