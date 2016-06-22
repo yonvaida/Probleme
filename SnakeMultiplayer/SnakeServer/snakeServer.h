@@ -4,6 +4,7 @@
 #include <boost\asio.hpp>
 #include <boost\property_tree\ptree.hpp>
 #include <boost\property_tree\json_parser.hpp>
+#include "flatbuffer\snakedata_generated.h"
 
 class server{
 public:

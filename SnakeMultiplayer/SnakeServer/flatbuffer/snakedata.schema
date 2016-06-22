@@ -1,0 +1,15 @@
+namespace snakedata;
+struct point{
+	x:int;
+	y:int;
+}
+table snakebodydata{
+	
+	board:boarddata;
+}
+
+table boarddata{
+	width:int;
+	height:int;
+}
+root_type snakebodydata;

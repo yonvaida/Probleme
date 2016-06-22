@@ -101,10 +101,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer\google;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,9 +148,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="flatbuffer\snakedata_generated.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="snake.h" />
-    <ClInclude Include="snakedata.pb.h" />
     <ClInclude Include="snakeFood.h" />
     <ClInclude Include="snakeServer.h" />
     <ClInclude Include="table.h" />
@@ -202,8 +205,6 @@
     <Import Project="packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets" Condition="Exists('packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets')" />
     <Import Project="packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets" Condition="Exists('packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets')" />
     <Import Project="packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets" Condition="Exists('packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets')" />
-    <Import Project="packages\protobuf.2.5.0.0\build\native\protobuf.targets" Condition="Exists('packages\protobuf.2.5.0.0\build\native\protobuf.targets')" />
-    <Import Project="packages\protobuf-vc140.2.5.0.0\build\native\protobuf-vc140.targets" Condition="Exists('packages\protobuf-vc140.2.5.0.0\build\native\protobuf-vc140.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -245,7 +246,5 @@
     <Error Condition="!Exists('packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_wave-vc140.1.60.0.0\build\native\boost_wave-vc140.targets'))" />
     <Error Condition="!Exists('packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_wserialization-vc140.1.60.0.0\build\native\boost_wserialization-vc140.targets'))" />
     <Error Condition="!Exists('packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost-vc140.1.60.0.0\build\native\boost-vc140.targets'))" />
-    <Error Condition="!Exists('packages\protobuf.2.5.0.0\build\native\protobuf.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\protobuf.2.5.0.0\build\native\protobuf.targets'))" />
-    <Error Condition="!Exists('packages\protobuf-vc140.2.5.0.0\build\native\protobuf-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\protobuf-vc140.2.5.0.0\build\native\protobuf-vc140.targets'))" />
   </Target>
 </Project>

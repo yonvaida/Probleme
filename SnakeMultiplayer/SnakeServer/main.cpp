@@ -2,6 +2,7 @@
 //
 
 //#include "stdafx.h"
+
 #include "boost\asio.hpp"
 #include <boost\property_tree\ptree.hpp>
 #include <boost\property_tree\json_parser.hpp>
@@ -17,16 +18,19 @@
 #include "table.h"
 #include "main.h"
 #include "snakeServer.h"
-#include "snakedata.pb.h"
+
+
 
 
 int main()
 {
-	GOOGLE_PROTOBUF_VERIFY_VERSION;
+	
 		try {
-			//snakedata::snakebody snakebodydata;
 			
+			
+			boost::property_tree::ptree data;
 			table table(50, 50);
+			
 			
 			snakeFood snakefood;
 			Snake snake;
@@ -34,23 +38,22 @@ int main()
 			head.x = 0;
 			head.y = 0;
 			snake.elongate(head, Direction::right);
-			boost::property_tree::ptree data;
 			point foodpoint;
 			std::vector<char> buf(2054);
-			std::string serverResponse;
+			//std::string serverResponse;
 			std::string clientResponse;
-			snakefood.randomize(50, 50);
+			snakefood.randomize(50, 50); 
 			int score = 0;
+			//builder.GetBufferPointer();
+			//std::cout << board.GetBufferPointer() << std::endl;
 			while (true) {
-				snakedata::table * tabledata=new snakedata::table;
+				
 				server snakeServer;
 				clientResponse = snakeServer.readSnakeMove();
 				 // client response is a string that represent the index of direction value
 				table.getData(data);
 				snake.getData(data);
 				snakefood.getData(data);
-				tabledata->set_tablex(data.get<int>("table.x"));
-				tabledata->set_tabley(data.get<int>("table.y"));
 				foodpoint.x = data.get<int>("snakefood.x");
 				foodpoint.y = data.get<int>("snakefood.y");
 				
@@ -65,20 +68,21 @@ int main()
 					//snakeServer.serverShutdown();
 					//snake.changeDirection(Direction::stay);
 					data.put("game_status","GAME OVER");
-					
-					serverResponse = snakeServer.sendSnakeData(data);
+					snakeServer.sendSnakeData(data);
+					//serverResponse = snakeServer.sendSnakeData(data);
 				}
 				else {
 					data.put("game_status", "Plaing");
 					snake.changeDirection(Direction(std::stoi(clientResponse)));
-					serverResponse = snakeServer.sendSnakeData(data);
+					snakeServer.sendSnakeData(data);
+					//serverResponse = snakeServer.sendSnakeData(data);
 				}
 				system("cls");
 				//std::cout << "size "<<tabledata.GetCachedSize() << std::endl;
 				std::cout << "Server is running ..." << std::endl;
-				std::cout << "Server response : " << serverResponse << std::endl;
+				//std::cout << "Server response : " << serverResponse << std::endl;
 				std::cout << "Client response : " << clientResponse << std::endl;
-				serverResponse = snakeServer.sendSnakeData(data);
+				//serverResponse = snakeServer.sendSnakeData(data);
 
 
 

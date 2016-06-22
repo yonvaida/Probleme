@@ -66,5 +66,8 @@
     <ClInclude Include="snakeclientGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="flatbuffer\snakedata_generated.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

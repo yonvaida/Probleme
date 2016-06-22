@@ -23,6 +23,7 @@
 #include "qabstracteventdispatcher.h"
 #include <QTcpSocket>
 #include "snakeclientGUI.h"
+#include "flatbuffer\snakedata_generated.h"
 
 
 
@@ -43,18 +44,26 @@ int main(int argc, char * argv[])
 	boost::property_tree::ptree data;
 	std::unique_ptr<QTimer> timer(new QTimer());
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
-		boost::array<char, 3000> buf;
-		system("cls");
+		//system("cls");
+		uint8_t * buf;
 		boost::asio::ip::tcp::socket dataSocket(ioService);
 		boost::asio::connect(dataSocket, endpoint);
 		boost::array<char, 1> sentmove;
 		sentmove.at(0)=	moveSnake(l->direction);
 		dataSocket.write_some(boost::asio::buffer(sentmove));
-		size_t length= dataSocket.read_some(boost::asio::buffer(buf),error);
+		size_t bufferLength;
+		size_t length= dataSocket.read_some(boost::asio::buffer(buf,bufferLength),error);
 		if (error == 0) {
-			convertToPtree(buf.data(),length, data);
+			//std::cout << unsigned(buf.data()) << std::endl;
+			//std::string temp = buf.data();
+			//auto data = temp.substr(0, length);
+			auto snake_data = snakedata::Getsnakebodydata(buf);
+			auto table = snake_data->board();
+			
+		//std::cout << table << std::endl;
+			//convertToPtree(buf.data(),length, data);
 		}
-		if (data.get<std::string>("game_status") == "GAME OVER") {
+		/*if (data.get<std::string>("game_status") == "GAME OVER") {
 			QFont font;
 			font.setPixelSize(50);
 			font.setBold(true);
@@ -73,7 +82,7 @@ int main(int argc, char * argv[])
 			for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
 				painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
 			};
-		}
+		}*/
 		l->setPixmap(*pixmap);
 	});
 	timer->start(100);
