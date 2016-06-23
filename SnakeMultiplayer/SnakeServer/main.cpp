@@ -39,15 +39,14 @@ int main()
 			head.y = 0;
 			snake.elongate(head, Direction::right);
 			point foodpoint;
-			std::vector<char> buf(2054);
-			//std::string serverResponse;
+			
+			std::string serverResponse;
 			std::string clientResponse;
 			snakefood.randomize(50, 50); 
 			int score = 0;
 			//builder.GetBufferPointer();
 			//std::cout << board.GetBufferPointer() << std::endl;
 			while (true) {
-				
 				server snakeServer;
 				clientResponse = snakeServer.readSnakeMove();
 				 // client response is a string that represent the index of direction value
@@ -66,23 +65,23 @@ int main()
 				data.put("game_score", score);
 				if (snake.collision() || !snake.onTable(table)) {
 					//snakeServer.serverShutdown();
-					//snake.changeDirection(Direction::stay);
+					snake.changeDirection(Direction::stay);
 					data.put("game_status","GAME OVER");
 					snakeServer.sendSnakeData(data);
-					//serverResponse = snakeServer.sendSnakeData(data);
+					serverResponse = snakeServer.sendSnakeData(data);
 				}
 				else {
 					data.put("game_status", "Plaing");
 					snake.changeDirection(Direction(std::stoi(clientResponse)));
 					snakeServer.sendSnakeData(data);
-					//serverResponse = snakeServer.sendSnakeData(data);
+					serverResponse = snakeServer.sendSnakeData(data);
 				}
-				system("cls");
+				
 				//std::cout << "size "<<tabledata.GetCachedSize() << std::endl;
 				std::cout << "Server is running ..." << std::endl;
 				//std::cout << "Server response : " << serverResponse << std::endl;
-				std::cout << "Client response : " << clientResponse << std::endl;
-				//serverResponse = snakeServer.sendSnakeData(data);
+				//std::cout << "Client response : " << clientResponse << std::endl;
+				serverResponse = snakeServer.sendSnakeData(data);
 
 
 

@@ -3,39 +3,43 @@
 #ifndef FLATBUFFERS_GENERATED_SNAKEDATA_SNAKEDATA_H_
 #define FLATBUFFERS_GENERATED_SNAKEDATA_SNAKEDATA_H_
 
-#include "include/flatbuffers/flatbuffers.h"
+#include "flatbuffers/flatbuffers.h"
 
 namespace snakedata {
 
-struct point;
-
 struct snakebodydata;
+
+struct snakefooddata;
 
 struct boarddata;
 
-MANUALLY_ALIGNED_STRUCT(4) point FLATBUFFERS_FINAL_CLASS {
- private:
-  int32_t x_;
-  int32_t y_;
-
- public:
-  point(int32_t _x, int32_t _y)
-    : x_(flatbuffers::EndianScalar(_x)), y_(flatbuffers::EndianScalar(_y)) { }
-
-  int32_t x() const { return flatbuffers::EndianScalar(x_); }
-  int32_t y() const { return flatbuffers::EndianScalar(y_); }
-};
-STRUCT_END(point, 8);
+struct snakebodypoint;
 
 struct snakebodydata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum {
-    VT_BOARD = 4
+    VT_SNAKEBODY = 4,
+    VT_BOARD = 6,
+    VT_SNAKEFOOD = 8,
+    VT_GAMESTATUS = 10,
+    VT_GAMESCORE = 12
   };
+  const flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>> *snakebody() const { return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>> *>(VT_SNAKEBODY); }
   const boarddata *board() const { return GetPointer<const boarddata *>(VT_BOARD); }
+  const snakefooddata *snakefood() const { return GetPointer<const snakefooddata *>(VT_SNAKEFOOD); }
+  const flatbuffers::String *gamestatus() const { return GetPointer<const flatbuffers::String *>(VT_GAMESTATUS); }
+  int32_t gamescore() const { return GetField<int32_t>(VT_GAMESCORE, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, VT_SNAKEBODY) &&
+           verifier.Verify(snakebody()) &&
+           verifier.VerifyVectorOfTables(snakebody()) &&
            VerifyField<flatbuffers::uoffset_t>(verifier, VT_BOARD) &&
            verifier.VerifyTable(board()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, VT_SNAKEFOOD) &&
+           verifier.VerifyTable(snakefood()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, VT_GAMESTATUS) &&
+           verifier.Verify(gamestatus()) &&
+           VerifyField<int32_t>(verifier, VT_GAMESCORE) &&
            verifier.EndTable();
   }
 };
@@ -43,19 +47,68 @@ struct snakebodydata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 struct snakebodydataBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_snakebody(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>>> snakebody) { fbb_.AddOffset(snakebodydata::VT_SNAKEBODY, snakebody); }
   void add_board(flatbuffers::Offset<boarddata> board) { fbb_.AddOffset(snakebodydata::VT_BOARD, board); }
+  void add_snakefood(flatbuffers::Offset<snakefooddata> snakefood) { fbb_.AddOffset(snakebodydata::VT_SNAKEFOOD, snakefood); }
+  void add_gamestatus(flatbuffers::Offset<flatbuffers::String> gamestatus) { fbb_.AddOffset(snakebodydata::VT_GAMESTATUS, gamestatus); }
+  void add_gamescore(int32_t gamescore) { fbb_.AddElement<int32_t>(snakebodydata::VT_GAMESCORE, gamescore, 0); }
   snakebodydataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   snakebodydataBuilder &operator=(const snakebodydataBuilder &);
   flatbuffers::Offset<snakebodydata> Finish() {
-    auto o = flatbuffers::Offset<snakebodydata>(fbb_.EndTable(start_, 1));
+    auto o = flatbuffers::Offset<snakebodydata>(fbb_.EndTable(start_, 5));
     return o;
   }
 };
 
 inline flatbuffers::Offset<snakebodydata> Createsnakebodydata(flatbuffers::FlatBufferBuilder &_fbb,
-   flatbuffers::Offset<boarddata> board = 0) {
+   flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>>> snakebody = 0,
+   flatbuffers::Offset<boarddata> board = 0,
+   flatbuffers::Offset<snakefooddata> snakefood = 0,
+   flatbuffers::Offset<flatbuffers::String> gamestatus = 0,
+   int32_t gamescore = 0) {
   snakebodydataBuilder builder_(_fbb);
+  builder_.add_gamescore(gamescore);
+  builder_.add_gamestatus(gamestatus);
+  builder_.add_snakefood(snakefood);
   builder_.add_board(board);
+  builder_.add_snakebody(snakebody);
+  return builder_.Finish();
+}
+
+struct snakefooddata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  enum {
+    VT_X = 4,
+    VT_Y = 6
+  };
+  int32_t x() const { return GetField<int32_t>(VT_X, 0); }
+  int32_t y() const { return GetField<int32_t>(VT_Y, 0); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_X) &&
+           VerifyField<int32_t>(verifier, VT_Y) &&
+           verifier.EndTable();
+  }
+};
+
+struct snakefooddataBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_x(int32_t x) { fbb_.AddElement<int32_t>(snakefooddata::VT_X, x, 0); }
+  void add_y(int32_t y) { fbb_.AddElement<int32_t>(snakefooddata::VT_Y, y, 0); }
+  snakefooddataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  snakefooddataBuilder &operator=(const snakefooddataBuilder &);
+  flatbuffers::Offset<snakefooddata> Finish() {
+    auto o = flatbuffers::Offset<snakefooddata>(fbb_.EndTable(start_, 2));
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<snakefooddata> Createsnakefooddata(flatbuffers::FlatBufferBuilder &_fbb,
+   int32_t x = 0,
+   int32_t y = 0) {
+  snakefooddataBuilder builder_(_fbb);
+  builder_.add_y(y);
+  builder_.add_x(x);
   return builder_.Finish();
 }
 
@@ -93,6 +146,43 @@ inline flatbuffers::Offset<boarddata> Createboarddata(flatbuffers::FlatBufferBui
   boarddataBuilder builder_(_fbb);
   builder_.add_height(height);
   builder_.add_width(width);
+  return builder_.Finish();
+}
+
+struct snakebodypoint FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  enum {
+    VT_X = 4,
+    VT_Y = 6
+  };
+  int32_t x() const { return GetField<int32_t>(VT_X, 0); }
+  int32_t y() const { return GetField<int32_t>(VT_Y, 0); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_X) &&
+           VerifyField<int32_t>(verifier, VT_Y) &&
+           verifier.EndTable();
+  }
+};
+
+struct snakebodypointBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_x(int32_t x) { fbb_.AddElement<int32_t>(snakebodypoint::VT_X, x, 0); }
+  void add_y(int32_t y) { fbb_.AddElement<int32_t>(snakebodypoint::VT_Y, y, 0); }
+  snakebodypointBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  snakebodypointBuilder &operator=(const snakebodypointBuilder &);
+  flatbuffers::Offset<snakebodypoint> Finish() {
+    auto o = flatbuffers::Offset<snakebodypoint>(fbb_.EndTable(start_, 2));
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<snakebodypoint> Createsnakebodypoint(flatbuffers::FlatBufferBuilder &_fbb,
+   int32_t x = 0,
+   int32_t y = 0) {
+  snakebodypointBuilder builder_(_fbb);
+  builder_.add_y(y);
+  builder_.add_x(x);
   return builder_.Finish();
 }
 

@@ -1,24 +1,22 @@
 #include "snakeServer.h"
 #include "main.h"
 #include <iostream>
+#include "boost\array.hpp"
+#include "serialization.h"
 
 std::string  server::sendSnakeData(boost::property_tree::ptree data) {
 	std::ostringstream dataToSend;
 	flatbuffers::FlatBufferBuilder builder;
-	auto board = snakedata::Createboarddata(builder,data.get<int>("table.width"),data.get<int>("table.height"));
-	snakedata::snakebodydataBuilder snake_data(builder);
-	snake_data.add_board(board);
-	snake_data.Finish();
+	
+	serialize(builder, data);
+	auto getdatafrom = snakedata::Getsnakebodydata(builder.GetBufferPointer());
+	auto table = getdatafrom->board()->width();
+	std::cout << table << std::endl;
+	int length = builder.GetSize();
+	std::cout << length << std::endl;
 
-	uint8_t * bufferdata = builder.GetCurrentBufferPointer();
-	std::cout << builder.GetSize() << std::endl;
-
-	boost::property_tree::write_json(dataToSend, data);
-	//data.put("size", dataToSend.str().size());
-	//dataToSend.str("");
-	//boost::property_tree::write_json(dataToSend, data);
-	std::cout << dataToSend.str().length() << std::endl;
-	boost::asio::async_write(socket,boost::asio::buffer(builder.GetCurrentBufferPointer(),builder.GetSize()), boost::asio::transfer_all());
+	boost::asio::async_write(socket,boost::asio::buffer(std::to_string(length)), boost::asio::transfer_all());
+	boost::asio::async_write(socket, boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()),boost::asio::transfer_all());
 	return dataToSend.str();
 };
 std::string server::readSnakeMove() {

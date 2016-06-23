@@ -1,11 +1,15 @@
 namespace snakedata;
+table point{
+	x:int;
+	y:int;
+}
 table snakebodydata{
-	snakebody:[snakebodypoint];
+	snakebody:[point];
 	board:boarddata;
 	snakefood:snakefooddata;
 	gamestatus:string;
 	gamescore:int;
-	}
+}
 table snakefooddata{
 	x:int;
 	y:int;
@@ -13,9 +17,5 @@ table snakefooddata{
 table boarddata{
 	width:int;
 	height:int;
-}
-table snakebodypoint{
-	x:int;
-	y:int;
 }
 root_type snakebodydata;
