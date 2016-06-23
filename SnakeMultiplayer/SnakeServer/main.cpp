@@ -44,8 +44,6 @@ int main()
 			std::string clientResponse;
 			snakefood.randomize(50, 50); 
 			int score = 0;
-			//builder.GetBufferPointer();
-			//std::cout << board.GetBufferPointer() << std::endl;
 			while (true) {
 				server snakeServer;
 				clientResponse = snakeServer.readSnakeMove();
@@ -55,7 +53,6 @@ int main()
 				snakefood.getData(data);
 				foodpoint.x = data.get<int>("snakefood.x");
 				foodpoint.y = data.get<int>("snakefood.y");
-				
 				snake.setFoodPoint(foodpoint);
 
 				if (snake.findFood(foodpoint)) {
@@ -64,7 +61,6 @@ int main()
 				};
 				data.put("game_score", score);
 				if (snake.collision() || !snake.onTable(table)) {
-					//snakeServer.serverShutdown();
 					snake.changeDirection(Direction::stay);
 					data.put("game_status","GAME OVER");
 					snakeServer.sendSnakeData(data);
@@ -76,11 +72,10 @@ int main()
 					snakeServer.sendSnakeData(data);
 					serverResponse = snakeServer.sendSnakeData(data);
 				}
-				
-				//std::cout << "size "<<tabledata.GetCachedSize() << std::endl;
+				system("cls");
 				std::cout << "Server is running ..." << std::endl;
-				//std::cout << "Server response : " << serverResponse << std::endl;
-				//std::cout << "Client response : " << clientResponse << std::endl;
+				std::cout << "Server response : " << serverResponse << std::endl;
+				std::cout << "Client response : " << clientResponse << std::endl;
 				serverResponse = snakeServer.sendSnakeData(data);
 
 

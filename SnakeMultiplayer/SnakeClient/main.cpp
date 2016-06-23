@@ -40,7 +40,6 @@ int main(int argc, char * argv[])
 	std::unique_ptr<label> l (new label);
 	std::unique_ptr<QPixmap> pixmap (new QPixmap(500, 500));
 	std::unique_ptr<QPainter> painter (new QPainter(pixmap.get()));
-	//QPainter * gameResults = new QPainter(pixmap);
 	boost::property_tree::ptree data;
 	std::unique_ptr<QTimer> timer(new QTimer());
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
@@ -56,29 +55,8 @@ int main(int argc, char * argv[])
 		dataSocket.read_some(boost::asio::buffer(length));
 		buf.resize(std::stoi(length.data()));
 		dataSocket.read_some(boost::asio::buffer(buf));
-		std::cout << std::stoi(length.data()) << std::endl;
-		//std::istringstream temp;
-		//temp.str(buf.data());
-		//std::cout << temp.str().substr(0,length) << std::endl;
-		//const uint8_t * snake_data = reinterpret_cast<const uint8_t*>(&temp.str().substr(0, length));
-		//std::cout<<reinterpret_cast<int>(buf.data())<<std::endl;
-		//std::cout << bufferLength.sgetn << std::endl;
-		//std::cout <<"Size: "<< bufferLength << std::endl;
-
 		deserialize(buf, data);
-
-
-		std::cout << data.get<int>("table.width") << std::endl;
-
-		if (error == 0) {
-			
-			//std::string temp = buf.data();
-			//auto data = temp.substr(0, length);
-			//auto snake_data = snakedata::Getsnakebodydata(buf);
-			//auto table = snake_data->board()->width();
-			//std::cout<<"table width: "  << std::endl;
-			//convertToPtree(buf.data(),length, data);
-		}
+		
 		if (data.get<std::string>("game_status") == "GAME OVER") {
 			QFont font;
 			font.setPixelSize(50);
@@ -98,8 +76,8 @@ int main(int argc, char * argv[])
 
 		for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
 				painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
-			};
-			
+		};
+		
 		}
 		l->setPixmap(*pixmap);
 	});
