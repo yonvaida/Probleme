@@ -31,32 +31,18 @@
 int main(int argc, char * argv[])
 {
 	QApplication a(argc, argv);
-	boost::asio::io_service ioService;
-	boost::asio::ip::tcp::resolver resolver(ioService);
-	boost::asio::ip::tcp::resolver::iterator endpoint;
-	boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
-	endpoint = resolver.resolve(query);
-	boost::system::error_code error;
+	
 	std::unique_ptr<label> l (new label);
 	std::unique_ptr<QPixmap> pixmap (new QPixmap(500, 500));
 	std::unique_ptr<QPainter> painter (new QPainter(pixmap.get()));
 	boost::property_tree::ptree data;
 	std::unique_ptr<QTimer> timer(new QTimer());
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
-		std::vector<char> length;
-		length.resize(40);
-		std::vector<uint8_t> buf;
-		boost::asio::streambuf bufferLength;
-		boost::asio::ip::tcp::socket dataSocket(ioService);
-		boost::asio::connect(dataSocket, endpoint);
-		boost::array<char, 1> sentmove;
-		sentmove.at(0)=	moveSnake(l->direction);
-		dataSocket.write_some(boost::asio::buffer(sentmove));
-		dataSocket.read_some(boost::asio::buffer(length));
-		buf.resize(std::stoi(length.data()));
-		dataSocket.read_some(boost::asio::buffer(buf));
-		deserialize(buf, data);
-		
+		clientNetwork network("127.0.0.1", "32560");
+		std::string sentmove;
+		sentmove=	moveSnake(l->direction);
+		network.send(sentmove);
+		data = network.read();
 		if (data.get<std::string>("game_status") == "GAME OVER") {
 			QFont font;
 			font.setPixelSize(50);
@@ -77,7 +63,6 @@ int main(int argc, char * argv[])
 		for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
 				painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
 		};
-		
 		}
 		l->setPixmap(*pixmap);
 	});
@@ -85,10 +70,5 @@ int main(int argc, char * argv[])
 	l->setPixmap(*pixmap);
 	l->setGeometry(300, 300, 50 * 11, 50 * 10);
 	l->show();
-
 	return a.exec();
-
-
-
-
 }

@@ -53,6 +53,12 @@
     <ClCompile Include="deserialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="snakeClient.test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="networkInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="snakeclient.h">
@@ -73,6 +79,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="deserialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="snakeClient.test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="networkInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -161,7 +161,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="deserialization.cpp" />
+    <ClCompile Include="networkInterface.cpp" />
     <ClCompile Include="snakeclient.cpp" />
+    <ClCompile Include="snakeClient.test.cpp" />
     <ClCompile Include="snakeclientGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +220,8 @@
   <ItemGroup>
     <ClInclude Include="flatbuffer\snakedata_generated.h" />
     <ClInclude Include="deserialization.h" />
+    <ClInclude Include="networkInterface.h" />
+    <ClInclude Include="snakeClient.test.h" />
     <ClInclude Include="snakeclientGUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
