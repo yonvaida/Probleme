@@ -26,12 +26,8 @@ int main()
 {
 	
 		try {
-			
-			
 			boost::property_tree::ptree data;
 			table table(50, 50);
-			
-			
 			snakeFood snakefood;
 			Snake snake;
 			point head;
@@ -39,7 +35,6 @@ int main()
 			head.y = 0;
 			snake.elongate(head, Direction::right);
 			point foodpoint;
-			
 			std::string serverResponse;
 			std::string clientResponse;
 			snakefood.randomize(50, 50); 
@@ -77,9 +72,6 @@ int main()
 				std::cout << "Server response : " << serverResponse << std::endl;
 				std::cout << "Client response : " << clientResponse << std::endl;
 				serverResponse = snakeServer.sendSnakeData(data);
-
-
-
 			}
 
 		}catch(std::exception& e) {
