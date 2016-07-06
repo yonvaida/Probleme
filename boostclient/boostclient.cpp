@@ -15,7 +15,7 @@ int main()
 		boost::asio::io_service ioService;
 		int i = 0;
 		
-		boost::asio::ip::tcp::resolver::query query("10.60.17.19", "31250");
+		boost::asio::ip::tcp::resolver::query query("192.168.1.66", "31250");
 		boost::system::error_code error;
 		boost::asio::ip::tcp::resolver resolver(ioService);
 		boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
@@ -24,11 +24,14 @@ int main()
 		while (true) {
 		boost::asio::ip::tcp::socket socket(ioService);
 		socket.connect(*iterator,error);
-		//std::cout << error.message() << std::endl;
+		std::cout << error.message() << std::endl;
 		if (!error) {
+			system("cls");
 			std::cout << "merge" << std::endl;
-			socket.write_some(boost::asio::buffer(std::to_string(i)),error);
-			socket.read_some(boost::asio::buffer(buf));
+			std::cout << socket.remote_endpoint().address();
+			socket.write_some(boost::asio::buffer("client 2"),error);
+			socket.read_some(boost::asio::buffer(buf),error);
+			i++;
 			if (!error) {
 				socket.close();
 			}
