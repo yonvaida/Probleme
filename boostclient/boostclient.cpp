@@ -28,7 +28,7 @@ int main()
 		if (!error) {
 			std::cout << "merge" << std::endl;
 			socket.write_some(boost::asio::buffer(std::to_string(i)),error);
-			//socket.read_some(boost::asio::buffer(buf));
+			socket.read_some(boost::asio::buffer(buf));
 			if (!error) {
 				socket.close();
 			}

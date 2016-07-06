@@ -11,8 +11,7 @@
 class server {
 public:
 	server(boost::asio::io_service &ioService): acceptor(ioService,boost::asio::ip::tcp::endpoint( boost::asio::ip::tcp::v4(), 31250)),socket(ioService) {
-		
-		
+			
 		std::cout << "Constructor" << std::endl;
 		
 		server::connectionAccept();
@@ -24,8 +23,9 @@ public:
 			std::cout << ec.message() << std::endl;
 			if (!ec) {
 				socket.read_some(boost::asio::buffer(buf));
+				socket.write_some(boost::asio::buffer("server serponse"));
 				std::cout << buf.data() << std::endl;
-				//connectionAccept();
+				connectionAccept();
 			}
 			
 		});
