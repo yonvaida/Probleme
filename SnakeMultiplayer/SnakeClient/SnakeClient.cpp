@@ -18,26 +18,23 @@ void clientNetwork::connectToServer(std::string ip,std::string port) {
 	endpoint = resolver.resolve(query,error);
 	if (endpoint != end) {
 		boost::asio::connect(dataSocket, endpoint);
-
-	}
+    	}
 	else {
 		dataSocket.close();
-		std::cout << "no connection" << std::endl;
+		std::cout << "no connection bbb" << std::endl;
 	}
 	
 }
 boost::property_tree::ptree clientNetwork::read() {
 	boost::property_tree::ptree data;
 	std::vector<uint8_t> buf;
-	std::vector<char> length;
-	length.resize(40);
+	buf.resize(3000);
 	if (error) {
 		dataSocket.close();
 		std::cout << "No connection from server" << std::endl;
 	}else {
-		dataSocket.read_some(boost::asio::buffer(length), error);
-		buf.resize(std::stoi(length.data()));
-		dataSocket.read_some(boost::asio::buffer(buf), error);
+		size_t length = dataSocket.read_some(boost::asio::buffer(buf), error);
+		buf.resize(static_cast<int>(length));
 		deserialize(buf, data);
 	}
 	

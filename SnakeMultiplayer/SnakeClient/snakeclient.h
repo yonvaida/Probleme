@@ -19,5 +19,4 @@ private:
 	boost::asio::io_service ioService;
 	void connectToServer(std::string ip , std::string port);
 	boost::asio::ip::tcp::socket dataSocket;
-	
 };

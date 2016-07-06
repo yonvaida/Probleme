@@ -34,13 +34,17 @@ int main(int argc, char * argv[])
 	std::unique_ptr<QPainter> painter (new QPainter(pixmap.get()));
 	boost::property_tree::ptree data;
 	std::unique_ptr<QTimer> timer(new QTimer());
+	std::string initialConnection="true";
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		try {
-			clientNetwork network("127.0.0.1", "32560");
+			clientNetwork network("10.60.17.19", "32560");
 			std::cout << network.error << std::endl;
 			std::string sentmove;
 			sentmove = moveSnake(l->direction);
-			network.send(sentmove);
+			if (initialConnection == "true") { 
+				network.send("n"); 
+				initialConnection = "false";
+			}else network.send(sentmove);
 			data = network.read();
 			if (network.error) {
 				std::cout << "no connection" << std::endl;
@@ -75,7 +79,7 @@ int main(int argc, char * argv[])
 			l->setPixmap(*pixmap);
 		}
 	});
-	timer->start(100);
+	timer->start(500);
 	l->setGeometry(300, 300, 50 * 11, 50 * 10);
 	l->show();
 	return a.exec();
