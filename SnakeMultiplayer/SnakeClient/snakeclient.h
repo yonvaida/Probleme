@@ -8,11 +8,10 @@
 #include "deserialization.h"
 
 void convertToPtree(std::string bufferValue, std::size_t length, boost::property_tree::ptree &data);
-
 class clientNetwork {
 public:
 	clientNetwork(std::string ip, std::string port);
-	boost::property_tree::ptree read();
+	std::string read();
 	void send(std::string sentMessage);
 	boost::system::error_code error;
 private:

@@ -5,21 +5,21 @@
 #include <boost\property_tree\ptree.hpp>
 #include <boost\property_tree\json_parser.hpp>
 #include "flatbuffer\snakedata_generated.h"
+#include <vector>
 
-class server{
+class TCPserver {
 public:
-	server();
-	std::string sendSnakeData(boost::property_tree::ptree data);
-	std::string readSnakeMove();
-	void serverAccept();
-	void serverShutdown();
-	bool socketStatus();
-	void run();
+	TCPserver(boost::asio::io_service &ioService);
+	void connectionAccept();
+	void setData(boost::property_tree::ptree &getdata);
 private:
-	std::set<std::string> ipList;
-	boost::asio::io_service io_service;
+	boost::system::error_code error;
 	boost::asio::ip::tcp::socket socket;
-	boost::asio::ip::tcp::endpoint endpoint;
+	boost::asio::ip::tcp::endpoint endPoint;
+	boost::property_tree::ptree data;
+	std::vector<char> buf;
+	boost::asio::ip::tcp::acceptor acceptor;
+	std::vector<std::string> playersList;
 };
 
 class snakeClient {
@@ -27,11 +27,8 @@ public:
 	snakeClient(boost::asio::ip::tcp::socket clientSocket);
 };
 
-void readHandler(const boost::system::error_code &error, std::size_t byte_transfered);
-
-
-class Game {
+class GameServer {
 public:
-	Game();
-	void joinGame(snakeClient snakePlayer);
+	GameServer();
+	void joinGame();
 };

@@ -4,6 +4,70 @@
 #include "boost\array.hpp"
 #include "serialization.h"
 
+TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 32560)), socket(ioService) {
+		TCPserver::connectionAccept();
+	};
+
+	void TCPserver::connectionAccept() {
+		buf.resize(1024);
+		boost::asio::ip::tcp::socket tempSocket(acceptor.get_io_service());
+		acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {
+			std::cout << ec.message() << std::endl;
+			if (!ec) {
+				bool newPlayer = true;
+				if (playersList.size() == 0) {
+					playersList.push_back(socket.remote_endpoint().address().to_string());
+					
+				}
+				else {
+					std::vector<std::string>::iterator it;
+					for (it = playersList.begin(); it != playersList.end(); it++) {
+						if (*it == socket.remote_endpoint().address().to_string()) {
+							std::cout << "Player was connected before" << std::endl;
+							newPlayer = false;
+						}
+					}
+					if(newPlayer==true) {
+							playersList.push_back(socket.remote_endpoint().address().to_string());
+						}
+					}
+						
+				}
+
+
+
+				
+				system("cls");
+
+
+				std::cout << playersList.size() << std::endl;
+				socket.read_some(boost::asio::buffer(buf), error);
+				std::string temp = data.get<std::string>("table.width");
+				socket.write_some(boost::asio::buffer(temp), error);
+				//std::cout << buf.data() << std::endl;
+				socket.close();
+				connectionAccept();
+			
+
+		});
+	}
+
+	void TCPserver::setData(boost::property_tree::ptree &getdata) {
+		data = getdata;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 std::string  server::sendSnakeData(boost::property_tree::ptree data) {
 	std::ostringstream dataToSend;
 	flatbuffers::FlatBufferBuilder builder;
@@ -29,44 +93,29 @@ std::string server::readSnakeMove() {
 		//std::cout << ec << std::endl;
 		return readBuffer.data();
 };
-bool server::socketStatus() {
-	if (socket.is_open()) {
-		return true;
-	};
-	return false;
-};
 
-server::server():socket(io_service),endpoint(boost::asio::ip::tcp::v4(), 32560) {
-	boost::asio::ip::tcp::acceptor acceptor(io_service, endpoint);
-	acceptor.accept(socket, endpoint);
-	
-	//boost::asio::ip::tcp::no_delay option(true);
-	
-	auto search = ipList.find(endpoint.address().to_string());
-	size_t length = 0;
-	if (ipList.size() == length) {
-	ipList.insert(endpoint.address().to_string());
-	std::cout << *(ipList.begin()) << " - " << ipList.size() << std::endl;
-	
-	}
-	socket.set_option(boost::asio::ip::tcp::no_delay(true));
-	
-	
 
-	
+server::server(boost::asio::io_service &ioService):socket(ioService), endpoint(boost::asio::ip::tcp::v4(), 32560), acceptor(ioService, endpoint) {
+
+
 };
-void server::serverAccept() {}
-void server::serverShutdown() {
+void server::serverAccept() {
+	//boost::asio::ip::tcp::socket socket(acceptor.get_io_service());
+acceptor.async_accept(socket, [&]() {
+	readSnakeMove();
+	sendSnakeData(data);
 	socket.close();
+	serverAccept();
+});
+
+	
+
 }
-void server::run() {
-	io_service.run();
+
+void server::setDataPtree(boost::property_tree::ptree &snakeData) {
+	data = snakeData;
 }
-void readHandler(const boost::system::error_code &error, std::size_t byte_transfered) {
-	if (!error) {
-		std::cout << "connection ok" << std::endl;
-	}
-}
+
 
 
 //--------------------------------------------------------------------------------
@@ -83,6 +132,8 @@ Game::Game() {
 
 }
 void Game::joinGame(snakeClient snakePlayer){
+}*/
 
 
-}
+
+
