@@ -18,7 +18,7 @@ void read_handler(const boost::system::error_code &ec, std::size_t bytes_transfe
 		try {
 			int clients = 0;
 			boost::asio::io_service ioService;
-			
+			boost::asio::io_service::work work(ioService);
 			
 			std::set<std::string> endpointlist;
 			
@@ -28,25 +28,33 @@ void read_handler(const boost::system::error_code &ec, std::size_t bytes_transfe
 			std::unique_ptr<std::vector<boost::asio::ip::tcp::socket>> socketList;
 			
 			
-			int clientsconnected = 0;
-			while (true) {
-				boost::asio::ip::tcp::endpoint endPoint(boost::asio::ip::tcp::v4(), 35200);
-				boost::asio::ip::tcp::acceptor acceptor(ioService);
-				//endpointlist.insert(endPoint.address().to_string());
-				boost::asio::ip::tcp::socket datasocket(ioService,endPoint);
 				boost::system::error_code ec;
 				//std::string temp;
 				//acceptor.listen();
 				//acceptor.open(endPoint.protocol());
+				boost::asio::ip::tcp::endpoint endPoint(boost::asio::ip::tcp::v4(), 35200);
+				boost::asio::ip::tcp::acceptor acceptor(ioService, endPoint);
+				boost::asio::ip::tcp::socket datasocket(ioService);
+			int clientsconnected = 0;
+			//while (true) {
 				
-				acceptor.open(endPoint.protocol());
+				//acceptor.open(endPoint.protocol());
+				//acceptor.bind(endPoint);
 				//acceptor.listen();
-				acceptor.async_accept(datasocket,[&](const boost::system::error_code &ec) {
-					std::cout << ec << std::endl;
+				
+
+				//endpointlist.insert(endPoint.address().to_string());
+
+				std::cout << "while enter" << std::endl;
+
+				acceptor.async_accept(datasocket, [&](const boost::system::error_code& ec) {
+					std::cout << ec.message() << std::endl;
+					std::cout << "in async_accept" << std::endl;
 					if (!ec) {
-						//datasocket.read_some(boost::asio::buffer(reading));
+						datasocket.read_some(boost::asio::buffer(reading));
+						std::cout << reading.data() << std::endl;
 					}
-					
+
 					//std::cout << "First read" << reading.at(0) << std::endl;
 					//std::cout << endPoint.address() << std::endl;
 					//boost::asio::async_write(datasocket, boost::asio::buffer("dddddd"), boost::asio::transfer_all());
@@ -54,13 +62,16 @@ void read_handler(const boost::system::error_code &ec, std::size_t bytes_transfe
 				});
 				//std::cout << endPoint.address() << std::endl;
 				//std::cout << endpointlist.size() << std::endl;
-				
+
 				//system("cls");
-				
+
+				//datasocket.close();
+
+				//return 0;
 				//datasocket.close();
 				ioService.run();
-				//return 0;
-			}
+			//}
+				
 		}
 		catch(int e){
 			std::cout << e << std::endl;
