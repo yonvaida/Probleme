@@ -13,9 +13,9 @@ int main()
 		buf.resize(3000);
 		std::string connectionStatus = "initial";
 		boost::asio::io_service ioService;
-
+		int i = 0;
 		
-		boost::asio::ip::tcp::resolver::query query("10.60.17.19", "35200");
+		boost::asio::ip::tcp::resolver::query query("10.60.17.19", "31250");
 		boost::system::error_code error;
 		boost::asio::ip::tcp::resolver resolver(ioService);
 		boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
@@ -27,7 +27,12 @@ int main()
 		//std::cout << error.message() << std::endl;
 		if (!error) {
 			std::cout << "merge" << std::endl;
-			socket.write_some(boost::asio::buffer("ddd"),error);
+			socket.write_some(boost::asio::buffer(std::to_string(i)),error);
+			//socket.read_some(boost::asio::buffer(buf));
+			if (!error) {
+				socket.close();
+			}
+			std::cout << buf.data() << std::endl;
 			std::cout << error.message() << std::endl;
 		}
 		
