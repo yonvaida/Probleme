@@ -16,7 +16,7 @@
 //#include <qapplication.h>
 //#include <QtNetwork\qtcpsocket.h>
 //#include "QtCore\qobject.h"
-//#include <qtimer.h>
+#include <qtimer.h>
 #include <memory>
 //#include <qdebug.h>
 //#include "snakeclient.h"
@@ -29,22 +29,24 @@
 int main(int argc, char * argv[])
 {
 		try {
+			
+
 			std::vector<char> buf;
 			buf.resize(3000);
 			std::string connectionStatus = "initial";
 			boost::asio::io_service ioService;
 			int i = 0;
-			boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
+			boost::asio::ip::tcp::resolver::query query("10.60.17.19", "32560");
 			boost::system::error_code error;
 			boost::asio::ip::tcp::resolver resolver(ioService);
 			boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
-			while (true) {
+			
 				boost::asio::ip::tcp::socket socket(ioService);
 				socket.connect(*iterator, error);
 				std::cout << error.message() << std::endl;
 				if (!error) {
 					system("cls");
-					std::cout << "merge" << std::endl;
+					std::cout << "merge 2" << std::endl;
 					std::cout << socket.remote_endpoint().address();
 					socket.write_some(boost::asio::buffer(std::to_string(i)), error);
 					socket.read_some(boost::asio::buffer(buf), error);
@@ -61,7 +63,7 @@ int main(int argc, char * argv[])
 				//system("cls");
 
 
-			}
+			
 			ioService.run();
 		}
 

@@ -1,5 +1,5 @@
 #include "snakeServer.h"
-#include "main.h"
+
 #include <iostream>
 #include "boost\array.hpp"
 #include "serialization.h"
@@ -11,11 +11,15 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 		buf.resize(1024);
 		boost::asio::ip::tcp::socket tempSocket(acceptor.get_io_service());
 		acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {
+			boost::property_tree::ptree tempData;
 			int gameNumber = -1;
 			std::cout << ec.message() << std::endl;
 			if (!ec) {
 				if (playersList.size() == 0) {
 					playersList.push_back(socket.remote_endpoint().address().to_string());
+					auto newGameServer = std::make_unique<GameServer>(tempData);
+					dataListofGames.push_back(tempData);
+					gameNumber = 0;
 				}
 			else {
 				for (int index = 0; index < playersList.size(); index++) {
@@ -25,15 +29,29 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 				}
 				if (gameNumber == -1) {
 					playersList.push_back(socket.remote_endpoint().address().to_string());
+					auto newGameServer = std::make_unique<GameServer>(tempData);
+					dataListofGames.push_back(tempData);
+					gameNumber = playersList.size()-1;
+				}else{
+					auto newGameServer = std::make_unique<GameServer>(dataListofGames.at(gameNumber));
+					//dataListofGames.push_back(tempData);
 				}
 				std::cout << gameNumber << std::endl;
 			}
-}
-				system("cls");
+			socket.read_some(boost::asio::buffer(buf), error);
+}			std::ostringstream dataToSend;
+			//flatbuffers::FlatBufferBuilder builder;
+			
+			
+			//serialize(builder, tempData);
+			//auto getdatafrom = snakedata::Getsnakebodydata(builder.GetBufferPointer());
+			//int length = builder.GetSize();
 				//std::cout << playersList.size() << std::endl;
-				socket.read_some(boost::asio::buffer(buf), error);
+				
 				//std::string temp = data.get<std::string>("table.width");
-				socket.write_some(boost::asio::buffer("snake data"), error);
+			boost::property_tree::write_json(dataToSend, dataListofGames.at(gameNumber));
+			std::cout << dataToSend.str() << std::endl;
+				socket.write_some(boost::asio::buffer(dataToSend.str()), error);
 				std::cout << buf.data()<<std::endl;
 				//std::cout << buf.data() << std::endl;
 				socket.close();
@@ -46,7 +64,34 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 	}
 
 
+	GameServer::GameServer(boost::property_tree::ptree &data) {
+		if (data.empty()) {
+			auto newTable = std::make_unique<table>(50, 50);
+			auto newFood = std::make_unique<snakeFood>();
+			newFood->randomize(50, 50);
+			auto newSnake = std::make_unique<Snake>();
+			auto newSnakeHead = std::make_unique<point>();
+			newSnakeHead->x = 0;
+			newSnakeHead->y = 0;
+			newSnake->elongate(*newSnakeHead, Direction::right);
+			newSnake->getData(data);
+			newFood->getData(data);
+			newTable->getData(data);
+			data.put("game_status", "playeng");
+			data.put("game_score", "5");
+		}
+		else {
+			auto newSnake = std::make_unique<Snake>(data);
+			auto newFood = std::make_unique<snakeFood>(data.get<int>("snakefood.x"),data.get<int>("snakefood.y"));
+			auto newTable = std::make_unique<table>(data.get<int>("table.width"), data.get<int>("table.height"));
+			newSnake->changeDirection(Direction(1));
+			newSnake->getData(data);
+			std::cout << "Snake created from ptree" << std::endl;
+		}
+		
 
+
+	}
 
 
 

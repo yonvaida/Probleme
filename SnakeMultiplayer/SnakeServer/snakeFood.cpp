@@ -5,7 +5,10 @@ snakeFood::snakeFood() {
 	foodPosition.x = rand() % 50;
 	foodPosition.y = rand() % 50;
 }
-
+snakeFood::snakeFood(int x, int y) {
+	foodPosition.x = x;
+	foodPosition.y = y;
+}
 void snakeFood::getData(boost::property_tree::ptree &data) {
 	data.put("snakefood.x", foodPosition.x);
 	data.put("snakefood.y", foodPosition.y);

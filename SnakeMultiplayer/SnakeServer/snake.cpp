@@ -5,7 +5,16 @@
 
 Snake::Snake() {
 };
-
+Snake::Snake(boost::property_tree::ptree &data) {
+	int snakeLength = data.get<int>("snakebody.length");
+	point snakeFragment;
+	for (int i = 0; i < snakeLength; i++) {
+		snakeFragment.x = data.get<int>("snakebody.point" + std::to_string(i) + ".x");
+		snakeFragment.y = data.get<int>("snakebody.point" + std::to_string(i) + ".y");
+		snakebody.push_back(snakeFragment);
+		snakeBodyMoves.push_back(Direction(data.get<int>("snakebody.point" + std::to_string(i) + ".move")));
+	}
+}
 void Snake::move() {
 	if (nextHeadPosition().x == food.x && nextHeadPosition().y==food.y) {
 		elongate(food, snakeBodyMoves.back());
@@ -95,6 +104,7 @@ void Snake::getData(boost::property_tree::ptree &data) {
 	for (int i = 0; i < snakebody.size(); i++) {
 		data.put("snakebody.point"+ std::to_string(i)+".x", snakebody[i].x);
 		data.put("snakebody.point" + std::to_string(i) + ".y", snakebody[i].y);
+		data.put("snakebody.point" + std::to_string(i) + ".move", (int)snakeBodyMoves[i]);
 		data.put("snakebody.length", snakebody.size());
 	}
 }
