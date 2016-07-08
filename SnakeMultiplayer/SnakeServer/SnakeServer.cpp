@@ -1,5 +1,4 @@
 #include "snakeServer.h"
-
 #include <iostream>
 #include "boost\array.hpp"
 #include "serialization.h"
@@ -8,6 +7,7 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 		TCPserver::connectionAccept();
 	};
 	void TCPserver::connectionAccept() {
+		flatbuffers::FlatBufferBuilder builder;
 		buf.resize(1024);
 		boost::asio::ip::tcp::socket tempSocket(acceptor.get_io_service());
 		acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {
@@ -40,18 +40,17 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 			}
 			socket.read_some(boost::asio::buffer(buf), error);
 }			std::ostringstream dataToSend;
-			//flatbuffers::FlatBufferBuilder builder;
 			
-			
-			//serialize(builder, tempData);
+			//std::string temp = data.get<std::string>("table.width");
+			boost::property_tree::write_json(dataToSend, dataListofGames.at(gameNumber));
+			std::cout << dataToSend.str() << std::endl;
+			//	serialize(builder, dataListofGames.at(gameNumber));
 			//auto getdatafrom = snakedata::Getsnakebodydata(builder.GetBufferPointer());
 			//int length = builder.GetSize();
 				//std::cout << playersList.size() << std::endl;
 				
-				//std::string temp = data.get<std::string>("table.width");
-			boost::property_tree::write_json(dataToSend, dataListofGames.at(gameNumber));
-			std::cout << dataToSend.str() << std::endl;
-				socket.write_some(boost::asio::buffer(dataToSend.str()), error);
+			
+				boost::asio::write(socket,boost::asio::buffer(dataToSend.str()), error);
 				std::cout << buf.data()<<std::endl;
 				//std::cout << buf.data() << std::endl;
 				socket.close();

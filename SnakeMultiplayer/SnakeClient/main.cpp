@@ -10,67 +10,78 @@
 #include <boost\property_tree\json_parser.hpp>
 #include <boost\array.hpp>
 #include <stdlib.h>
-//#include <QLabel>
-//#include <QPicture>
-//#include <QPainter>
-//#include <qapplication.h>
-//#include <QtNetwork\qtcpsocket.h>
-//#include "QtCore\qobject.h"
+#include <QLabel>
+#include <QPicture>
+#include <QPainter>
+#include <qapplication.h>
+#include <QtNetwork\qtcpsocket.h>
+#include "QtCore\qobject.h"
 #include <qtimer.h>
 #include <memory>
-//#include <qdebug.h>
-//#include "snakeclient.h"
-//#include "qabstracteventdispatcher.h"
-//#include <QTcpSocket>
-//#include "snakeclientGUI.h"
+#include <qdebug.h>
+#include "snakeclient.h"
+#include "qabstracteventdispatcher.h"
+#include <QTcpSocket>
+#include "snakeclientGUI.h"
 #include "deserialization.h"
 #include <exception>
 
 int main(int argc, char * argv[])
 {
+	QApplication a(argc, argv);
+	std::unique_ptr<label> l(new label);
+	std::unique_ptr<QPixmap> pixmap(new QPixmap(500, 500));
+	std::unique_ptr<QPainter> painter(new QPainter(pixmap.get()));
+	std::unique_ptr<QTimer> timer(new QTimer());
+	std::string initialConnection = "true";
+	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
+
 		try {
-			
+
 
 			std::vector<char> buf;
 			buf.resize(3000);
 			std::string connectionStatus = "initial";
 			boost::asio::io_service ioService;
 			int i = 0;
-			boost::asio::ip::tcp::resolver::query query("10.60.17.19", "32560");
+			boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
 			boost::system::error_code error;
 			boost::asio::ip::tcp::resolver resolver(ioService);
 			boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
-			
-				boost::asio::ip::tcp::socket socket(ioService);
-				socket.connect(*iterator, error);
-				std::cout << error.message() << std::endl;
+			boost::asio::ip::tcp::socket socket(ioService);
+			socket.connect(*iterator, error);
+			std::cout << error.message() << std::endl;
+			if (!error) {
+				system("cls");
+				std::cout << "merge 2" << std::endl;
+				std::cout << socket.remote_endpoint().address();
+				socket.write_some(boost::asio::buffer(std::to_string(i)), error);
+				socket.read_some(boost::asio::buffer(buf), error);
+				i++;
+				std::cout << i << std::endl;
 				if (!error) {
-					system("cls");
-					std::cout << "merge 2" << std::endl;
-					std::cout << socket.remote_endpoint().address();
-					socket.write_some(boost::asio::buffer(std::to_string(i)), error);
-					socket.read_some(boost::asio::buffer(buf), error);
-					i++;
-					std::cout << i << std::endl;
-					if (!error) {
-						socket.close();
-					}
-					std::cout << buf.data() << std::endl;
-					std::cout << error.message() << std::endl;
+					socket.close();
 				}
+				std::cout << buf.data() << std::endl;
+				std::cout << error.message() << std::endl;
+			}
 
 
-				//system("cls");
+			//system("cls");
 
 
-			
+
 			ioService.run();
 		}
 
 		catch (int e) {
 			std::cout << e << std::endl;
 		}
-
+	});
+	timer->start(1000);
+	l->setGeometry(300, 300, 50 * 11, 50 * 10);
+	l->show();
+	return a.exec();
 
 
 
