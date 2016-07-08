@@ -12,11 +12,13 @@ public:
 	TCPserver(boost::asio::io_service &ioService);
 	void connectionAccept();
 	void setData(boost::property_tree::ptree &getdata);
+	void removePlayerfromList(std::string player);
+	void find(std::string player);
 private:
 	boost::system::error_code error;
 	boost::asio::ip::tcp::socket socket;
 	boost::asio::ip::tcp::endpoint endPoint;
-	boost::property_tree::ptree data;
+	std::vector<boost::property_tree::ptree> dataListofGames;
 	std::vector<char> buf;
 	boost::asio::ip::tcp::acceptor acceptor;
 	std::vector<std::string> playersList;
@@ -29,6 +31,6 @@ public:
 
 class GameServer {
 public:
-	GameServer();
+	GameServer(boost::property_tree::ptree &data);
 	void joinGame();
 };

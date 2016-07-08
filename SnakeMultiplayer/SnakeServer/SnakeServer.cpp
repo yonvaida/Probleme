@@ -7,53 +7,42 @@
 TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 32560)), socket(ioService) {
 		TCPserver::connectionAccept();
 	};
-
 	void TCPserver::connectionAccept() {
 		buf.resize(1024);
 		boost::asio::ip::tcp::socket tempSocket(acceptor.get_io_service());
 		acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {
+			int gameNumber = -1;
 			std::cout << ec.message() << std::endl;
 			if (!ec) {
-				bool newPlayer = true;
 				if (playersList.size() == 0) {
 					playersList.push_back(socket.remote_endpoint().address().to_string());
-					
 				}
-				else {
-					std::vector<std::string>::iterator it;
-					for (it = playersList.begin(); it != playersList.end(); it++) {
-						if (*it == socket.remote_endpoint().address().to_string()) {
-							std::cout << "Player was connected before" << std::endl;
-							newPlayer = false;
-						}
+			else {
+				for (int index = 0; index < playersList.size(); index++) {
+					if (playersList.at(index) == socket.remote_endpoint().address().to_string()) {
+						gameNumber = index;
 					}
-					if(newPlayer==true) {
-							playersList.push_back(socket.remote_endpoint().address().to_string());
-						}
-					}
-						
 				}
-
-
-
-				
+				if (gameNumber == -1) {
+					playersList.push_back(socket.remote_endpoint().address().to_string());
+				}
+				std::cout << gameNumber << std::endl;
+			}
+}
 				system("cls");
-
-
-				std::cout << playersList.size() << std::endl;
+				//std::cout << playersList.size() << std::endl;
 				socket.read_some(boost::asio::buffer(buf), error);
-				std::string temp = data.get<std::string>("table.width");
-				socket.write_some(boost::asio::buffer(temp), error);
+				//std::string temp = data.get<std::string>("table.width");
+				socket.write_some(boost::asio::buffer("snake data"), error);
+				std::cout << buf.data()<<std::endl;
 				//std::cout << buf.data() << std::endl;
 				socket.close();
 				connectionAccept();
-			
-
 		});
 	}
 
 	void TCPserver::setData(boost::property_tree::ptree &getdata) {
-		data = getdata;
+		//data = getdata;
 	}
 
 

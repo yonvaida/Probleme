@@ -34,7 +34,7 @@ int main(int argc, char * argv[])
 			std::string connectionStatus = "initial";
 			boost::asio::io_service ioService;
 			int i = 0;
-			boost::asio::ip::tcp::resolver::query query("192.168.1.66", "32560");
+			boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
 			boost::system::error_code error;
 			boost::asio::ip::tcp::resolver resolver(ioService);
 			boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
@@ -46,9 +46,10 @@ int main(int argc, char * argv[])
 					system("cls");
 					std::cout << "merge" << std::endl;
 					std::cout << socket.remote_endpoint().address();
-					socket.write_some(boost::asio::buffer("1"), error);
+					socket.write_some(boost::asio::buffer(std::to_string(i)), error);
 					socket.read_some(boost::asio::buffer(buf), error);
 					i++;
+					std::cout << i << std::endl;
 					if (!error) {
 						socket.close();
 					}
