@@ -17,6 +17,7 @@ public:
 	void removePlayerfromList(std::string player);
 	void find(std::string player);
 private:
+	void createPlayersList();
 	boost::system::error_code error;
 	boost::asio::ip::tcp::socket socket;
 	boost::asio::ip::tcp::endpoint endPoint;
@@ -33,6 +34,6 @@ public:
 
 class GameServer {
 public:
-	GameServer(boost::property_tree::ptree &data);
+	GameServer(boost::property_tree::ptree &data,std::string direction);
 	void joinGame();
 };

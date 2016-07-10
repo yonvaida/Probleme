@@ -11,7 +11,7 @@ void convertToPtree(std::string bufferValue, std::size_t length, boost::property
 class clientNetwork {
 public:
 	clientNetwork(std::string ip, std::string port);
-	std::string read();
+	boost::property_tree::ptree read();
 	void send(std::string sentMessage);
 	boost::system::error_code error;
 private:

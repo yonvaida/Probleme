@@ -25,23 +25,23 @@ void clientNetwork::connectToServer(std::string ip,std::string port) {
 	}
 	
 }
-std::string clientNetwork::read() {
+boost::property_tree::ptree clientNetwork::read() {
 	boost::property_tree::ptree data;
 	std::vector<uint8_t> buf;
 	buf.resize(1024);
-	//if (error) {
-	//	dataSocket.close();
-	//	std::cout << "No connection from server" << std::endl;
-	//}else {
+	if (error) {
+		dataSocket.close();
+		std::cout << "No connection from server" << std::endl;
+	}else {
 		size_t length = dataSocket.read_some(boost::asio::buffer(buf), error);
 		buf.resize(static_cast<int>(length));
-		//deserialize(buf, data);
-	//}
+		deserialize(buf, data);
+	}
 		std::string temp;
 		for (int i = 0; i < buf.size(); i++) {
 			temp += buf.at(0);
 		}
-		return temp;
+		return data;
 }
 void clientNetwork::send(std::string sentMessage) {
 	if (error) {

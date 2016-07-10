@@ -1,5 +1,5 @@
 #include "deserialization.h"
-void deserialize(std::vector<unsigned char> buf, boost::property_tree::ptree &data) {
+void deserialize(std::vector<unsigned char> &buf, boost::property_tree::ptree &data) {
 
 	auto snake_data = snakedata::Getsnakebodydata(buf.data());
 	data.put("table.width", snake_data->board()->width());

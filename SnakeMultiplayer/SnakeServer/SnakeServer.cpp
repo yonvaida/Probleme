@@ -7,17 +7,21 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 		TCPserver::connectionAccept();
 	};
 	void TCPserver::connectionAccept() {
-		flatbuffers::FlatBufferBuilder builder;
-		buf.resize(1024);
+		
+		
 		boost::asio::ip::tcp::socket tempSocket(acceptor.get_io_service());
 		acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {
 			boost::property_tree::ptree tempData;
+			flatbuffers::FlatBufferBuilder builder;
 			int gameNumber = -1;
 			std::cout << ec.message() << std::endl;
 			if (!ec) {
+				buf.resize(1);
+				socket.read_some(boost::asio::buffer(buf), error);
+
 				if (playersList.size() == 0) {
 					playersList.push_back(socket.remote_endpoint().address().to_string());
-					auto newGameServer = std::make_unique<GameServer>(tempData);
+					auto newGameServer = std::make_unique<GameServer>(tempData,buf.data());
 					dataListofGames.push_back(tempData);
 					gameNumber = 0;
 				}
@@ -29,30 +33,25 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 				}
 				if (gameNumber == -1) {
 					playersList.push_back(socket.remote_endpoint().address().to_string());
-					auto newGameServer = std::make_unique<GameServer>(tempData);
+					auto newGameServer = std::make_unique<GameServer>(tempData , buf.data());
 					dataListofGames.push_back(tempData);
 					gameNumber = playersList.size()-1;
 				}else{
-					auto newGameServer = std::make_unique<GameServer>(dataListofGames.at(gameNumber));
+					auto newGameServer = std::make_unique<GameServer>(dataListofGames.at(gameNumber), buf.data());
 					//dataListofGames.push_back(tempData);
 				}
 				std::cout << gameNumber << std::endl;
 			}
-			socket.read_some(boost::asio::buffer(buf), error);
-}			std::ostringstream dataToSend;
+
 			
-			//std::string temp = data.get<std::string>("table.width");
-			boost::property_tree::write_json(dataToSend, dataListofGames.at(gameNumber));
-			std::cout << dataToSend.str() << std::endl;
-			//	serialize(builder, dataListofGames.at(gameNumber));
-			//auto getdatafrom = snakedata::Getsnakebodydata(builder.GetBufferPointer());
-			//int length = builder.GetSize();
-				//std::cout << playersList.size() << std::endl;
-				
+
+}			
+			serialize(builder, dataListofGames.at(gameNumber));
 			
-				boost::asio::write(socket,boost::asio::buffer(dataToSend.str()), error);
+			int length = builder.GetSize();
+			socket.write_some(boost::asio::buffer(builder.GetCurrentBufferPointer(),builder.GetSize()), error);
 				std::cout << buf.data()<<std::endl;
-				//std::cout << buf.data() << std::endl;
+			
 				socket.close();
 				connectionAccept();
 		});
@@ -61,9 +60,11 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 	void TCPserver::setData(boost::property_tree::ptree &getdata) {
 		//data = getdata;
 	}
+	void TCPserver::createPlayersList() {
 
+	}
 
-	GameServer::GameServer(boost::property_tree::ptree &data) {
+	GameServer::GameServer(boost::property_tree::ptree &data,std::string direction) {
 		if (data.empty()) {
 			auto newTable = std::make_unique<table>(50, 50);
 			auto newFood = std::make_unique<snakeFood>();
@@ -76,14 +77,14 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 			newSnake->getData(data);
 			newFood->getData(data);
 			newTable->getData(data);
-			data.put("game_status", "playeng");
+			data.put("game_status", "plaing");
 			data.put("game_score", "5");
 		}
 		else {
 			auto newSnake = std::make_unique<Snake>(data);
 			auto newFood = std::make_unique<snakeFood>(data.get<int>("snakefood.x"),data.get<int>("snakefood.y"));
 			auto newTable = std::make_unique<table>(data.get<int>("table.width"), data.get<int>("table.height"));
-			newSnake->changeDirection(Direction(1));
+			newSnake->changeDirection(Direction(std::stoi(direction)));
 			newSnake->getData(data);
 			std::cout << "Snake created from ptree" << std::endl;
 		}
