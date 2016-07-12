@@ -14,13 +14,16 @@
 #include "table.h"
 #include "main.h"
 #include "snakeServer.h"
+#include "tcpServer.h"
+
 
 int main(int argc, char *argv[])
 {
 	int result = Catch::Session().run(argc, argv);
 		try {
+			snakeServer snakeGamesServer;
 			boost::asio::io_service ioService;
-			TCPserver snakeServer(ioService);
+			TCPserver TCPsnakeServer(ioService, snakeGamesServer);
 			ioService.run();
 		}
 		catch (std::exception& e) {

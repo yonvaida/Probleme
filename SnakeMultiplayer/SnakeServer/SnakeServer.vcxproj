@@ -153,9 +153,11 @@
     <ClInclude Include="serialization.h" />
     <ClInclude Include="snake.h" />
     <ClInclude Include="snakeFood.h" />
+    <ClInclude Include="snakeGame.h" />
     <ClInclude Include="snakeServer.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="tcpServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="serialization.cpp" />
@@ -164,10 +166,12 @@
     <ClCompile Include="snake.test.cpp" />
     <ClCompile Include="snakeFood.cpp" />
     <ClCompile Include="snakeFood.test.cpp" />
+    <ClCompile Include="snakeGame.cpp" />
     <ClCompile Include="SnakeServer.cpp" />
     <ClCompile Include="snakeServer.test.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="table.test.cpp" />
+    <ClCompile Include="tcpServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

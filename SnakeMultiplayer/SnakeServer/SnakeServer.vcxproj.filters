@@ -42,6 +42,12 @@
     <ClInclude Include="serialization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tcpServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="snakeGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SnakeServer.cpp">
@@ -75,6 +81,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="snakeServer.test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tcpServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="snakeGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
