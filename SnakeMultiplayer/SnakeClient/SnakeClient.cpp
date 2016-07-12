@@ -15,13 +15,13 @@ void clientNetwork::connectToServer(std::string ip,std::string port) {
 	boost::asio::ip::tcp::resolver::iterator endpoint;
 	boost::asio::ip::tcp::resolver::iterator end;
 	boost::asio::ip::tcp::resolver::query query(ip,port);
-	endpoint = resolver.resolve(query,error);
-	if (endpoint != end) {
+	endpoint = resolver.resolve(query);
+	if (!error) {
 		boost::asio::connect(dataSocket, endpoint);
     	}
 	else {
 		dataSocket.close();
-		std::cout << "no connection bbb" << std::endl;
+		std::cout << "no connection" << std::endl;
 	}
 	
 }

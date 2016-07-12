@@ -77,11 +77,7 @@ bool Snake::findFood(point foodPoint) {
 	}
 }
 
-bool Snake::onTable(table board) {
-	boost::property_tree::ptree data;
-	board.getData(data);
-	auto width = data.get<int>("table.width");
-	auto height = data.get<int>("table.height");
+bool Snake::onTable(int width,int height) {
 	return (snakebody.back().x<0 || snakebody.back().y<0 || snakebody.back().x>width-1 || snakebody.back().y>height-1) ? false : true;
 } 
 
@@ -95,7 +91,6 @@ bool Snake::collision() {
 	for (int i = 0; i < snakebody.size() - 1; i++) {
 		if (temppoint.x == snakebody.at(i).x && temppoint.y == snakebody.at(i).y) return true;
 	}
-	//std::vector<point>::iterator collisionResult = std::find_if(snakebody.begin(), snakebody.end() - 2, [&](point compare) {return ((compare.x == temppoint.x) && (compare.y == temppoint.y)); });
 	return false;	
 }
 

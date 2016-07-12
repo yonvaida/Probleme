@@ -13,6 +13,9 @@ void label::keyPressEvent(QKeyEvent * event) {
 	if (event->key() == Qt::Key_Right) {
 		direction = Direction::right;
 	}
+	if (event->key() == Qt::Key_Insert) {
+		direction == Direction::newGame;
+	}
 }
 char moveSnake(Direction direction) {
 	//direction is converted in it's index as string to be sent
@@ -25,6 +28,8 @@ char moveSnake(Direction direction) {
 		return '2';
 	case Direction::down:
 		return '3';
+	case Direction::newGame:
+		return 'n';
 	default:
 		return '4';
 	}

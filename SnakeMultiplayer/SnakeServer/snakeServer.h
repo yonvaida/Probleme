@@ -25,15 +25,13 @@ private:
 	std::vector<char> buf;
 	boost::asio::ip::tcp::acceptor acceptor;
 	std::vector<std::string> playersList;
+	int getGameNumber;
 };
 
-class snakeClient {
-public:
-	snakeClient(boost::asio::ip::tcp::socket clientSocket);
-};
 
-class GameServer {
+
+class snakeGame {
 public:
-	GameServer(boost::property_tree::ptree &data,std::string direction);
-	void joinGame();
+	snakeGame(boost::property_tree::ptree &data,std::string direction);
+	void makeSnakeMove();
 };
