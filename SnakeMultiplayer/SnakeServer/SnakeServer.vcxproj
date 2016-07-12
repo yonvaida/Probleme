@@ -99,7 +99,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer\google;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -161,9 +161,13 @@
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="snake.cpp" />
+    <ClCompile Include="snake.test.cpp" />
     <ClCompile Include="snakeFood.cpp" />
+    <ClCompile Include="snakeFood.test.cpp" />
     <ClCompile Include="SnakeServer.cpp" />
+    <ClCompile Include="snakeServer.test.cpp" />
     <ClCompile Include="table.cpp" />
+    <ClCompile Include="table.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

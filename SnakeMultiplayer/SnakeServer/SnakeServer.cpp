@@ -9,23 +9,22 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 	void TCPserver::connectionAccept() {
 		acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {	
 			flatbuffers::FlatBufferBuilder builder;
-			std::cout << ec.message() << std::endl;
 			if (!ec) {
+				int snakeMove;
 				buf.resize(1);
 				socket.read_some(boost::asio::buffer(buf), error);
-				createPlayersList();
+				snakeMove = std::stoi(buf.data());
+				createPlayersList(snakeMove);
 				serialize(builder, dataListofGames.at(getGameNumber));
 				int length = builder.GetSize();
 				socket.write_some(boost::asio::buffer(builder.GetCurrentBufferPointer(), builder.GetSize()), error);
-				std::cout << buf.data() << std::endl;
 				socket.close();
 			}			
-			
 				connectionAccept();
 		});
 	}
 
-	void TCPserver::createPlayersList() {
+	void TCPserver::createPlayersList(int snakeMove) {
 		boost::property_tree::ptree tempData;
 		int gameNumber = -1;
 			for (int index = 0; index < playersList.size(); index++) {
@@ -35,18 +34,18 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 			}
 			if (gameNumber == -1) {
 				playersList.push_back(socket.remote_endpoint().address().to_string());
-				auto newsnakeGame = std::make_unique<snakeGame>(tempData, buf.data());
+				auto newsnakeGame = std::make_unique<snakeGame>(tempData, snakeMove);
 				dataListofGames.push_back(tempData);
 				gameNumber = playersList.size() - 1;
 			}
 			else {
-				auto newsnakeGame = std::make_unique<snakeGame>(dataListofGames.at(gameNumber), buf.data());
+				auto newsnakeGame = std::make_unique<snakeGame>(dataListofGames.at(gameNumber), snakeMove);
 			}
 			getGameNumber = gameNumber;
-			std::cout << gameNumber << std::endl;
+			
 	}
 
-	snakeGame::snakeGame(boost::property_tree::ptree &data,std::string direction) {
+	snakeGame::snakeGame(boost::property_tree::ptree &data,int direction) {
 		if (data.empty()) {
 			auto newTable = std::make_unique<table>(50, 50);
 			auto newFood = std::make_unique<snakeFood>();
@@ -81,9 +80,8 @@ TCPserver::TCPserver(boost::asio::io_service &ioService) : acceptor(ioService, b
 				if (!newSnake->onTable(data.get<int>("table.width"), data.get<int>("table.height")) || newSnake->collision()) {
 					data.put("game_status", "GAME OVER");
 				}
-				newSnake->changeDirection(Direction(std::stoi(direction)));
+				newSnake->changeDirection(Direction(direction));
 				newSnake->getData(data);
-				std::cout << "Snake created from ptree" << std::endl;
 			}
 			
 		}

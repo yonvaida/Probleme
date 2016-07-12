@@ -75,10 +75,8 @@ SCENARIO("") {
 				CHECK(data.get<int>("snakebody.point2.y") == 0);
 			}
 		}		
-		
-		
 		WHEN("Snake move and intersect hi's body") {
-			snake.changeDirection(Direction::right);
+			snake.changeDirection(Direction::left);
 			THEN("Collision is true and game is over") {
 				CHECK(snake.collision() == true);
 			}
@@ -86,7 +84,7 @@ SCENARIO("") {
 		WHEN("Move snake move on table") {
 			snake.move();
 			THEN("On table function is true and snake game continue") {
-				CHECK(snake.onTable(board) == true);
+				CHECK(snake.onTable(50,50) == true);
 
 			}
 		}
@@ -96,7 +94,7 @@ SCENARIO("") {
 			snake.move();
 			snake.move();
 			THEN("On table function is false and snake game is over") {
-				CHECK(snake.onTable(board) == false);
+				CHECK(snake.onTable(2,2) == false);
 
 			}
 		}

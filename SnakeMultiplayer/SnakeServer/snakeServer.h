@@ -17,7 +17,7 @@ public:
 	void removePlayerfromList(std::string player);
 	void find(std::string player);
 private:
-	void createPlayersList();
+	void createPlayersList(int snakeMove);
 	boost::system::error_code error;
 	boost::asio::ip::tcp::socket socket;
 	boost::asio::ip::tcp::endpoint endPoint;
@@ -32,6 +32,6 @@ private:
 
 class snakeGame {
 public:
-	snakeGame(boost::property_tree::ptree &data,std::string direction);
+	snakeGame(boost::property_tree::ptree &data,int direction);
 	void makeSnakeMove();
 };

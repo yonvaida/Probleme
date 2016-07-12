@@ -1,3 +1,5 @@
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
 #include "boost\asio.hpp"
 #include <boost\property_tree\ptree.hpp>
 #include <boost\property_tree\json_parser.hpp>
@@ -13,9 +15,9 @@
 #include "main.h"
 #include "snakeServer.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-	for (;;) {
+	int result = Catch::Session().run(argc, argv);
 		try {
 			boost::asio::io_service ioService;
 			TCPserver snakeServer(ioService);
@@ -24,7 +26,7 @@ int main()
 		catch (std::exception& e) {
 			std::cout << "Exception: " << e.what() << "\n";
 		}
-	}
+	
 	return 0;
 }
 
