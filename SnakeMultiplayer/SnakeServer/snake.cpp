@@ -69,7 +69,6 @@ void Snake::changeDirection(Direction direction) {
 
 bool Snake::findFood(point foodPoint) {
 	if (snakebody.back().x == food.x && snakebody.back().y == food.y) {
-		std::cout << "snake food find" << std::endl;	
 		return true;
 	}
 	else {

@@ -23,12 +23,8 @@ int main(int argc, char *argv[])
 		try {
 			snakeServer snakeGamesServer;
 			boost::asio::io_service ioService;
-		
 				TCPserver TCPsnakeServer(ioService, snakeGamesServer);
-				ioService.run();
-				
-			
-			
+				ioService.run();	
 		}
 		catch (std::exception& e) {
 			std::cout << "Exception: " << e.what()<<"   --error" << "\n";

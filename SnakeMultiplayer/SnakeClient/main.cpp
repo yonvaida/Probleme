@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
 {
 	QApplication a(argc, argv);
 	std::unique_ptr<label> l(new label);
-	std::unique_ptr<QPixmap> pixmap(new QPixmap(500, 500));
+	std::unique_ptr<QPixmap> pixmap(new QPixmap(550, 500));
 	std::unique_ptr<QPainter> painter(new QPainter(pixmap.get()));
 	boost::property_tree::ptree data;
 	std::unique_ptr<QTimer> timer(new QTimer());
@@ -34,6 +34,7 @@ int main(int argc, char * argv[])
 			clientNetwork network("10.60.17.19", "32560");
 			std::string sentmove;
 			sentmove = moveSnake(l->direction);
+			if(l->direction==Direction::newGame)l->direction = Direction::right;
 			if (!network.error) {
 				network.send(sentmove);
 				data = network.read();
@@ -46,12 +47,12 @@ int main(int argc, char * argv[])
 				painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "GAME OVER");
 				painter->drawText(data.get<int>("table.width") * 2 + 60, data.get<int>("table.height") * 2 + 50, "SCORE:");
 				painter->drawText(data.get<int>("table.width") * 2 + 130, data.get<int>("table.height") * 2 + 100, QString::number(data.get<int>("game_score")));
+				painter->drawText(data.get<int>("table.width") * 2 , data.get<int>("table.height") * 2 + 150, "F5 - New Game");
 			}
 			else {
-				
 				painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10, Qt::gray);
 				painter->drawPixmap(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10, QPixmap("strawberry.png"));
-				painter->fillRect(data.get<int>("table.width") * 10, 0, 50, data.get<int>("table.height") * 10, Qt::darkCyan);
+				painter->fillRect(data.get<int>("table.width") * 10, 0, 50, data.get<int>("table.height") * 10, Qt::darkGray);
 				painter->drawText(data.get<int>("table.width") * 10 + 5, 10, "SCORE:");
 				painter->drawText(data.get<int>("table.width") * 10 + 20, 10 + 20, QString::number(data.get<int>("game_score")));
 

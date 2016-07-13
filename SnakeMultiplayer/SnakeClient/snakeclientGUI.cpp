@@ -13,7 +13,7 @@ void label::keyPressEvent(QKeyEvent * event) {
 	if (event->key() == Qt::Key_Right) {
 		direction = Direction::right;
 	}
-	if (event->key() == Qt::Key_Insert) {
+	if (event->key() == Qt::Key_F5) {
 		direction = Direction::newGame;
 	}
 }

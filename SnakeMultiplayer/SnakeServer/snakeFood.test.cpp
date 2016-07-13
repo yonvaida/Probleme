@@ -5,8 +5,6 @@
 
 SCENARIO("Test for snake food") {
 	GIVEN("") {
-		
-		
 		WHEN("") {
 			THEN("") {
 

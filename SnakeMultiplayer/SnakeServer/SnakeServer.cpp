@@ -8,7 +8,6 @@ void snakeServer::addNewGame(int direction,std::string ip) {
 	listOfGames.push_back(newSnakeGame);
 }
 void snakeServer::moveSnakeInGame(int direction,std::string ip) {
-	
 	gameNumber = -1;
 	for (int i = 0; i < listOfGames.size(); i++) {
 		if (listOfGames.at(i).gameID == ip) {
@@ -19,10 +18,14 @@ void snakeServer::moveSnakeInGame(int direction,std::string ip) {
 			addNewGame(direction,ip);
 		}
 		else {
-			listOfGames.at(gameNumber).makeSnakeMove(direction);
+			if (direction == 5) {
+				removeGame(ip);
+				addNewGame(1, ip);
+			}else{
+				listOfGames.at(gameNumber).makeSnakeMove(direction);
+			}
 			
 		};
-
 }
 snakeGame snakeServer::getGame(std::string ip) {
 	for (int i = 0; i < listOfGames.size(); i++) {
@@ -32,4 +35,13 @@ snakeGame snakeServer::getGame(std::string ip) {
 	}
 	return listOfGames.at(gameNumber);
 }
-
+int snakeServer::numberOfClients() {
+	return listOfGames.size();
+}
+void snakeServer::removeGame(std::string ip){
+	for (int i = 0; i < listOfGames.size(); i++) {
+		if (listOfGames.at(i).gameID == ip) {
+			listOfGames.erase(listOfGames.begin() + i);
+		};
+	}
+}
