@@ -7,10 +7,10 @@ public:
 	snakeServer();
 	void addNewGame(int direction, std::string ip);
 	void moveSnakeInGame(int direction,std::string ip);
-	snakeGame getGame();
+	snakeGame getGame(std::string ip);
 private:
 	int snakeMove;
-	std::vector<std::shared_ptr<snakeGame> > listOfGames;
+	std::vector<snakeGame> listOfGames;
 	//std::vector<int> listOfPlayers;
 	int gameNumber;
 };

@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
 	std::unique_ptr<QTimer> timer(new QTimer());
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		try {
-			clientNetwork network("127.0.0.1", "32560");
+			clientNetwork network("10.60.17.19", "32560");
 			std::string sentmove;
 			sentmove = moveSnake(l->direction);
 			if (!network.error) {

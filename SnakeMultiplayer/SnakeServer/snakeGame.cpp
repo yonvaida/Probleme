@@ -2,7 +2,6 @@
 
 snakeGame::snakeGame(int direction,std::string ip) {
 	gameID = ip;
-	
 		auto newTable = std::make_unique<table>(50, 50);
 		auto newFood = std::make_unique<snakeFood>();
 		newFood->randomize(50, 50);
