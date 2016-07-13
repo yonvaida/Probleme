@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 			ioService.run();
 		}
 		catch (std::exception& e) {
-			std::cout << "Exception: " << e.what() << "\n";
+			std::cout << "Exception: " << e.what()<<"   --error" << "\n";
 		}
 	
 	return 0;

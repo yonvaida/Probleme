@@ -8,8 +8,10 @@
 
 class snakeGame {
 public:
-	snakeGame(boost::property_tree::ptree &data, int direction);
-	void makeSnakeMove();
+	snakeGame(int direction, std::string ip);
+	void makeSnakeMove(int direction);
+	boost::property_tree::ptree getData();
+	std::string gameID;
 private:
 	boost::property_tree::ptree data;
 };
