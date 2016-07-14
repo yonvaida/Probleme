@@ -3,21 +3,17 @@
 #include <vector>
 #include <string.h>
 #include <boost\property_tree\ptree.hpp>
-#include <boost\property_tree\json_parser.hpp>
-#include <boost\array.hpp>
 #include <stdlib.h>
 #include <QLabel>
 #include <QPicture>
 #include <QPainter>
 #include <qapplication.h>
-#include <QtNetwork\qtcpsocket.h>
 #include "QtCore\qobject.h"
 #include <qtimer.h>
 #include <memory>
 #include <qdebug.h>
 #include "snakeclient.h"
 #include "qabstracteventdispatcher.h"
-#include <QTcpSocket>
 #include "snakeclientGUI.h"
 #include "deserialization.h"
 
@@ -28,6 +24,8 @@ int main(int argc, char * argv[])
 	std::unique_ptr<QPixmap> pixmap(new QPixmap(550, 500));
 	std::unique_ptr<QPainter> painter(new QPainter(pixmap.get()));
 	boost::property_tree::ptree data;
+	l->setGeometry(300, 300, 50 * 11, 50 * 10);
+
 	std::unique_ptr<QTimer> timer(new QTimer());
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		try {
@@ -50,6 +48,10 @@ int main(int argc, char * argv[])
 				painter->drawText(data.get<int>("table.width") * 2 , data.get<int>("table.height") * 2 + 150, "F5 - New Game");
 			}
 			else {
+				QFont font;
+				font.setPixelSize(10);
+				font.setBold(true);
+				painter->setFont(font);
 				painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10, Qt::gray);
 				painter->drawPixmap(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10, QPixmap("strawberry.png"));
 				painter->fillRect(data.get<int>("table.width") * 10, 0, 50, data.get<int>("table.height") * 10, Qt::darkGray);
@@ -70,8 +72,8 @@ int main(int argc, char * argv[])
 		}
 	}			);
 	timer->start(100);
-	l->setPixmap(*pixmap);
-	l->setGeometry(300, 300, 50 * 11, 50 * 10);
+	//l->setPixmap(*pixmap);
+	
 	l->show();
 	return a.exec();
 }

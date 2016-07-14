@@ -48,6 +48,9 @@
     <ClInclude Include="snakeGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="snakePlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SnakeServer.cpp">
@@ -88,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="snakeGame.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="snakePlayer.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

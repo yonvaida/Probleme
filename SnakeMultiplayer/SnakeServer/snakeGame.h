@@ -4,7 +4,7 @@
 #include "snakeFood.h"
 #include <boost\property_tree\ptree.hpp>
 #include <iostream>
-
+#include <snakePlayer.h>
 
 class snakeGame {
 public:
@@ -12,6 +12,8 @@ public:
 	void makeSnakeMove(int direction);
 	boost::property_tree::ptree getData();
 	std::string gameID;
+	void joinGame(player gamePlayer);
 private:
+	std::set<player> listOfPlayers;
 	boost::property_tree::ptree data;
 };
