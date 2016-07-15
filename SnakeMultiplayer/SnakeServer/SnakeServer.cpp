@@ -1,3 +1,4 @@
+#pragma once
 #include "snakeServer.h"
 
 snakeServer::snakeServer() {

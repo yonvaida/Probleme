@@ -4,7 +4,7 @@
 #include "snakeFood.h"
 #include <boost\property_tree\ptree.hpp>
 #include <iostream>
-#include <snakePlayer.h>
+#include "snakePlayer.h"
 
 class snakeGame {
 public:

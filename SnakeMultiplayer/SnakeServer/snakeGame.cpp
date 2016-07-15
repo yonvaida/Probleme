@@ -1,3 +1,4 @@
+#pragma once
 #include "snakeGame.h"
 
 snakeGame::snakeGame(int direction,std::string ip) {
