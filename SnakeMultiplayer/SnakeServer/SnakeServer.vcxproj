@@ -154,6 +154,7 @@
     <ClInclude Include="snake.h" />
     <ClInclude Include="snakeFood.h" />
     <ClInclude Include="snakeGame.h" />
+    <ClInclude Include="snakeGame_session.h" />
     <ClInclude Include="snakePlayer.h" />
     <ClInclude Include="snakeServer.h" />
     <ClInclude Include="table.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="snakeFood.cpp" />
     <ClCompile Include="snakeFood.test.cpp" />
     <ClCompile Include="snakeGame.cpp" />
+    <ClCompile Include="snakeGame_session.cpp" />
     <ClCompile Include="snakePlayer.cpp" />
     <ClCompile Include="SnakeServer.cpp" />
     <ClCompile Include="snakeServer.test.cpp" />

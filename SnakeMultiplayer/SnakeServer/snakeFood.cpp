@@ -1,3 +1,4 @@
+#pragma once
 #include "snakeFood.h"
 
 snakeFood::snakeFood() {

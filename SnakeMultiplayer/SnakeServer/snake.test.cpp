@@ -1,4 +1,4 @@
-
+#pragma once
 #include "snake.h"
 #include "catch.hpp"
 #include <vector>

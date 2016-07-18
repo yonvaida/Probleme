@@ -1,3 +1,4 @@
+#pragma once
 #include "catch.hpp"
 #include "snakeFood.h"
 #include <iostream>

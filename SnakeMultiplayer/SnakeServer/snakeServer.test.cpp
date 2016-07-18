@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "catch.hpp"
 #include "snakeServer.h"
 SCENARIO("Test snake server game") {
@@ -20,4 +20,4 @@ SCENARIO("Test snake server game") {
 			}
 		}
 	}
-}
+}*/

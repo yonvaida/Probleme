@@ -1,3 +1,4 @@
+#pragma once
 #include "table.h"
 table::table() {
 	width = 100;

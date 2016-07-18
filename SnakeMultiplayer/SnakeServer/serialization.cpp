@@ -1,3 +1,4 @@
+#pragma once
 #include "serialization.h"
 void serialize(flatbuffers::FlatBufferBuilder &builder, boost::property_tree::ptree data) {
 

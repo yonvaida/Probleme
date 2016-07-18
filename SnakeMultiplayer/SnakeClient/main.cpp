@@ -34,10 +34,10 @@ int main(int argc, char * argv[])
 			std::string sentmove;
 			sentmove = moveSnake(l->direction);
 			if(l->direction==Direction::newGame)l->direction = Direction::right;
-			if (!network.error) {
-				network.send(sentmove);
-				data = network.read();
-			}
+			network.send(sentmove);
+			data = network.read();
+			std::cout << data.get<int>("snakebody.point0.x") << std::endl;
+			
 			if (data.get<std::string>("game_status") == "GAME OVER") {
 				QFont font;
 				font.setPixelSize(50);
@@ -72,7 +72,7 @@ int main(int argc, char * argv[])
 			l->setPixmap(*pixmap);
 		}
 	}			);
-	timer->start(100);
+	timer->start(1);
 	//l->setPixmap(*pixmap);
 	
 	l->show();
