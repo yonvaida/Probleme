@@ -10,7 +10,6 @@ class snakeGame {
 public:
 	void joinGame(std::shared_ptr<snakePlayer> player);
 	void leaveGame(std::shared_ptr<snakePlayer> player);
-	
 	int getNumberofPlayers();
 private:
 	std::set<std::shared_ptr<snakePlayer>> playersList;
