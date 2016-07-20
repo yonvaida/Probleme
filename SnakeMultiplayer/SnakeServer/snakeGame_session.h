@@ -12,7 +12,7 @@ public:
 	void readSnakeMove();
 	void movesnake(int direction);
 private:
-	boost::asio::ip::tcp::socket socket;
+	boost::asio::ip::tcp::socket snakeSocket;
 	snakeGame &game;
 	std::vector<char>buf;
 };

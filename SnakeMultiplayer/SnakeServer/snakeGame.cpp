@@ -8,9 +8,5 @@ void snakeGame::leaveGame(std::shared_ptr<snakePlayer> player) {
 	playersList.erase(player);
 }
 int snakeGame::getNumberofPlayers() {
-	int i=0;
-	for (auto players : playersList) {
-		i++;
-	}
-	return i;
+	return playersList.size();
 }

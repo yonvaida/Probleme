@@ -77,20 +77,34 @@ int draw(int argc, char * argv[]) {
 }
 void networkConection() {
 	std::string lastmove;
-	clientNetwork network("10.60.17.19", "32560");
-	//mutex.lock();
-	//if (move != "") lastmove = move;
-	//mutex.unlock();
-	//if (!network.error) {
-		
-	network.send("231");
-	//	mutex.lock();
-		//data = network.read();
-	//	mutex.unlock();
-	//}
-	//std::cout << data.get<int>("table.width") << std::endl;
-	boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
-	//networkConection();
+	boost::asio::io_service ioService;
+	boost::asio::ip::tcp::socket datasocket(ioService);
+	boost::asio::ip::tcp::resolver resolver(ioService);
+	boost::asio::ip::tcp::resolver::iterator endpoint;
+	boost::asio::ip::tcp::resolver::iterator end;
+	boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
+	endpoint = resolver.resolve(query);
+	
+		boost::asio::async_connect(datasocket, endpoint, [&](const boost::system::error_code &ec, boost::asio::ip::tcp::resolver::iterator iterator) {
+			if (!ec) {
+				std::cout << "Connect succes" << std::endl;
+				
+					boost::asio::async_write(datasocket, boost::asio::buffer("dddd"), [&](const boost::system::error_code &ec, size_t length) {
+						std::cout << ec.message() << std::endl;
+					});
+				
+			}
+
+		});
+	
+
+
+	ioService.run();
+
+
+
+	//boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
+
 }
 int main(int argc, char * argv[])
 {
