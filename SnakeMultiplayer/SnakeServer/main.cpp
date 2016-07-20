@@ -20,12 +20,14 @@
 
 int main(int argc, char *argv[])
 {
-	int result = Catch::Session().run(argc, argv);
+	//int result = Catch::Session().run(argc, argv);
 		try {
-			snakeServer snakeGamesServer;
-			boost::asio::io_service ioService;
-				TCPserver TCPsnakeServer(ioService, snakeGamesServer);
-				ioService.run();	
+			//snakeServer snakeGamesServer;
+		boost::asio::io_service ioService;
+		boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), 32560);
+		snakeServer gameServer(ioService,endpoint );
+			//	TCPserver TCPsnakeServer(ioService, snakeGamesServer);
+		ioService.run();	
 		}
 		catch (std::exception& e) {
 			std::cout << "Exception: " << e.what()<<"   --error" << "\n";

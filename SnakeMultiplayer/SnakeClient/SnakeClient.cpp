@@ -43,12 +43,20 @@ boost::property_tree::ptree clientNetwork::read() {
 }
 
 void clientNetwork::send(std::string sentMessage) {
-	if (error) {
-		dataSocket.close();
-		std::cout << "No connection from server" << std::endl;
-	}
-	else {
-		dataSocket.write_some(boost::asio::buffer(sentMessage), error);
-	}
+	std::cout << "writing" << std::endl;
+	std::cout<<dataSocket.is_open()<<std::endl;
+		boost::asio::async_write(dataSocket, boost::asio::buffer(sentMessage), [&](const boost::system::error_code &ec,size_t length) {
+			std::cout << ec.message() << std::endl;
+			if (!ec) {
+				send("123");
+				std::cout << ec.message() << std::endl;
+			}
+			else {
+				send("123");
+				std::cout << ec.message() << std::endl;
+			}
+			
+		});
+	
 	
 };

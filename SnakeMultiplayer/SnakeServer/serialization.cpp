@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "serialization.h"
 void serialize(flatbuffers::FlatBufferBuilder &builder, boost::property_tree::ptree data) {
 
@@ -14,4 +14,4 @@ void serialize(flatbuffers::FlatBufferBuilder &builder, boost::property_tree::pt
 	auto snake_data = snakedata::Createsnakebodydata(builder,snakebodypointsvector, board,snakefood,gamestatus,gamescore);
 	snakedata::FinishsnakebodydataBuffer(builder, snake_data);
 		
-}
+}*/

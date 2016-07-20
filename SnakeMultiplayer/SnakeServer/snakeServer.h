@@ -1,17 +1,16 @@
 #pragma once
+#include "boost/asio.hpp"
 #include "snakeGame.h"
+#include "snakeGame_session.h"
 #include <string>
 
 class snakeServer {
 public:
-	snakeServer();
-	void addNewGame(int direction, std::string ip);
-	void moveSnakeInGame(int direction,std::string ip);
-	snakeGame getGame(std::string ip);
-	int numberOfClients();
-	void removeGame(std::string ip);
+	snakeServer(boost::asio::io_service &ioService, boost::asio::ip::tcp::endpoint &endpoint) ;
+	void acceptConnection();
 private:
-	int snakeMove;
-	std::vector<snakeGame> listOfGames;
-	int gameNumber;
+	boost::asio::ip::tcp::acceptor acceptor;
+	boost::asio::ip::tcp::socket socket;
+	snakeGame game;
 };
+

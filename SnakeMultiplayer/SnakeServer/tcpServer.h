@@ -8,7 +8,7 @@
 #include "snakeServer.h"
 #include "snakeGame.h"
 #include <boost\date_time\posix_time\posix_time.hpp>
-
+/*
 class TCPserver {
 public:
 	TCPserver(boost::asio::io_service &ioService, snakeServer &snakeGamesServer);
@@ -17,7 +17,8 @@ private:
 	boost::system::error_code error;
 	boost::asio::ip::tcp::socket socket;
 	boost::asio::ip::tcp::acceptor acceptor;
-
+	boost::asio::deadline_timer timer;
 };
 
 
+*/

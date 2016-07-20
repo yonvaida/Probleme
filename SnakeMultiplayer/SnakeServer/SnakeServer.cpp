@@ -1,48 +1,17 @@
 #pragma once
 #include "snakeServer.h"
 
-snakeServer::snakeServer() {
-	std::cout << "Snake Server created..." << std::endl;
-}
-void snakeServer::addNewGame(int direction,std::string ip) {
-	snakeGame newSnakeGame(direction,ip);
-	listOfGames.push_back(newSnakeGame);
-}
-void snakeServer::moveSnakeInGame(int direction,std::string ip) {
-	gameNumber = -1;
-	for (int i = 0; i < listOfGames.size(); i++) {
-		if (listOfGames.at(i).gameID == ip) {
-			gameNumber = i;
-		};
-	};
-		if (gameNumber == -1) {
-			addNewGame(direction,ip);
+snakeServer::snakeServer(boost::asio::io_service &ioService, boost::asio::ip::tcp::endpoint &endpoint) :acceptor(ioService, endpoint), socket(ioService) {
+	acceptConnection();
+};
+void snakeServer::acceptConnection() {
+	acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {
+		std::cout << "connection accepted" << std::endl;
+		if (!ec) {
+			std::make_shared<snakeGame_session>(std::move(socket), game)->startSession();
 		}
-		else {
-			if (direction == 5) {
-				removeGame(ip);
-				addNewGame(1, ip);
-			}else{
-				listOfGames.at(gameNumber).makeSnakeMove(direction);
-			}
-			
-		};
-}
-snakeGame snakeServer::getGame(std::string ip) {
-	for (int i = 0; i < listOfGames.size(); i++) {
-		if (listOfGames.at(i).gameID == ip) {
-			gameNumber = i;
-		};
-	}
-	return listOfGames.at(gameNumber);
-}
-int snakeServer::numberOfClients() {
-	return listOfGames.size();
-}
-void snakeServer::removeGame(std::string ip){
-	for (int i = 0; i < listOfGames.size(); i++) {
-		if (listOfGames.at(i).gameID == ip) {
-			listOfGames.erase(listOfGames.begin() + i);
-		};
-	}
+		
+		acceptConnection();
+	});
+	
 }

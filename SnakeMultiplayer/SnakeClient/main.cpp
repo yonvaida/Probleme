@@ -17,27 +17,29 @@
 #include "qabstracteventdispatcher.h"
 #include "snakeclientGUI.h"
 #include "deserialization.h"
-
-int main(int argc, char * argv[])
-{
+#include "boost\thread.hpp"
+#include "boost\date_time\posix_time\posix_time.hpp"
+boost::mutex mutex;
+boost::property_tree::ptree data;
+std::string move;
+int draw(int argc, char * argv[]) {
+	boost::property_tree::ptree snakeData;
 	QApplication a(argc, argv);
 	std::unique_ptr<label> l(new label);
 	std::unique_ptr<QPixmap> pixmap(new QPixmap(550, 500));
 	std::unique_ptr<QPainter> painter(new QPainter(pixmap.get()));
-	boost::property_tree::ptree data;
-	l->setGeometry(300, 300, 50 * 11, 50 * 10);
-
-	std::unique_ptr<QTimer> timer(new QTimer());
+	std::unique_ptr<QTimer> timer(new QTimer);
+	move = moveSnake(l->direction);
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
-		try {
-			clientNetwork network("10.60.17.19", "32560");
-			std::string sentmove;
-			sentmove = moveSnake(l->direction);
-			if(l->direction==Direction::newGame)l->direction = Direction::right;
-			network.send(sentmove);
-			data = network.read();
-			std::cout << data.get<int>("snakebody.point0.x") << std::endl;
-			
+		
+		mutex.lock();
+		snakeData = data;
+		move = moveSnake(l->direction);
+		mutex.unlock();
+	if (data.empty()) {
+			painter->fillRect(500, 0, 50, 500, Qt::darkGray);
+		}
+		else {
 			if (data.get<std::string>("game_status") == "GAME OVER") {
 				QFont font;
 				font.setPixelSize(50);
@@ -46,9 +48,10 @@ int main(int argc, char * argv[])
 				painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "GAME OVER");
 				painter->drawText(data.get<int>("table.width") * 2 + 60, data.get<int>("table.height") * 2 + 50, "SCORE:");
 				painter->drawText(data.get<int>("table.width") * 2 + 130, data.get<int>("table.height") * 2 + 100, QString::number(data.get<int>("game_score")));
-				painter->drawText(data.get<int>("table.width") * 2 , data.get<int>("table.height") * 2 + 150, "F5 - New Game");
+				painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2 + 150, "F5 - New Game");
 			}
 			else {
+				if (l->direction == Direction::newGame)l->direction = Direction::right;
 				QFont font;
 				font.setPixelSize(10);
 				font.setBold(true);
@@ -63,18 +66,37 @@ int main(int argc, char * argv[])
 					painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
 				};
 			}
-			l->setPixmap(*pixmap);
 		}
-		catch (std::exception &ec) {
-			std::cout << ec.what() << std::endl;
-			painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10, Qt::gray);
-			painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "No Connection");
-			l->setPixmap(*pixmap);
-		}
-	}			);
-	timer->start(1);
-	//l->setPixmap(*pixmap);
-	
+	l->setPixmap(*pixmap);
+	});
+	timer->start();	
+	l->setGeometry(300, 300, 50 * 11, 50 * 10);
 	l->show();
 	return a.exec();
+	
+}
+void networkConection() {
+	std::string lastmove;
+	clientNetwork network("10.60.17.19", "32560");
+	//mutex.lock();
+	//if (move != "") lastmove = move;
+	//mutex.unlock();
+	//if (!network.error) {
+		
+	network.send("231");
+	//	mutex.lock();
+		//data = network.read();
+	//	mutex.unlock();
+	//}
+	//std::cout << data.get<int>("table.width") << std::endl;
+	boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
+	//networkConection();
+}
+int main(int argc, char * argv[])
+{
+	//boost::thread drawThread(boost::bind(draw,argc, argv));
+	//networkConection();
+	boost::thread communication(boost::bind(&networkConection));
+	communication.join();
+	//drawThread.join();
 }
