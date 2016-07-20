@@ -9,12 +9,13 @@
 
 class clientNetwork {
 public:
-	clientNetwork(std::string ip, std::string port);
-	boost::property_tree::ptree read();
-	void send(std::string sentMessage);
+	clientNetwork(boost::asio::io_service &ioService,std::string ip, std::string port);
+	void read();
+	void send();
 	boost::system::error_code error;
 private:
-	boost::asio::io_service ioService;
-	void connectToServer(std::string ip , std::string port);
+	
+	void connectToServer(boost::asio::io_service &ioService, std::string ip , std::string port);
 	boost::asio::ip::tcp::socket dataSocket;
+	std::vector<char> buf;
 };

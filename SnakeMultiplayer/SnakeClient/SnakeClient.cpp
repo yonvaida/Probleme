@@ -3,18 +3,26 @@
 
 
 
-clientNetwork::clientNetwork(std::string ip, std::string port):dataSocket(ioService) {
-	connectToServer(ip, port);
+clientNetwork::clientNetwork(boost::asio::io_service &ioService,std::string ip, std::string port):dataSocket(ioService) {
+	
+	connectToServer(ioService,ip, port);
 };
 
-void clientNetwork::connectToServer(std::string ip,std::string port) {
+void clientNetwork::connectToServer(boost::asio::io_service &ioService,std::string ip,std::string port) {
 	boost::asio::ip::tcp::resolver resolver(ioService);
 	boost::asio::ip::tcp::resolver::iterator endpoint;
 	boost::asio::ip::tcp::resolver::iterator end;
 	boost::asio::ip::tcp::resolver::query query(ip,port);
 	endpoint = resolver.resolve(query);
+	buf.resize(1024);
 	if (!error) {
-		boost::asio::connect(dataSocket, endpoint);
+		boost::asio::async_connect(dataSocket, endpoint, [&](const boost::system::error_code &ec,boost::asio::ip::tcp::resolver::iterator iterator) {
+			if (!ec) {
+				send();
+			}
+			
+		
+		});
     	}
 	else {
 		dataSocket.close();
@@ -23,40 +31,23 @@ void clientNetwork::connectToServer(std::string ip,std::string port) {
 	
 }
 
-boost::property_tree::ptree clientNetwork::read() {
-	boost::property_tree::ptree data;
-	std::vector<uint8_t> buf;
-	buf.resize(1024);
-	if (error) {
-		dataSocket.close();
-		std::cout << "No connection from server" << std::endl;
-	}else {
-		size_t length = dataSocket.read_some(boost::asio::buffer(buf), error);
-		buf.resize(static_cast<int>(length));
-		deserialize(buf, data);
+void clientNetwork::read() {
+	boost::asio::async_read(dataSocket, boost::asio::buffer(buf), [&](const boost::system::error_code ec,size_t length) {
+		std::cout << ec.message() << std::endl;
+		if (!ec) {
+			std::cout << buf.data() << std::endl;
+			send();
 	}
-		std::string temp;
-		for (int i = 0; i < buf.size(); i++) {
-			temp += buf.at(0);
-		}
-		return data;
+	});
 }
 
-void clientNetwork::send(std::string sentMessage) {
-	std::cout << "writing" << std::endl;
-	std::cout<<dataSocket.is_open()<<std::endl;
-		boost::asio::async_write(dataSocket, boost::asio::buffer(sentMessage), [&](const boost::system::error_code &ec,size_t length) {
-			std::cout << ec.message() << std::endl;
-			if (!ec) {
-				send("123");
-				std::cout << ec.message() << std::endl;
-			}
-			else {
-				send("123");
-				std::cout << ec.message() << std::endl;
-			}
-			
-		});
+void clientNetwork::send() {
+	boost::asio::async_write(dataSocket, boost::asio::buffer("2"), [&](const boost::system::error_code ec, size_t length) {
+		if (!ec) {
+			std::cout << buf.data() << std::endl;
+			read();
+		}
+	});
 	
 	
 };

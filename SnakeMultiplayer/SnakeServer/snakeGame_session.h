@@ -17,9 +17,9 @@ public:
 private:
 	boost::property_tree::ptree data;
 	boost::asio::ip::tcp::socket snakeSocket;
-	snakeGame game;
+	snakeGame &game;
 	std::vector<char>buf;
 	Snake playerSnake;
-	
+	std::string snakeposition;
 	int direction;
 };
