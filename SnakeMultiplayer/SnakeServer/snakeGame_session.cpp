@@ -40,18 +40,18 @@ void snakeGame_session::sendSnakeData() {
 }
 void snakeGame_session::startSession() {
 	game.joinGame(shared_from_this());
-	//point snakehead;
-	//snakehead.x = 0;
-	//snakehead.y = 0;
-//	playerSnake.elongate(snakehead, Direction::right);
-//	//direction = 1;
-	//playerSnake.getData(data);
+	point snakehead;
+	snakehead.x = 0;
+	snakehead.y = 0;
+	playerSnake.elongate(snakehead, Direction::right);
+	direction = 1;
+	playerSnake.getData(data);
 	readSnakeMove();
 	sendSnakeData();
 	//movesnake();
 };
 void snakeGame_session::movesnake() {
-	Sleep(500);
+	//Sleep(500);
 		playerSnake.changeDirection(Direction(direction));
 		playerSnake.getData(data);
 		std::cout << data.get<int>("snakebody.point0.x") << std::endl;

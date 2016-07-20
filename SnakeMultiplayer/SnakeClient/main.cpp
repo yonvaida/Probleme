@@ -98,15 +98,6 @@ void read_async(boost::asio::ip::tcp::socket &tempsocket) {
 
 void networkConection() {
 	
-
-
-
-	//boost::this_thread::sleep_for(boost::chrono::milliseconds(50));
-
-}
-int main(int argc, char * argv[])
-{
-
 	std::string lastmove;
 	boost::asio::io_service ioService;
 	boost::asio::ip::tcp::socket datasocket(ioService);
@@ -137,10 +128,15 @@ int main(int argc, char * argv[])
 
 	ioService.run();
 
+}
+int main(int argc, char * argv[])
+{
+
+	
 
 	//boost::thread drawThread(boost::bind(draw,argc, argv));
 	//networkConection();
-	//boost::thread communication(boost::bind(&networkConection));
-	//communication.join();
+	boost::thread communication(boost::bind(&networkConection));
+	communication.join();
 	//drawThread.join();
 }
