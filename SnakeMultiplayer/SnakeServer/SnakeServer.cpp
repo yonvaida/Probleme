@@ -1,31 +1,26 @@
 #pragma once
 #include "snakeServer.h"
 
-snakeServer::snakeServer(boost::asio::io_service &ioService, boost::asio::ip::tcp::endpoint &endpoint) :acceptor(ioService, endpoint), socket(ioService),serverTimer(ioService) {
+snakeServer::snakeServer(boost::asio::io_service &ioService, boost::asio::ip::tcp::endpoint &endpoint) :acceptor(ioService, endpoint), socket(ioService),snakeTimer(ioService) {
 	acceptConnection();
-	movePlayersSnake();
+	makemoves();
 };
 void snakeServer::acceptConnection() {
 	acceptor.async_accept(socket, [&](const boost::system::error_code &ec) {
 		
 		if (!ec) {
 			std::make_shared<snakeGame_session>(std::move(socket), game)->startSession();
-			
 		}
 		
 		acceptConnection();
 	});
-	
 }
+void snakeServer::makemoves() {
+	snakeTimer.expires_from_now(boost::posix_time::milliseconds(1000));
+	snakeTimer.async_wait([&](const boost::system::error_code ec) {
 
-void snakeServer::movePlayersSnake() {
-	std::cout << "making moves" << std::endl;
-	game.makeMove();
-	std::cout<<game.getNumberofPlayers() << std::endl;
-	serverTimer.expires_from_now(boost::posix_time::seconds(2));
-	serverTimer.async_wait([&](const boost::system::error_code ec) {
-	
-		
-		movePlayersSnake();
+		std::cout << "timer expire" << std::endl;
+		game.moveSnakes();
+		makemoves();
 	});
 }

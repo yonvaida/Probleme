@@ -76,28 +76,30 @@ int draw(int argc, char * argv[]) {
 	return a.exec();
 	
 }
-void read_async(boost::asio::ip::tcp::socket &tempsocket) {
-	boost::asio::async_read(tempsocket, boost::asio::buffer(buf), [&](const boost::system::error_code &ec, size_t length) {
-		std::cout << ec.message() << std::endl;
-		buf.resize(length);
-		if (!ec) {
-			system("cls");
-			std::cout << "Read from server: " << buf.data() << std::endl;
-			read_async(tempsocket);
-		}
-	});
-}
-
 void write_async(boost::asio::ip::tcp::socket &tempsocket) {
-	boost::asio::async_write(tempsocket, boost::asio::buffer("4"), [&](const boost::system::error_code &ec, size_t length) {
+	boost::asio::async_write(tempsocket, boost::asio::buffer("2"), [&](const boost::system::error_code &ec, size_t length) {
 		//std::cout << ec.message() << std::endl;
 		if (!ec) {
-			
 			write_async(tempsocket);
 		}
 	});
 }
 
+void read_async(boost::asio::ip::tcp::socket &tempsocket) {
+	boost::asio::async_read(tempsocket, boost::asio::buffer(buf), [&](const boost::system::error_code &ec, size_t length) {
+		std::cout << ec.message() << std::endl;
+
+		if (!ec) {
+			system("cls");
+			buf.resize(length);
+			mutex.lock();
+			//deserialize(buf,data);
+			std::cout <<"Read from server: "<<buf.data() << std::endl;
+			mutex.unlock();
+			read_async(tempsocket);
+		}
+	});
+}
 
 void networkConection() {
 	
@@ -109,38 +111,23 @@ void networkConection() {
 	boost::asio::ip::tcp::resolver::iterator end;
 	boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
 	endpoint = resolver.resolve(query);
-
-	buf.resize(10);
+	buf.resize(1);
 	boost::asio::async_connect(datasocket, endpoint, [&](const boost::system::error_code &ec, boost::asio::ip::tcp::resolver::iterator iterator) {
 		if (!ec) {
 			std::cout << "Connect succes" << std::endl;
+
 			write_async(datasocket);
 			read_async(datasocket);
-
-
 		}
-
-
-
-
-
 	});
-
-
-
 	ioService.run();
 
 }
 int main(int argc, char * argv[])
-{	
-	boost::asio::io_service ioService;
-
-	clientNetwork network( ioService,"127.0.0.1", "32560");
-	ioService.run();
-
+{
 	//boost::thread drawThread(boost::bind(draw,argc, argv));
 	//networkConection();
-	//boost::thread communication(boost::bind(&networkConection));
-	//communication.join();
+	boost::thread communication(boost::bind(&networkConection));
+	communication.join();
 	//drawThread.join();
 }

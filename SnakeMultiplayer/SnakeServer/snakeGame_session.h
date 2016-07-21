@@ -21,5 +21,6 @@ private:
 	std::vector<char>buf;
 	Snake playerSnake;
 	std::string snakeposition;
+	flatbuffers::FlatBufferBuilder builder;
 	int direction;
 };

@@ -1,4 +1,4 @@
-
+/*
 //#include "snakeWithTest\main.h"
 #include <iostream>
 #include <boost\asio.hpp>
@@ -9,13 +9,12 @@
 
 class clientNetwork {
 public:
-	clientNetwork(boost::asio::io_service &ioService,std::string ip, std::string port);
-	void read();
-	void send();
+	clientNetwork(std::string ip, std::string port);
+	boost::property_tree::ptree read();
+	void send(std::string sentMessage);
 	boost::system::error_code error;
 private:
-	
-	void connectToServer(boost::asio::io_service &ioService, std::string ip , std::string port);
+	boost::asio::io_service ioService;
+	void connectToServer(std::string ip , std::string port);
 	boost::asio::ip::tcp::socket dataSocket;
-	std::vector<char> buf;
-};
+};*/

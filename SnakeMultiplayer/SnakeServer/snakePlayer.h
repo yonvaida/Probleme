@@ -1,5 +1,5 @@
 #pragma once
 class snakePlayer {
-	public:
+public:
 	virtual void movesnake() = 0;
 };

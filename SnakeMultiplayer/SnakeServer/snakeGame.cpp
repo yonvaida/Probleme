@@ -10,12 +10,8 @@ void snakeGame::leaveGame(std::shared_ptr<snakePlayer> player) {
 int snakeGame::getNumberofPlayers() {
 	return playersList.size();
 }
-void snakeGame::makeMove() {
-	int i = 0;
-	std::cout << playersList.size() << std::endl;
+void snakeGame::moveSnakes() {
 	for (auto player : playersList) {
-		std::cout << "Game "<<i<<" making moves " << std::endl;
-		i++;
 		player->movesnake();
-	};
+	}
 }
