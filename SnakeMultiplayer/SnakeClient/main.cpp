@@ -23,6 +23,7 @@ boost::mutex mutex;
 boost::property_tree::ptree data;
 std::string move;
 std::vector<char> buf;
+std::vector<uint8_t> dataBuffer;
 int draw(int argc, char * argv[]) {
 	boost::property_tree::ptree snakeData;
 	QApplication a(argc, argv);
@@ -86,17 +87,27 @@ void write_async(boost::asio::ip::tcp::socket &tempsocket) {
 }
 
 void read_async(boost::asio::ip::tcp::socket &tempsocket) {
-	boost::asio::async_read(tempsocket, boost::asio::buffer(buf), [&](const boost::system::error_code &ec, size_t length) {
+	boost::asio::async_read(tempsocket, boost::asio::buffer(buf),  [&](const boost::system::error_code &ec, size_t length) {
 		std::cout << ec.message() << std::endl;
-
 		if (!ec) {
-			system("cls");
-			buf.resize(length);
-			mutex.lock();
-			//deserialize(buf,data);
-			std::cout <<"Read from server: "<<buf.data() << std::endl;
-			mutex.unlock();
+			std::cout <<atoi(buf.data())<< std::endl;
+			/*	std::string bufferlength;
+				std::istream(&buf) >> bufferlength;
+				dataBuffer.resize(std::stoi(bufferlength));
+				boost::asio::async_read(tempsocket, boost::asio::buffer(dataBuffer), [&](const boost::system::error_code ec, size_t length) {
+					deserialize(dataBuffer, data);
+					std::cout << data.get<int>("table.width") << std::endl;
+					read_async(tempsocket);
+				});
+		*/
+			
 			read_async(tempsocket);
+			
+			
+
+
+
+						
 		}
 	});
 }
@@ -111,7 +122,7 @@ void networkConection() {
 	boost::asio::ip::tcp::resolver::iterator end;
 	boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
 	endpoint = resolver.resolve(query);
-	buf.resize(1);
+	buf.resize(4);
 	boost::asio::async_connect(datasocket, endpoint, [&](const boost::system::error_code &ec, boost::asio::ip::tcp::resolver::iterator iterator) {
 		if (!ec) {
 			std::cout << "Connect succes" << std::endl;

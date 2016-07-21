@@ -5,6 +5,7 @@
 #include "boost\enable_shared_from_this.hpp"
 #include <conio.h>
 #include <Windows.h>
+#include <cstdlib>
 class snakeGame_session :public snakePlayer,public std::enable_shared_from_this<snakeGame_session> {
 
 public:
@@ -20,7 +21,7 @@ private:
 	snakeGame &game;
 	std::vector<char>buf;
 	Snake playerSnake;
-	std::string snakeposition;
+	std::vector<char> snakeposition;
 	flatbuffers::FlatBufferBuilder builder;
 	int direction;
 };

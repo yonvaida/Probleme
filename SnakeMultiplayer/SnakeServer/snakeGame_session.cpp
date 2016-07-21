@@ -15,10 +15,10 @@ void snakeGame_session::readSnakeMove() {
 }
 void snakeGame_session::sendSnakeData() {
 	
-	boost::asio::async_write(snakeSocket, boost::asio::buffer(snakeposition,snakeposition.length()), [&](const boost::system::error_code ec, size_t length) {
+	boost::asio::async_write(snakeSocket, boost::asio::buffer(snakeposition), [&](const boost::system::error_code ec, size_t length) {
 		if (ec) { snakeSocket.close(); };
 		if(!ec){ 		
-			
+		//	boost::asio::async_write(snakeSocket, boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()), [](const boost::system::error_code ec,size_t length) {});
 		}
 	});
 
@@ -44,9 +44,14 @@ void snakeGame_session::startSession() {
 };
 void snakeGame_session::movesnake() {
 	readSnakeMove();
-	sendSnakeData();
+	
 		playerSnake.changeDirection(Direction(direction));
 		playerSnake.getData(data);
-		snakeposition = std::to_string(data.get<int>("snakebody.point0.x"));
+		serialize(builder, data);
+		int val = 55;
+		snakeposition.resize(4);
+		std::memcpy(&snakeposition[0], &val, 4);
+		std::cout << atoi(snakeposition.data()) << std::endl;
 		
+		sendSnakeData();
 };
