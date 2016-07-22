@@ -24,4 +24,5 @@ private:
 	std::vector<char> snakeposition;
 	flatbuffers::FlatBufferBuilder builder;
 	int direction;
+	int bufferlength;
 };

@@ -21,8 +21,9 @@
 #include "boost\date_time\posix_time\posix_time.hpp"
 boost::mutex mutex;
 boost::property_tree::ptree data;
+std::string lastmove="";
 std::string move;
-std::vector<char> buf;
+int buf;
 std::vector<uint8_t> dataBuffer;
 int draw(int argc, char * argv[]) {
 	boost::property_tree::ptree snakeData;
@@ -31,12 +32,13 @@ int draw(int argc, char * argv[]) {
 	std::unique_ptr<QPixmap> pixmap(new QPixmap(550, 500));
 	std::unique_ptr<QPainter> painter(new QPainter(pixmap.get()));
 	std::unique_ptr<QTimer> timer(new QTimer);
-	move = moveSnake(l->direction);
+	move = moveSnake(l->direction);;
 	QObject::connect(timer.get(), &QTimer::timeout, [&]() {
 		
 		mutex.lock();
 		snakeData = data;
 		move = moveSnake(l->direction);
+		//std::cout << move << std::endl;
 		mutex.unlock();
 	if (data.empty()) {
 			painter->fillRect(500, 0, 50, 500, Qt::darkGray);
@@ -78,36 +80,28 @@ int draw(int argc, char * argv[]) {
 	
 }
 void write_async(boost::asio::ip::tcp::socket &tempsocket) {
-	boost::asio::async_write(tempsocket, boost::asio::buffer("2"), [&](const boost::system::error_code &ec, size_t length) {
-		//std::cout << ec.message() << std::endl;
-		if (!ec) {
-			write_async(tempsocket);
-		}
-	});
+	mutex.lock();
+	
+	
+		boost::asio::async_write(tempsocket, boost::asio::buffer(move), [&](const boost::system::error_code &ec, size_t length) {
+			if (!ec) {
+
+				write_async(tempsocket);
+			}
+		});
+		mutex.unlock();
 }
 
 void read_async(boost::asio::ip::tcp::socket &tempsocket) {
-	boost::asio::async_read(tempsocket, boost::asio::buffer(buf),  [&](const boost::system::error_code &ec, size_t length) {
-		std::cout << ec.message() << std::endl;
+	boost::asio::async_read(tempsocket, boost::asio::buffer(&buf,4),  [&](const boost::system::error_code &ec, size_t length) {
 		if (!ec) {
-			std::cout <<atoi(buf.data())<< std::endl;
-			/*	std::string bufferlength;
-				std::istream(&buf) >> bufferlength;
-				dataBuffer.resize(std::stoi(bufferlength));
-				boost::asio::async_read(tempsocket, boost::asio::buffer(dataBuffer), [&](const boost::system::error_code ec, size_t length) {
+				dataBuffer.resize(buf);
+				boost::asio::async_read(tempsocket, boost::asio::buffer(dataBuffer,buf), [&](const boost::system::error_code ec, size_t length) {
+					mutex.lock();
 					deserialize(dataBuffer, data);
-					std::cout << data.get<int>("table.width") << std::endl;
+					mutex.unlock();
 					read_async(tempsocket);
-				});
-		*/
-			
-			read_async(tempsocket);
-			
-			
-
-
-
-						
+				});				
 		}
 	});
 }
@@ -122,7 +116,7 @@ void networkConection() {
 	boost::asio::ip::tcp::resolver::iterator end;
 	boost::asio::ip::tcp::resolver::query query("127.0.0.1", "32560");
 	endpoint = resolver.resolve(query);
-	buf.resize(4);
+	//buf.resize(4);
 	boost::asio::async_connect(datasocket, endpoint, [&](const boost::system::error_code &ec, boost::asio::ip::tcp::resolver::iterator iterator) {
 		if (!ec) {
 			std::cout << "Connect succes" << std::endl;
@@ -136,9 +130,9 @@ void networkConection() {
 }
 int main(int argc, char * argv[])
 {
-	//boost::thread drawThread(boost::bind(draw,argc, argv));
+	boost::thread drawThread(boost::bind(draw,argc, argv));
 	//networkConection();
 	boost::thread communication(boost::bind(&networkConection));
 	communication.join();
-	//drawThread.join();
+	drawThread.join();
 }
