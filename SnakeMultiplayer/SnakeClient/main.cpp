@@ -40,19 +40,19 @@ int draw(int argc, char * argv[]) {
 		move = moveSnake(l->direction);
 		//std::cout << move << std::endl;
 		mutex.unlock();
-	if (data.empty()) {
+	if (snakeData.empty()) {
 			painter->fillRect(500, 0, 50, 500, Qt::darkGray);
 		}
 		else {
-			if (data.get<std::string>("game_status") == "GAME OVER") {
+			if (snakeData.get<std::string>("game_status") == "GAME OVER") {
 				QFont font;
 				font.setPixelSize(50);
 				font.setBold(true);
 				painter->setFont(font);
-				painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2, "GAME OVER");
-				painter->drawText(data.get<int>("table.width") * 2 + 60, data.get<int>("table.height") * 2 + 50, "SCORE:");
-				painter->drawText(data.get<int>("table.width") * 2 + 130, data.get<int>("table.height") * 2 + 100, QString::number(data.get<int>("game_score")));
-				painter->drawText(data.get<int>("table.width") * 2, data.get<int>("table.height") * 2 + 150, "F5 - New Game");
+				painter->drawText(snakeData.get<int>("table.width") * 2, snakeData.get<int>("table.height") * 2, "GAME OVER");
+				painter->drawText(snakeData.get<int>("table.width") * 2 + 60, snakeData.get<int>("table.height") * 2 + 50, "SCORE:");
+				painter->drawText(snakeData.get<int>("table.width") * 2 + 130, snakeData.get<int>("table.height") * 2 + 100, QString::number(snakeData.get<int>("game_score")));
+				painter->drawText(snakeData.get<int>("table.width") * 2, snakeData.get<int>("table.height") * 2 + 150, "F5 - New Game");
 			}
 			else {
 				if (l->direction == Direction::newGame)l->direction = Direction::right;
@@ -60,14 +60,13 @@ int draw(int argc, char * argv[]) {
 				font.setPixelSize(10);
 				font.setBold(true);
 				painter->setFont(font);
-				painter->fillRect(0, 0, data.get<int>("table.width") * 10, data.get<int>("table.height") * 10, Qt::gray);
-				painter->drawPixmap(data.get<int>("snakefood.x") * 10, data.get<int>("snakefood.y") * 10, 10, 10, QPixmap("strawberry.png"));
-				painter->fillRect(data.get<int>("table.width") * 10, 0, 50, data.get<int>("table.height") * 10, Qt::darkGray);
-				painter->drawText(data.get<int>("table.width") * 10 + 5, 10, "SCORE:");
-				painter->drawText(data.get<int>("table.width") * 10 + 20, 10 + 20, QString::number(data.get<int>("game_score")));
-
-				for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
-					painter->fillRect(data.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, data.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
+				painter->fillRect(0, 0, snakeData.get<int>("table.width") * 10, snakeData.get<int>("table.height") * 10, Qt::gray);
+				painter->drawPixmap(snakeData.get<int>("snakefood.x") * 10, snakeData.get<int>("snakefood.y") * 10, 10, 10, QPixmap("strawberry.png"));
+				painter->fillRect(snakeData.get<int>("table.width") * 10, 0, 50, snakeData.get<int>("table.height") * 10, Qt::darkGray);
+				painter->drawText(snakeData.get<int>("table.width") * 10 + 5, 10, "SCORE:");
+				painter->drawText(snakeData.get<int>("table.width") * 10 + 20, 10 + 20, QString::number(snakeData.get<int>("game_score")));
+				for (int i = 0; i < snakeData.get<int>("snakebody.length"); i++) {
+					painter->fillRect(snakeData.get<int>("snakebody.point" + std::to_string(i) + ".x") * 10, snakeData.get<int>("snakebody.point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
 				};
 			}
 		}
@@ -77,26 +76,26 @@ int draw(int argc, char * argv[]) {
 	l->setGeometry(300, 300, 50 * 11, 50 * 10);
 	l->show();
 	return a.exec();
-	
 }
 void write_async(boost::asio::ip::tcp::socket &tempsocket) {
 	mutex.lock();
-	
-	
-		boost::asio::async_write(tempsocket, boost::asio::buffer(move), [&](const boost::system::error_code &ec, size_t length) {
+	lastmove = move;
+		boost::asio::async_write(tempsocket, boost::asio::buffer(lastmove), [&](const boost::system::error_code &ec, size_t length) {
 			if (!ec) {
-
 				write_async(tempsocket);
 			}
 		});
-		mutex.unlock();
+	mutex.unlock();	
 }
 
 void read_async(boost::asio::ip::tcp::socket &tempsocket) {
 	boost::asio::async_read(tempsocket, boost::asio::buffer(&buf,4),  [&](const boost::system::error_code &ec, size_t length) {
 		if (!ec) {
-				dataBuffer.resize(buf);
-				boost::asio::async_read(tempsocket, boost::asio::buffer(dataBuffer,buf), [&](const boost::system::error_code ec, size_t length) {
+			mutex.lock();
+			int readbuffer = buf;
+			mutex.unlock();
+				dataBuffer.resize(readbuffer);
+				boost::asio::async_read(tempsocket, boost::asio::buffer(dataBuffer,readbuffer), [&](const boost::system::error_code ec, size_t length) {
 					mutex.lock();
 					deserialize(dataBuffer, data);
 					mutex.unlock();
@@ -105,9 +104,7 @@ void read_async(boost::asio::ip::tcp::socket &tempsocket) {
 		}
 	});
 }
-
 void networkConection() {
-	
 	std::string lastmove;
 	boost::asio::io_service ioService;
 	boost::asio::ip::tcp::socket datasocket(ioService);
@@ -126,12 +123,10 @@ void networkConection() {
 		}
 	});
 	ioService.run();
-
 }
 int main(int argc, char * argv[])
 {
 	boost::thread drawThread(boost::bind(draw,argc, argv));
-	//networkConection();
 	boost::thread communication(boost::bind(&networkConection));
 	communication.join();
 	drawThread.join();
