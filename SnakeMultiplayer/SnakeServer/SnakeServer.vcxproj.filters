@@ -54,6 +54,9 @@
     <ClInclude Include="snakeGame_session.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bufferMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SnakeServer.cpp">
@@ -96,6 +99,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="snakeGame_session.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\boost_system.error_code.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bufferMessage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

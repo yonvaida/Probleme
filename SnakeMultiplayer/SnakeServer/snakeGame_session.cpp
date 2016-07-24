@@ -25,7 +25,7 @@ void snakeGame_session::sendSnakeData() {
 			std::cout << builder.GetSize() << std::endl;
 			boost::asio::async_write(snakeSocket, boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()), [&](const boost::system::error_code ec,size_t length) {
 				if (!ec) {
-					sendSnakeData();
+					
 				}
 			});
 		}
@@ -49,6 +49,7 @@ void snakeGame_session::startSession() {
 	data.put("game_score", "1");
 	readSnakeMove();
 	playerSnake.getData(data);
+	
 	//builder.Clear();
 	serialize(builder, data);
 	bufferlength = builder.GetSize();
@@ -56,12 +57,16 @@ void snakeGame_session::startSession() {
 	
 };
 void snakeGame_session::movesnake() {
+	point foodpoint;
 		playerSnake.changeDirection(Direction(direction));
 		playerSnake.getData(data);
 		builder.Clear();
 		serialize(builder, data);
 		bufferlength = builder.GetSize();
-		std::cout << data.get<int>("snakebody.point0.x") << std::endl;
+		foodpoint.x = data.get<int>("snakefood.x");
+		foodpoint.y = data.get<int>("snakefood.y");
+		playerSnake.setFoodPoint(foodpoint);
+		//std::cout << data.get<int>("snakebody.point0.x") << std::endl;
 		
-
+		sendSnakeData();
 };

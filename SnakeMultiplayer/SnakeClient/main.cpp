@@ -78,14 +78,20 @@ int draw(int argc, char * argv[]) {
 	return a.exec();
 }
 void write_async(boost::asio::ip::tcp::socket &tempsocket) {
-	mutex.lock();
-	lastmove = move;
-		boost::asio::async_write(tempsocket, boost::asio::buffer(lastmove), [&](const boost::system::error_code &ec, size_t length) {
+	//mutex.lock();
+	//lastmove = move;
+	//if (lastmove != move) {
+	
+	std::cout << "Current move: " << move << std::endl;
+		boost::asio::async_write(tempsocket, boost::asio::buffer(move), [&](const boost::system::error_code &ec, size_t length) {
 			if (!ec) {
 				write_async(tempsocket);
+		//		lastmove = move;
 			}
 		});
-	mutex.unlock();	
+	//}
+	
+	//mutex.unlock();	
 }
 
 void read_async(boost::asio::ip::tcp::socket &tempsocket) {

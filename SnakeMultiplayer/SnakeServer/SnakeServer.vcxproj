@@ -148,6 +148,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bufferMessage.h" />
     <ClInclude Include="flatbuffer\snakedata_generated.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="serialization.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="tcpServer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bufferMessage.cpp" />
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="snake.cpp" />
