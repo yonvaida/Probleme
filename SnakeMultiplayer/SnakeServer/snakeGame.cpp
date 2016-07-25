@@ -15,3 +15,11 @@ void snakeGame::moveSnakes() {
 		player->movesnake();
 	}
 }
+void snakeGame::createSnakeBoard(boost::property_tree::ptree &data) {
+	table board(50, 50);
+	board.getData(data);
+}
+void snakeGame::createSnakeFood(boost::property_tree::ptree &data) {
+	food.randomize(50, 50);
+	food.getData(data);
+}

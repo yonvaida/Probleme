@@ -1,20 +1,19 @@
-/*
-//#include "snakeWithTest\main.h"
-#include <iostream>
-#include <boost\asio.hpp>
-#include <boost\property_tree\ptree.hpp>
-#include <string>
+#pragma once
+#include "boost\asio.hpp"
+#include "boost\property_tree\ptree.hpp"
 #include "deserialization.h"
 
 
-class clientNetwork {
+class networkConnection {
 public:
-	clientNetwork(std::string ip, std::string port);
-	boost::property_tree::ptree read();
-	void send(std::string sentMessage);
-	boost::system::error_code error;
+	networkConnection(boost::asio::io_service &ioService, std::string &snakemove);
+	void startConnection(boost::property_tree::ptree &data);
+	void sendSnakeMove();
+	void readGameData(boost::property_tree::ptree &data);
 private:
-	boost::asio::io_service ioService;
-	void connectToServer(std::string ip , std::string port);
-	boost::asio::ip::tcp::socket dataSocket;
-};*/
+	boost::asio::ip::tcp::socket clientSocket;
+	boost::asio::ip::tcp::resolver resolver;
+	int buf;
+	std::vector<uint8_t> dataBuffer;
+	std::string &move;
+};

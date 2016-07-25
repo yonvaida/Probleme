@@ -18,7 +18,6 @@ void snakeServer::acceptConnection() {
 void snakeServer::makemoves() {
 	snakeTimer.expires_from_now(boost::posix_time::milliseconds(100));
 	snakeTimer.async_wait([&](const boost::system::error_code ec) {
-
 		std::cout << "timer expire" << std::endl;
 		game.moveSnakes();
 		makemoves();
