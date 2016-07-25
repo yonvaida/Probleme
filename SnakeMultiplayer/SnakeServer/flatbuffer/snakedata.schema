@@ -5,6 +5,7 @@ table snakebodydata{
 	snakefood:snakefooddata;
 	gamestatus:string;
 	gamescore:int;
+	
 	}
 table snakefooddata{
 	x:int;

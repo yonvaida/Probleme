@@ -3,7 +3,7 @@
 #ifndef FLATBUFFERS_GENERATED_SNAKEDATA_SNAKEDATA_H_
 #define FLATBUFFERS_GENERATED_SNAKEDATA_SNAKEDATA_H_
 
-#include "include/flatbuffers/flatbuffers.h"
+#include "flatbuffers/flatbuffers.h"
 
 namespace snakedata {
 

@@ -7,7 +7,6 @@ void snakeGame_session::readSnakeMove() {
 	boost::asio::async_read(snakeSocket, boost::asio::buffer(buf), [&](const boost::system::error_code ec,size_t length) {
 		if (!ec) {
 			direction = std::stoi(buf.data());
-			std::cout <<"read move:"<< buf.at(0) << std::endl;
 			readSnakeMove();
 		}
 	});
@@ -19,7 +18,6 @@ void snakeGame_session::sendSnakeData() {
 			std::cout << builder.GetSize() << std::endl;
 			boost::asio::async_write(snakeSocket, boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()), [&](const boost::system::error_code ec,size_t length) {
 				if (!ec) {
-					
 				}
 			});
 		}
@@ -27,6 +25,10 @@ void snakeGame_session::sendSnakeData() {
 }
 void snakeGame_session::startSession() {
 	game.joinGame(shared_from_this());
+	newGame();
+};
+void snakeGame_session::newGame() {
+	data.clear();
 	point snakehead;
 	snakehead.x = 0;
 	snakehead.y = 0;
@@ -35,13 +37,13 @@ void snakeGame_session::startSession() {
 	game.createSnakeBoard(data);
 	game.createSnakeFood(data);
 	data.put("game_status", "plaing");
-	data.put("game_score", "1");
+	data.put("game_score", "0");
 	readSnakeMove();
 	playerSnake.getData(data);
 	serialize(builder, data);
 	bufferlength = builder.GetSize();
-	sendSnakeData();	
-};
+	sendSnakeData();
+}
 void snakeGame_session::movesnake() {
 	point foodpoint;
 		playerSnake.changeDirection(Direction(direction));
@@ -49,14 +51,19 @@ void snakeGame_session::movesnake() {
 		game.food.getData(data);
 		foodpoint.x = data.get<int>("snakefood.x");
 		foodpoint.y = data.get<int>("snakefood.y");
+		playerSnake.setFoodPoint(foodpoint);
 		if (playerSnake.findFood(foodpoint)) {
 			game.food.randomize(50, 50);
 			game.food.getData(data);
+			data.put("game_score", std::to_string(data.get<int>("game_score") + 1));
 		}
-		builder.Clear();
-		serialize(builder, data);
-		bufferlength = builder.GetSize();
+		if (!playerSnake.onTable(data.get<int>("table.width"),data.get<int>("table.height")) || playerSnake.collision()) {
+			data.put("game_status", "GAME OVER");
+		}
+			builder.Clear();
+			serialize(builder, data);
+			bufferlength = builder.GetSize();
+			sendSnakeData();
+
 		
-		playerSnake.setFoodPoint(foodpoint);
-		sendSnakeData();
 };

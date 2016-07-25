@@ -160,24 +160,19 @@
     <ClInclude Include="snakeServer.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="tcpServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bufferMessage.cpp" />
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="snake.cpp" />
-    <ClCompile Include="snake.test.cpp" />
     <ClCompile Include="snakeFood.cpp" />
-    <ClCompile Include="snakeFood.test.cpp" />
     <ClCompile Include="snakeGame.cpp" />
     <ClCompile Include="snakeGame_session.cpp" />
     <ClCompile Include="snakePlayer.cpp" />
     <ClCompile Include="SnakeServer.cpp" />
     <ClCompile Include="snakeServer.test.cpp" />
     <ClCompile Include="table.cpp" />
-    <ClCompile Include="table.test.cpp" />
-    <ClCompile Include="tcpServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

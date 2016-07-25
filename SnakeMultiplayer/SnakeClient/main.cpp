@@ -4,7 +4,6 @@
 #include <vector>
 #include <string.h>
 #include <boost\property_tree\ptree.hpp>
-#include <stdlib.h>
 #include <QLabel>
 #include <QPicture>
 #include <QPainter>
@@ -12,9 +11,7 @@
 #include "QtCore\qobject.h"
 #include <qtimer.h>
 #include <memory>
-#include <qdebug.h>
 #include "snakeclient.h"
-#include "qabstracteventdispatcher.h"
 #include "snakeclientGUI.h"
 #include "deserialization.h"
 #include "boost\thread.hpp"

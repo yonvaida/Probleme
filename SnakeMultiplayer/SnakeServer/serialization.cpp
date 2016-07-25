@@ -5,6 +5,7 @@ void serialize(flatbuffers::FlatBufferBuilder &builder, boost::property_tree::pt
 	auto board = snakedata::Createboarddata(builder, data.get<int>("table.width"), data.get<int>("table.height"));
 	auto snakefood = snakedata::Createsnakefooddata(builder,data.get<int>("snakefood.x"), data.get<int>("snakefood.y"));
 	std::vector<flatbuffers::Offset<snakedata::snakebodypoint>> snakebodypoints;
+	
 	for (int i = 0; i < data.get<int>("snakebody.length"); i++) {
 		snakebodypoints.push_back(snakedata::Createsnakebodypoint(builder, data.get<int>("snakebody.point" + std::to_string(i) + ".x"), data.get<int>("snakebody.point" + std::to_string(i) + ".y")));
 	};

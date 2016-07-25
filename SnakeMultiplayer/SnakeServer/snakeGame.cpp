@@ -1,6 +1,5 @@
 #pragma once
 #include "snakeGame.h"
-
 void snakeGame::joinGame(std::shared_ptr<snakePlayer> player) {
 	playersList.insert(player);
 }

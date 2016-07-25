@@ -15,6 +15,7 @@ public:
 	void sendSnakeData();
 	void initiateSnake();
 	void movesnake();
+	void newGame();
 private:
 	boost::property_tree::ptree data;
 	boost::asio::ip::tcp::socket snakeSocket;

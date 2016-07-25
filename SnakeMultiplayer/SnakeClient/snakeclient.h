@@ -2,8 +2,6 @@
 #include "boost\asio.hpp"
 #include "boost\property_tree\ptree.hpp"
 #include "deserialization.h"
-
-
 class networkConnection {
 public:
 	networkConnection(boost::asio::io_service &ioService, std::string &snakemove);
