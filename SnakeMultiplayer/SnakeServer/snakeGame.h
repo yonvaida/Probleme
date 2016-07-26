@@ -14,9 +14,12 @@ public:
 	void createSnakeBoard(boost::property_tree::ptree &data);
 	snakeFood food;	
 	void createSnakeFood(boost::property_tree::ptree &data);
-	int getNumberofPlayers();
+	void getAllSnakes(boost::property_tree::ptree &allSnakes);
+	std::vector<boost::property_tree::ptree> allSnakes; 
 	void moveSnakes();
 private:
+	
 	std::set<std::shared_ptr<snakePlayer>> playersList;
+	
 };
 

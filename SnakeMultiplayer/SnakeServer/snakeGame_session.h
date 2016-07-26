@@ -12,10 +12,12 @@ public:
 	snakeGame_session(boost::asio::ip::tcp::socket newSocket, snakeGame &mainGame);
 	void startSession();
 	void readSnakeMove();
-	void sendSnakeData();
+	void sendSnakeData(std::vector<boost::property_tree::ptree> &data,int playerNumber);
 	void initiateSnake();
 	void movesnake();
 	void newGame();
+	void getsnake(boost::property_tree::ptree &data);
+
 private:
 	boost::property_tree::ptree data;
 	boost::asio::ip::tcp::socket snakeSocket;
@@ -25,4 +27,6 @@ private:
 	flatbuffers::FlatBufferBuilder builder;
 	int direction;
 	int bufferlength;
+	int score;
+	std::string gameStatus;
 };

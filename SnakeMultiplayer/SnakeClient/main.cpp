@@ -46,7 +46,6 @@ void clientCommunication() {
 	std::string lastmove;
 	boost::asio::io_service ioService;
 	std::unique_ptr<networkConnection> connection(new networkConnection(ioService,move));
-	//connection->setMove(move);
 	connection->startConnection(data);
 	ioService.run();
 }

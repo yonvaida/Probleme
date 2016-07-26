@@ -11,7 +11,10 @@ void snakeGame_session::readSnakeMove() {
 		}
 	});
 }
-void snakeGame_session::sendSnakeData() {
+void snakeGame_session::sendSnakeData(std::vector<boost::property_tree::ptree> &data,int playerNumber) {
+	builder.Clear();
+	serialize(builder, data,playerNumber);
+	bufferlength = builder.GetSize();
 	boost::asio::async_write(snakeSocket, boost::asio::buffer((const char*)&bufferlength,4), [&](const boost::system::error_code ec, size_t length) {
 		if (ec) { snakeSocket.close(); };
 		if(!ec){ 	
@@ -25,6 +28,8 @@ void snakeGame_session::sendSnakeData() {
 }
 void snakeGame_session::startSession() {
 	game.joinGame(shared_from_this());
+	score = 0;
+	gameStatus = "plaing";
 	newGame();
 };
 void snakeGame_session::newGame() {
@@ -33,37 +38,27 @@ void snakeGame_session::newGame() {
 	snakehead.x = 0;
 	snakehead.y = 0;
 	playerSnake.elongate(snakehead, Direction::right);
-	playerSnake.getData(data);
-	game.createSnakeBoard(data);
-	game.createSnakeFood(data);
-	data.put("game_status", "plaing");
-	data.put("game_score", "0");
 	readSnakeMove();
-	playerSnake.getData(data);
-	serialize(builder, data);
 	bufferlength = builder.GetSize();
-	sendSnakeData();
 }
 void snakeGame_session::movesnake() {
-	point foodpoint;
 		playerSnake.changeDirection(Direction(direction));
-		playerSnake.getData(data);
-		game.food.getData(data);
-		foodpoint.x = data.get<int>("snakefood.x");
-		foodpoint.y = data.get<int>("snakefood.y");
-		playerSnake.setFoodPoint(foodpoint);
-		if (playerSnake.findFood(foodpoint)) {
-			game.food.randomize(50, 50);
-			game.food.getData(data);
-			data.put("game_score", std::to_string(data.get<int>("game_score") + 1));
-		}
-		if (!playerSnake.onTable(data.get<int>("table.width"),data.get<int>("table.height")) || playerSnake.collision()) {
-			data.put("game_status", "GAME OVER");
-		}
-			builder.Clear();
-			serialize(builder, data);
-			bufferlength = builder.GetSize();
-			sendSnakeData();
+};
 
-		
+void snakeGame_session::getsnake(boost::property_tree::ptree &data) {
+	point foodpoint;
+	game.food.getData(data);
+	foodpoint.x = data.get<int>("snakefood.x");
+	foodpoint.y = data.get<int>("snakefood.y");
+	playerSnake.setFoodPoint(foodpoint);
+	if (playerSnake.findFood(foodpoint)) {
+		game.food.randomize(50, 50);
+		score++;
+	}
+	if (!playerSnake.onTable(data.get<int>("table.width"), data.get<int>("table.height")) || playerSnake.collision()) {
+		gameStatus = "GAME OVER";
+	};
+	data.put("game_status", gameStatus);
+	data.put("game_score",std::to_string(score));
+	playerSnake.getData(data);
 };

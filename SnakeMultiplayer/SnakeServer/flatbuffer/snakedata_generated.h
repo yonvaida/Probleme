@@ -7,6 +7,8 @@
 
 namespace snakedata {
 
+struct snakepacketdata;
+
 struct snakebodydata;
 
 struct snakefooddata;
@@ -15,24 +17,26 @@ struct boarddata;
 
 struct snakebodypoint;
 
-struct snakebodydata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct snakepacketdata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum {
-    VT_SNAKEBODY = 4,
+    VT_ALLSNAKES = 4,
     VT_BOARD = 6,
     VT_SNAKEFOOD = 8,
     VT_GAMESTATUS = 10,
-    VT_GAMESCORE = 12
+    VT_GAMESCORE = 12,
+    VT_NUMBEROFSNAKES = 14
   };
-  const flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>> *snakebody() const { return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>> *>(VT_SNAKEBODY); }
+  const flatbuffers::Vector<flatbuffers::Offset<snakebodydata>> *allsnakes() const { return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<snakebodydata>> *>(VT_ALLSNAKES); }
   const boarddata *board() const { return GetPointer<const boarddata *>(VT_BOARD); }
   const snakefooddata *snakefood() const { return GetPointer<const snakefooddata *>(VT_SNAKEFOOD); }
   const flatbuffers::String *gamestatus() const { return GetPointer<const flatbuffers::String *>(VT_GAMESTATUS); }
   int32_t gamescore() const { return GetField<int32_t>(VT_GAMESCORE, 0); }
+  int32_t numberofsnakes() const { return GetField<int32_t>(VT_NUMBEROFSNAKES, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<flatbuffers::uoffset_t>(verifier, VT_SNAKEBODY) &&
-           verifier.Verify(snakebody()) &&
-           verifier.VerifyVectorOfTables(snakebody()) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, VT_ALLSNAKES) &&
+           verifier.Verify(allsnakes()) &&
+           verifier.VerifyVectorOfTables(allsnakes()) &&
            VerifyField<flatbuffers::uoffset_t>(verifier, VT_BOARD) &&
            verifier.VerifyTable(board()) &&
            VerifyField<flatbuffers::uoffset_t>(verifier, VT_SNAKEFOOD) &&
@@ -40,6 +44,55 @@ struct snakebodydata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<flatbuffers::uoffset_t>(verifier, VT_GAMESTATUS) &&
            verifier.Verify(gamestatus()) &&
            VerifyField<int32_t>(verifier, VT_GAMESCORE) &&
+           VerifyField<int32_t>(verifier, VT_NUMBEROFSNAKES) &&
+           verifier.EndTable();
+  }
+};
+
+struct snakepacketdataBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_allsnakes(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<snakebodydata>>> allsnakes) { fbb_.AddOffset(snakepacketdata::VT_ALLSNAKES, allsnakes); }
+  void add_board(flatbuffers::Offset<boarddata> board) { fbb_.AddOffset(snakepacketdata::VT_BOARD, board); }
+  void add_snakefood(flatbuffers::Offset<snakefooddata> snakefood) { fbb_.AddOffset(snakepacketdata::VT_SNAKEFOOD, snakefood); }
+  void add_gamestatus(flatbuffers::Offset<flatbuffers::String> gamestatus) { fbb_.AddOffset(snakepacketdata::VT_GAMESTATUS, gamestatus); }
+  void add_gamescore(int32_t gamescore) { fbb_.AddElement<int32_t>(snakepacketdata::VT_GAMESCORE, gamescore, 0); }
+  void add_numberofsnakes(int32_t numberofsnakes) { fbb_.AddElement<int32_t>(snakepacketdata::VT_NUMBEROFSNAKES, numberofsnakes, 0); }
+  snakepacketdataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  snakepacketdataBuilder &operator=(const snakepacketdataBuilder &);
+  flatbuffers::Offset<snakepacketdata> Finish() {
+    auto o = flatbuffers::Offset<snakepacketdata>(fbb_.EndTable(start_, 6));
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<snakepacketdata> Createsnakepacketdata(flatbuffers::FlatBufferBuilder &_fbb,
+   flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<snakebodydata>>> allsnakes = 0,
+   flatbuffers::Offset<boarddata> board = 0,
+   flatbuffers::Offset<snakefooddata> snakefood = 0,
+   flatbuffers::Offset<flatbuffers::String> gamestatus = 0,
+   int32_t gamescore = 0,
+   int32_t numberofsnakes = 0) {
+  snakepacketdataBuilder builder_(_fbb);
+  builder_.add_numberofsnakes(numberofsnakes);
+  builder_.add_gamescore(gamescore);
+  builder_.add_gamestatus(gamestatus);
+  builder_.add_snakefood(snakefood);
+  builder_.add_board(board);
+  builder_.add_allsnakes(allsnakes);
+  return builder_.Finish();
+}
+
+struct snakebodydata FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  enum {
+    VT_SNAKEBODY = 4
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>> *snakebody() const { return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>> *>(VT_SNAKEBODY); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<flatbuffers::uoffset_t>(verifier, VT_SNAKEBODY) &&
+           verifier.Verify(snakebody()) &&
+           verifier.VerifyVectorOfTables(snakebody()) &&
            verifier.EndTable();
   }
 };
@@ -48,29 +101,17 @@ struct snakebodydataBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_snakebody(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>>> snakebody) { fbb_.AddOffset(snakebodydata::VT_SNAKEBODY, snakebody); }
-  void add_board(flatbuffers::Offset<boarddata> board) { fbb_.AddOffset(snakebodydata::VT_BOARD, board); }
-  void add_snakefood(flatbuffers::Offset<snakefooddata> snakefood) { fbb_.AddOffset(snakebodydata::VT_SNAKEFOOD, snakefood); }
-  void add_gamestatus(flatbuffers::Offset<flatbuffers::String> gamestatus) { fbb_.AddOffset(snakebodydata::VT_GAMESTATUS, gamestatus); }
-  void add_gamescore(int32_t gamescore) { fbb_.AddElement<int32_t>(snakebodydata::VT_GAMESCORE, gamescore, 0); }
   snakebodydataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   snakebodydataBuilder &operator=(const snakebodydataBuilder &);
   flatbuffers::Offset<snakebodydata> Finish() {
-    auto o = flatbuffers::Offset<snakebodydata>(fbb_.EndTable(start_, 5));
+    auto o = flatbuffers::Offset<snakebodydata>(fbb_.EndTable(start_, 1));
     return o;
   }
 };
 
 inline flatbuffers::Offset<snakebodydata> Createsnakebodydata(flatbuffers::FlatBufferBuilder &_fbb,
-   flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>>> snakebody = 0,
-   flatbuffers::Offset<boarddata> board = 0,
-   flatbuffers::Offset<snakefooddata> snakefood = 0,
-   flatbuffers::Offset<flatbuffers::String> gamestatus = 0,
-   int32_t gamescore = 0) {
+   flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<snakebodypoint>>> snakebody = 0) {
   snakebodydataBuilder builder_(_fbb);
-  builder_.add_gamescore(gamescore);
-  builder_.add_gamestatus(gamestatus);
-  builder_.add_snakefood(snakefood);
-  builder_.add_board(board);
   builder_.add_snakebody(snakebody);
   return builder_.Finish();
 }
@@ -186,11 +227,11 @@ inline flatbuffers::Offset<snakebodypoint> Createsnakebodypoint(flatbuffers::Fla
   return builder_.Finish();
 }
 
-inline const snakedata::snakebodydata *Getsnakebodydata(const void *buf) { return flatbuffers::GetRoot<snakedata::snakebodydata>(buf); }
+inline const snakedata::snakepacketdata *Getsnakepacketdata(const void *buf) { return flatbuffers::GetRoot<snakedata::snakepacketdata>(buf); }
 
-inline bool VerifysnakebodydataBuffer(flatbuffers::Verifier &verifier) { return verifier.VerifyBuffer<snakedata::snakebodydata>(); }
+inline bool VerifysnakepacketdataBuffer(flatbuffers::Verifier &verifier) { return verifier.VerifyBuffer<snakedata::snakepacketdata>(); }
 
-inline void FinishsnakebodydataBuffer(flatbuffers::FlatBufferBuilder &fbb, flatbuffers::Offset<snakedata::snakebodydata> root) { fbb.Finish(root); }
+inline void FinishsnakepacketdataBuffer(flatbuffers::FlatBufferBuilder &fbb, flatbuffers::Offset<snakedata::snakepacketdata> root) { fbb.Finish(root); }
 
 }  // namespace snakedata
 
