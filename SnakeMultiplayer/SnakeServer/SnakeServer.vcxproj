@@ -171,7 +171,6 @@
     <ClCompile Include="snakeGame_session.cpp" />
     <ClCompile Include="snakePlayer.cpp" />
     <ClCompile Include="SnakeServer.cpp" />
-    <ClCompile Include="snakeServer.test.cpp" />
     <ClCompile Include="table.cpp" />
   </ItemGroup>
   <ItemGroup>

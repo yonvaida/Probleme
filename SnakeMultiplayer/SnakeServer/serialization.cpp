@@ -15,7 +15,7 @@ void serialize(flatbuffers::FlatBufferBuilder &builder, std::vector<boost::prope
 	}
 	auto allsnakesdatavector = builder.CreateVector(allsnakesdata);
 	
-	auto gamestatus = builder.CreateString(data.at(0).get<std::string>("game_status"));
+	auto gamestatus = builder.CreateString(data.at(playerNumber).get<std::string>("game_status"));
 	auto gamescore = data.at(playerNumber).get<int>("game_score");
 	auto numberofsnakes = data.size();
 	auto snake_data = snakedata::Createsnakepacketdata(builder,allsnakesdatavector, board,snakefood,gamestatus,gamescore,numberofsnakes);

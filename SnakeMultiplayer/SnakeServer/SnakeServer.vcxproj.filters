@@ -74,9 +74,6 @@
     <ClCompile Include="serialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="snakeServer.test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="snakeGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
