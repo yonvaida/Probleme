@@ -1,5 +1,6 @@
 #pragma once
 #include "boost\asio.hpp"
+#include "boost\asio\buffer.hpp"
 #include "snakeGame.h"
 #include "snakePlayer.h"
 #include "boost\enable_shared_from_this.hpp"

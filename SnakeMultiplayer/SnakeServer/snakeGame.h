@@ -6,6 +6,7 @@
 #include <iostream>
 #include "snakePlayer.h"
 #include "serialization.h"
+#include "boost\property_tree\json_parser.hpp"
 
 class snakeGame {
 public:

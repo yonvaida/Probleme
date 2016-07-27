@@ -11,7 +11,7 @@ class Snake
 {
 public:
 	Snake();
-	Snake(boost::property_tree::ptree &data);
+	void startSnake();
 	void elongate(point elongatePoint,Direction direction);
 	void move();
 	void changeDirection(Direction direction);

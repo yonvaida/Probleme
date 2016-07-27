@@ -15,7 +15,7 @@ void snakeGame_session::readSnakeMove() {
 			
 			if (direction == 5 && gameStatus=="GAME OVER") {
 				std::cout << "New game" << std::endl;
-				game.newGame(shared_from_this());
+				//game.newGame(shared_from_this());
 				newGame();
 			}else if(direction==5 &&gameStatus=="plaing"){
 				direction = 1;
@@ -28,33 +28,24 @@ void snakeGame_session::sendSnakeData(std::vector<boost::property_tree::ptree> &
 	builder.Clear();
 	serialize(builder, data,playerNumber);
 	bufferlength = builder.GetSize();
-	boost::asio::async_write(snakeSocket, boost::asio::buffer((const char*)&bufferlength,4), [&](const boost::system::error_code ec, size_t length) {
-		
+	std::vector<boost::asio::const_buffer> bufferToSend;
+	bufferToSend.push_back(boost::asio::buffer((const char*)&bufferlength, 4));
+	bufferToSend.push_back(boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()));
+	boost::asio::async_write(snakeSocket, bufferToSend, [&](const boost::system::error_code ec, size_t length) {
 		if (ec) { snakeSocket.close();
 		game.leaveGame(shared_from_this());
 		};
-		if(!ec){ 	
-			std::cout << builder.GetSize() << std::endl;
-			boost::asio::async_write(snakeSocket, boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()), [&](const boost::system::error_code ec,size_t length) {
-				if (!ec) {
-				}
-			});
-		}
 	});
 }
 void snakeGame_session::startSession() {
 	game.joinGame(shared_from_this());
-	
 	newGame();
 };
 void snakeGame_session::newGame() {
 	score = 0;
 	gameStatus = "plaing";
 	data.clear();
-	point snakehead;
-	snakehead.x = 0;
-	snakehead.y = 0;
-	playerSnake.elongate(snakehead, Direction::right);
+	playerSnake.startSnake();
 	readSnakeMove();
 	bufferlength = builder.GetSize();
 }

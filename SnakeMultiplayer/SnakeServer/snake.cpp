@@ -6,15 +6,13 @@
 
 Snake::Snake() {
 };
-Snake::Snake(boost::property_tree::ptree &data) {
-	int snakeLength = data.get<int>("snakebody.length");
-	point snakeFragment;
-	for (int i = 0; i < snakeLength; i++) {
-		snakeFragment.x = data.get<int>("snakebody.point" + std::to_string(i) + ".x");
-		snakeFragment.y = data.get<int>("snakebody.point" + std::to_string(i) + ".y");
-		snakebody.push_back(snakeFragment);
-		snakeBodyMoves.push_back(Direction(data.get<int>("snakebody.point" + std::to_string(i) + ".move")));
-	}
+void Snake::startSnake() {
+	point snakehead;
+	snakehead.x = 0;
+	snakehead.y = 0;
+	snakebody.resize(0);
+	snakeBodyMoves.resize(0);
+	elongate(snakehead, Direction::right);
 }
 void Snake::move() {
 	if (nextHeadPosition().x == food.x && nextHeadPosition().y==food.y) {
