@@ -97,8 +97,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -150,14 +149,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\SnakeServer\main.h" />
+    <ClInclude Include="..\SnakeServer\snake.h" />
+    <ClInclude Include="..\SnakeServer\table.h" />
     <ClInclude Include="catch.hpp" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\SnakeServer\snake.cpp" />
+    <ClCompile Include="..\SnakeServer\table.cpp" />
     <ClCompile Include="snake.test.cpp" />
+    <ClCompile Include="snakeFood.test.cpp" />
     <ClCompile Include="SnakeTests.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="table.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

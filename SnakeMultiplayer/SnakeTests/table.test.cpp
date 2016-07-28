@@ -26,7 +26,7 @@ SCENARIO("Test for table class") {
 		}
 		WHEN("Create a table with specific dimensions and resize") {
 			table board(3, 3);
-			board.resizeTable(3);
+			board.resizeTable(9,9);
 			boost::property_tree::ptree data;
 			board.getData(data);
 			THEN("change table dimensions") {

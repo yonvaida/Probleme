@@ -15,7 +15,6 @@ void networkConnection::startConnection(boost::property_tree::ptree &data) {
 	});
 }
 void networkConnection::sendSnakeMove() {
-	std::cout << "Move: " << move << std::endl;
 	boost::asio::async_write(clientSocket, boost::asio::buffer(move), [&](const boost::system::error_code &ec, size_t length) {
 		if (!ec) {
 		}

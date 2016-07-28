@@ -10,17 +10,20 @@
 
 class snakeGame {
 public:
+	snakeGame();
 	void joinGame(std::shared_ptr<snakePlayer> player);
 	void leaveGame(std::shared_ptr<snakePlayer> player);
 	void newGame(std::shared_ptr<snakePlayer> player);
-	void createSnakeBoard(boost::property_tree::ptree &data);
+	void getGameBoard(boost::property_tree::ptree &data);
 	snakeFood food;	
-	void createSnakeFood(boost::property_tree::ptree &data);
+	void getGameFood(boost::property_tree::ptree &data);
 	void getAllSnakes(boost::property_tree::ptree &allSnakes);
 	std::vector<boost::property_tree::ptree> allSnakes; 
+	std::vector<point> collisionList();
 	void moveSnakes();
 private:
-	
+	table board;
+	snakeFood foodpoint;
 	std::set<std::shared_ptr<snakePlayer>> playersList;
 	
 };

@@ -5,17 +5,9 @@ snakeGame_session::snakeGame_session(boost::asio::ip::tcp::socket newSocket, sna
 void snakeGame_session::readSnakeMove() {
 	buf.resize(1);
 	boost::asio::async_read(snakeSocket, boost::asio::buffer(buf), [&](const boost::system::error_code ec,size_t length) {
-		
-		if (ec) {
-			snakeSocket.close();
-			game.leaveGame(shared_from_this());
-		};
 		if (!ec) {
 			direction = std::stoi(buf.data());
-			
 			if (direction == 5 && gameStatus=="GAME OVER") {
-				std::cout << "New game" << std::endl;
-				//game.newGame(shared_from_this());
 				newGame();
 			}else if(direction==5 &&gameStatus=="plaing"){
 				direction = 1;
@@ -50,9 +42,10 @@ void snakeGame_session::newGame() {
 	bufferlength = builder.GetSize();
 }
 void snakeGame_session::movesnake() {
+	if (gameStatus != "GAME OVER") {
 		playerSnake.changeDirection(Direction(direction));
+	}
 };
-
 void snakeGame_session::getsnake(boost::property_tree::ptree &data) {
 	point foodpoint;
 	game.food.getData(data);
@@ -63,7 +56,7 @@ void snakeGame_session::getsnake(boost::property_tree::ptree &data) {
 		game.food.randomize(50, 50);
 		score++;
 	}
-	if (!playerSnake.onTable(data.get<int>("table.width"), data.get<int>("table.height")) || playerSnake.collision()) {
+	if (!playerSnake.onTable(data.get<int>("table.width"), data.get<int>("table.height")) || playerSnake.collision(game.collisionList())) {
 		gameStatus = "GAME OVER";
 	};
 	data.put("game_status", gameStatus);

@@ -17,7 +17,7 @@ public:
 	void changeDirection(Direction direction);
 	bool findFood(point foodPoint);
 	bool onTable(int width, int height);
-	bool collision();
+	bool collision(std::vector<point> collisionList);
 	void getData(boost::property_tree::ptree &data);
 	void setFoodPoint(point foodpoint);
 private:

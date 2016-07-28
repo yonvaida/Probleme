@@ -84,10 +84,10 @@ void Snake::elongate(point elongatePoint,Direction direction) {
 	snakeBodyMoves.push_back(direction);
 }
 
-bool Snake::collision() {
+bool Snake::collision(std::vector<point> collisionList) {
 	point temppoint = snakebody.back();
-	for (int i = 0; i < snakebody.size() - 1; i++) {
-		if (temppoint.x == snakebody.at(i).x && temppoint.y == snakebody.at(i).y) return true;
+	for (int i = 0; i < collisionList.size(); i++) {
+		if (temppoint.x == collisionList.at(i).x && temppoint.y == collisionList.at(i).y) return true;
 	}
 	return false;	
 }
