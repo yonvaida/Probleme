@@ -10,13 +10,14 @@ void snakeServer::acceptConnection() {
 		
 		if (!ec) {
 			std::make_shared<snakeGame_session>(std::move(socket), game)->startSession();
+			std::cout << "Connection accepted" << std::endl;
 		}
 		
 		acceptConnection();
 	});
 }
 void snakeServer::makemoves() {
-	snakeTimer.expires_from_now(boost::posix_time::milliseconds(500));
+	snakeTimer.expires_from_now(boost::posix_time::milliseconds(100));
 	snakeTimer.async_wait([&](const boost::system::error_code ec) {
 		game.moveSnakes();
 		makemoves();

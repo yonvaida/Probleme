@@ -17,14 +17,6 @@ void snakeGame::leaveGame(std::shared_ptr<snakePlayer> player) {
 	}
 	playersList.erase(player);
 }
-void snakeGame::newGame(std::shared_ptr<snakePlayer> player) {
-	int i = 0;
-	for (auto snakeplayer : playersList) {
-		if (player == snakeplayer) {
-		}
-		else { i++; }
-	}
-}
 void snakeGame::moveSnakes() {
 	boost::property_tree::ptree data;
 	int i = 0;
@@ -52,7 +44,6 @@ void snakeGame::getGameBoard(boost::property_tree::ptree &data) {
 	board.getData(data);
 }
 void snakeGame::getGameFood(boost::property_tree::ptree &data) {
-	
 	foodpoint.getData(data);
 }
 std::vector<point> snakeGame::collisionList() {

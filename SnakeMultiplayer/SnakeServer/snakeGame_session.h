@@ -20,12 +20,11 @@ public:
 	void getsnake(boost::property_tree::ptree &data);
 
 private:
-	boost::property_tree::ptree data;
+	flatbuffers::FlatBufferBuilder builder;
 	boost::asio::ip::tcp::socket snakeSocket;
 	snakeGame &game;
 	std::vector<char>buf;
 	Snake playerSnake;
-	flatbuffers::FlatBufferBuilder builder;
 	int direction;
 	int bufferlength;
 	int score;

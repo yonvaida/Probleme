@@ -17,15 +17,15 @@ void snakeGame_session::readSnakeMove() {
 	});
 }
 void snakeGame_session::sendSnakeData(std::vector<boost::property_tree::ptree> &data,int playerNumber) {
+	std::vector<boost::asio::const_buffer> bufferToSend;
 	builder.Clear();
 	serialize(builder, data,playerNumber);
 	bufferlength = builder.GetSize();
-	std::vector<boost::asio::const_buffer> bufferToSend;
 	bufferToSend.push_back(boost::asio::buffer((const char*)&bufferlength, 4));
 	bufferToSend.push_back(boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()));
 	boost::asio::async_write(snakeSocket, bufferToSend, [&](const boost::system::error_code ec, size_t length) {
 		if (ec) { snakeSocket.close();
-		game.leaveGame(shared_from_this());
+			game.leaveGame(shared_from_this());
 		};
 	});
 }
@@ -36,29 +36,31 @@ void snakeGame_session::startSession() {
 void snakeGame_session::newGame() {
 	score = 0;
 	gameStatus = "plaing";
-	data.clear();
 	playerSnake.startSnake();
 	readSnakeMove();
-	bufferlength = builder.GetSize();
+	
 }
 void snakeGame_session::movesnake() {
+	boost::property_tree::ptree tempData;
 	if (gameStatus != "GAME OVER") {
 		playerSnake.changeDirection(Direction(direction));
+		point foodpoint;
+		game.food.getData(tempData);
+		game.getGameBoard(tempData);
+		foodpoint.x = tempData.get<int>("snakefood.x");
+		foodpoint.y = tempData.get<int>("snakefood.y");
+		playerSnake.setFoodPoint(foodpoint);
+		if (playerSnake.findFood(foodpoint)) {
+			game.food.randomize(50, 50);
+			score++;
+		}
+		if (!playerSnake.onTable(tempData.get<int>("table.width"), tempData.get<int>("table.height")) || playerSnake.collision(game.collisionList())) {
+			gameStatus = "GAME OVER";
+		};
 	}
 };
 void snakeGame_session::getsnake(boost::property_tree::ptree &data) {
-	point foodpoint;
 	game.food.getData(data);
-	foodpoint.x = data.get<int>("snakefood.x");
-	foodpoint.y = data.get<int>("snakefood.y");
-	playerSnake.setFoodPoint(foodpoint);
-	if (playerSnake.findFood(foodpoint)) {
-		game.food.randomize(50, 50);
-		score++;
-	}
-	if (!playerSnake.onTable(data.get<int>("table.width"), data.get<int>("table.height")) || playerSnake.collision(game.collisionList())) {
-		gameStatus = "GAME OVER";
-	};
 	data.put("game_status", gameStatus);
 	data.put("game_score",std::to_string(score));
 	playerSnake.getData(data);

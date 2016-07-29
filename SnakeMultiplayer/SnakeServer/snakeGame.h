@@ -13,7 +13,6 @@ public:
 	snakeGame();
 	void joinGame(std::shared_ptr<snakePlayer> player);
 	void leaveGame(std::shared_ptr<snakePlayer> player);
-	void newGame(std::shared_ptr<snakePlayer> player);
 	void getGameBoard(boost::property_tree::ptree &data);
 	snakeFood food;	
 	void getGameFood(boost::property_tree::ptree &data);
