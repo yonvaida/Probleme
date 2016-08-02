@@ -3,10 +3,12 @@
 snakeGame_session::snakeGame_session(boost::asio::ip::tcp::socket newSocket, snakeGame &mainGame):snakeSocket(std::move(newSocket)),game(mainGame) {
 }
 void snakeGame_session::readSnakeMove() {
-	buf.resize(1);
+	buf.resize(1024);
 	boost::asio::async_read(snakeSocket, boost::asio::buffer(buf), [&](const boost::system::error_code ec,size_t length) {
 		if (!ec) {
 			direction = std::stoi(buf.data());
+			//std::cout<<buf.data() << std::endl;
+			//direction = 1;
 			if (direction == 5 && gameStatus=="GAME OVER") {
 				newGame();
 			}else if(direction==5 &&gameStatus=="plaing"){
@@ -23,6 +25,7 @@ void snakeGame_session::sendSnakeData(std::vector<boost::property_tree::ptree> &
 	bufferlength = builder.GetSize();
 	bufferToSend.push_back(boost::asio::buffer((const char*)&bufferlength, 4));
 	bufferToSend.push_back(boost::asio::buffer(builder.GetBufferPointer(),builder.GetSize()));
+	std::cout << bufferlength << std::endl;
 	boost::asio::async_write(snakeSocket, bufferToSend, [&](const boost::system::error_code ec, size_t length) {
 		if (ec) { snakeSocket.close();
 			game.leaveGame(shared_from_this());

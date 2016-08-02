@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 			
 		boost::asio::io_service ioService;
 		boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), 32560);
+		//boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), 1080);
 		snakeServer gameServer(ioService,endpoint );
-			
 		ioService.run();	
 		}
 		catch (std::exception& e) {
