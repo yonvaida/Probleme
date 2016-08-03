@@ -3,12 +3,10 @@
 snakeGame_session::snakeGame_session(boost::asio::ip::tcp::socket newSocket, snakeGame &mainGame):snakeSocket(std::move(newSocket)),game(mainGame) {
 }
 void snakeGame_session::readSnakeMove() {
-	buf.resize(1024);
+	buf.resize(1);
 	boost::asio::async_read(snakeSocket, boost::asio::buffer(buf), [&](const boost::system::error_code ec,size_t length) {
 		if (!ec) {
 			direction = std::stoi(buf.data());
-			//std::cout<<buf.data() << std::endl;
-			//direction = 1;
 			if (direction == 5 && gameStatus=="GAME OVER") {
 				newGame();
 			}else if(direction==5 &&gameStatus=="plaing"){
