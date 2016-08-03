@@ -17,7 +17,7 @@ void snakeServer::acceptConnection() {
 	});
 }
 void snakeServer::makemoves() {
-	snakeTimer.expires_from_now(boost::posix_time::milliseconds(100));
+	snakeTimer.expires_from_now(boost::posix_time::milliseconds(1000));
 	snakeTimer.async_wait([&](const boost::system::error_code ec) {
 		game.moveSnakes();
 		makemoves();

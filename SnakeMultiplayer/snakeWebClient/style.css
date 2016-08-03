@@ -1,0 +1,19 @@
+#table{
+    position:fixed;
+    top:0px;
+    left:0px;
+}
+#food{
+    position:fixed;
+    background-color:red;
+    z-index:999;
+    width:10px;
+    height:10px;
+}
+#head{
+    position:fixed;
+    background-color:red;
+    z-index:999;
+    width:10px;
+    height:10px;
+}
