@@ -26,17 +26,12 @@ void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
 	serverMutex.lock();
 	boost::property_tree::write_json(tempdata, data);
 	serverMutex.unlock();
-
-
 	std::cout <<"message from client:"<< msg->get_payload() << std::endl;
-	if (data.empty()) {
-		print_server.send(hdl, "STOP", msg->get_opcode());
-		cv.notify_all();
-	}
-	else {
-		print_server.send(hdl, tempdata.str(), msg->get_opcode());
-	}
-	
+	print_server.send(hdl, tempdata.str(), msg->get_opcode());
+}
+void on_accepted(websocketpp::connection_hdl hdl) {
+	cv.notify_all();
+	std::cout << "connection accepted" << std::endl;
 }
 void serverCommunication() {
 	std::unique_lock<std::mutex> locker(serverMutex);
@@ -49,6 +44,7 @@ void serverCommunication() {
 }
 void webCommunication() {
 	print_server.set_message_handler(&on_message);
+	print_server.set_open_handler(&on_accepted);
 	print_server.init_asio();
 	print_server.listen(1080);
 	print_server.start_accept();

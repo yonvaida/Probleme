@@ -75,8 +75,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(IncludePath)</IncludePath>
-    <SourcePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(SourcePath)</SourcePath>
+    <IncludePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(IncludePath)</IncludePath>
+    <SourcePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -105,7 +105,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_SCL_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0601</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer\websocketpp;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
