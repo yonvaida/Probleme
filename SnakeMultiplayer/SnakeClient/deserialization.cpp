@@ -12,8 +12,8 @@ void deserialize(std::vector<unsigned char> &buf,boost::property_tree::ptree &da
 	for (int i = 0; i < numberofsnakes; i++) {
 	auto snakebodylength = snake_data->allsnakes()->Get(i)->snakebody()->Length();
 	for (int j = 0; j < snakebodylength; j++) {
-		data.put("snakebody." + std::to_string(i) + ".point" + std::to_string(j) + ".x", snake_data->allsnakes()->Get(i)->snakebody()->Get(j)->x());
-		data.put("snakebody." + std::to_string(i) + ".point" + std::to_string(j) + ".y", snake_data->allsnakes()->Get(i)->snakebody()->Get(j)->y());
+		data.put("snakebody." + std::to_string(i) + ".point." + std::to_string(j) + ".x", snake_data->allsnakes()->Get(i)->snakebody()->Get(j)->x());
+		data.put("snakebody." + std::to_string(i) + ".point." + std::to_string(j) + ".y", snake_data->allsnakes()->Get(i)->snakebody()->Get(j)->y());
 	}
 	data.put("snakebody." + std::to_string(i) + ".length", snake_data->allsnakes()->Get(i)->snakebody()->Length());
 	}

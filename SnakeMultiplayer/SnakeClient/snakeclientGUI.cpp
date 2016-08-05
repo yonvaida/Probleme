@@ -63,7 +63,7 @@ void drawSnake(boost::property_tree::ptree &snakeData, std::unique_ptr<QPainter>
 			painter->drawText(snakeData.get<int>("table.width") * 10 + 20, 10 + 20, QString::number(snakeData.get<int>("game_score")));
 			for (int j = 0; j < snakeData.get<int>("numberofsnakes"); j++) {
 				for (int i = 0; i < snakeData.get<int>("snakebody."+std::to_string(j)+".length"); i++) {
-					painter->fillRect(snakeData.get<int>("snakebody."+std::to_string(j)+".point" + std::to_string(i) + ".x") * 10, snakeData.get<int>("snakebody."+std::to_string(j)+".point" + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
+					painter->fillRect(snakeData.get<int>("snakebody."+std::to_string(j)+".point." + std::to_string(i) + ".x") * 10, snakeData.get<int>("snakebody."+std::to_string(j)+".point." + std::to_string(i) + ".y") * 10, 10, 10, Qt::Dense2Pattern);
 				};
 			}
 			

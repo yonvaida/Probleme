@@ -8,7 +8,7 @@ void serialize(flatbuffers::FlatBufferBuilder &builder, std::vector<boost::prope
 	for (int j = 0; j < data.size(); j++) {
 		std::vector<flatbuffers::Offset<snakedata::snakebodypoint>> snakebodypoints;
 		for (int i = 0; i < data.at(j).get<int>("snakebody.length"); i++) {
-			snakebodypoints.push_back(snakedata::Createsnakebodypoint(builder, data.at(j).get<int>("snakebody.point" + std::to_string(i) + ".x"), data.at(j).get<int>("snakebody.point" + std::to_string(i) + ".y")));
+			snakebodypoints.push_back(snakedata::Createsnakebodypoint(builder, data.at(j).get<int>("snakebody.point." + std::to_string(i) + ".x"), data.at(j).get<int>("snakebody.point." + std::to_string(i) + ".y")));
 		};
 		auto snakebodypointsvector = builder.CreateVector(snakebodypoints);
 		allsnakesdata.push_back(snakedata::Createsnakebodydata(builder,snakebodypointsvector));

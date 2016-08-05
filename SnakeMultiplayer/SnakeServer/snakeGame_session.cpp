@@ -6,6 +6,7 @@ void snakeGame_session::readSnakeMove() {
 	buf.resize(1);
 	boost::asio::async_read(snakeSocket, boost::asio::buffer(buf), [&](const boost::system::error_code ec,size_t length) {
 		if (!ec) {
+			
 			direction = std::stoi(buf.data());
 			if (direction == 5 && gameStatus=="GAME OVER") {
 				newGame();

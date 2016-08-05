@@ -51,8 +51,8 @@ std::vector<point> snakeGame::collisionList() {
 	point snakePoint;
 	for (auto playerSnake : allSnakes) {
 		for (int i = 1; i < playerSnake.get<int>("snakebody.length"); i++) {
-			snakePoint.x = playerSnake.get<int>("snakebody.point" + std::to_string(i) + ".x");
-			snakePoint.y = playerSnake.get<int>("snakebody.point" + std::to_string(i) + ".y");
+			snakePoint.x = playerSnake.get<int>("snakebody.point." + std::to_string(i) + ".x");
+			snakePoint.y = playerSnake.get<int>("snakebody.point." + std::to_string(i) + ".y");
 			list.push_back(snakePoint);
 		}
 	}

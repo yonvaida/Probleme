@@ -220,7 +220,6 @@
   <ItemGroup>
     <ClInclude Include="flatbuffer\snakedata_generated.h" />
     <ClInclude Include="deserialization.h" />
-    <ClInclude Include="snakeClient.test.h" />
     <ClInclude Include="snakeclientGUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

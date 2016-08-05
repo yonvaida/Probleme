@@ -1,23 +1,55 @@
-var snakeApp = angular.module("snakeWebClient", ['ngWebSocket']);
-snakeApp.controller("snakeWebClientController", function ($scope,$websocket) {
-    var result;
-    ws = $websocket("ws://127.0.0.1:1080");
-    ws.onOpen(function () {
-        ws.send("work ok");
-    });
-    ws.onMessage(function (evt) {
-        if (evt.data == "STOP") { }
-        else { 
-       dataJson = JSON.parse(evt.data);
-        $scope.result = dataJson.table.width;
-        angular.element(document.getElementById("Table")).css("height", dataJson.table.height * 10).css("width", dataJson.table.width * 10).css("background-color", "lightgray");
-        angular.element(document.getElementById("Food")).css("left", dataJson.snakefood.x * 10).css("top", dataJson.snakefood.y * 10);
-        angular.element(document.getElementById("Head")).css("left", dataJson.snakebody[0].point0.x * 10).css("top", dataJson.snakebody[0].point0.y * 10);
+
+
+$(document).ready(function () {
+    var move="1";
+    document.onkeydown = function () {
+        switch (event.keyCode) {
+            case 37:
+                move = "0";
+                break;
+            case 38:
+                move = "2";
+                break;
+            case 39:
+                move = "1";
+                break;
+            case 40:
+                move = "3";
+                break;
+            default:
+                move = "5";
+                break;
         }
+     }
+    var c = document.getElementById("snakeRender");
+    var canvasContext = c.getContext("2d");
+    var ws = new WebSocket("ws://127.0.0.1:1080");
+    ws.onopen=function () {
+        ws.send("1");        
+    };
+    ws.onmessage = function (evt) {
+        var data = jQuery.parseJSON(evt.data);
+        ws.send(move);
+        c.width = 500;
+        c.height = 500;
+        canvasContext.clearRect(0, 0, 500, 500);
+        canvasContext.fillStyle = "red";
+        canvasContext.fillRect(data.snakefood.x*10, data.snakefood.y*10, 10, 10);
+        canvasContext.fillStyle = "green";
+        console.log(data);
+        for (i = 0; i < data.numberofsnakes; i++) {
+            for (j = 0;j<data.snakebody[i].length;j++){
+                canvasContext.fillRect(data.snakebody[i].point[j].x * 10, data.snakebody[i].point[j].y * 10, 10, 10);
+            }
+           
 
 
-        ws.send("work ok");
-    });
+
+        }
+       
+
+    };
     
-});
+   
 
+})

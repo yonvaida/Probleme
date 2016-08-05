@@ -1,27 +1,14 @@
 <html>
 <head>
-<script src="angular.js"></script>
-    <script type="text/javascript" src="angular-websocket.js"></script>
-<script src="script.js"></script>
-    <link type="text/css" rel="stylesheet" href="style.css" />
+<script type="text/javascript" src="jquery-3.1.0.js"></script>
+<link type="text/css" rel="stylesheet" href="style.css" />
 
 </head>
-<body ng-app="snakeWebClient">
-    <div ng-controller="snakeWebClientController">
-
-        <div id="Table">
-            <div id="Food">
-
-            </div>
-            <div id="Head">
-
-            </div>
-        </div>
+<body >
+    <canvas id="snakeRender" style="width:300px;height:300px;border:1px solid black;">
 
 
-        {{result}}
-    </div>
-
+    </canvas>
 </body>
-
+<script src="script.js"></script>
 </html>

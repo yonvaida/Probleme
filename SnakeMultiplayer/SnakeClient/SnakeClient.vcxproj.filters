@@ -75,8 +75,5 @@
     <ClInclude Include="deserialization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="snakeClient.test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -96,9 +96,9 @@ bool Snake::collision(std::vector<point> collisionList) {
 void Snake::getData(boost::property_tree::ptree &data) {
 	
 	for (int i = 0; i < snakebody.size(); i++) {
-		data.put("snakebody.point"+ std::to_string(i)+".x", snakebody[i].x);
-		data.put("snakebody.point" + std::to_string(i) + ".y", snakebody[i].y);
-		data.put("snakebody.point" + std::to_string(i) + ".move", (int)snakeBodyMoves[i]);
+		data.put("snakebody.point."+ std::to_string(i)+".x", snakebody[i].x);
+		data.put("snakebody.point." + std::to_string(i) + ".y", snakebody[i].y);
+		data.put("snakebody.point." + std::to_string(i) + ".move", (int)snakeBodyMoves[i]);
 		data.put("snakebody.length", snakebody.size());
 	}
 }
