@@ -26,6 +26,7 @@ void on_accept(websocketpp::connection_hdl hdl) {
 	std::cout << "Connection accepted" << std::endl;
 	std::shared_ptr<proxyServer> proxy(new proxyServer(ioService));
 	proxy->startConnection();
+
 	serversList.push_back(std::move(proxy));
 }
 
@@ -33,6 +34,7 @@ void on_accept(websocketpp::connection_hdl hdl) {
 int main() {
 	
 	websocketpp::server<websocketpp::config::asio> webServer;
+	
 	webServer.init_asio(&ioService);
 	webServer.listen(1080);
 	webServer.set_open_handler(&on_accept);

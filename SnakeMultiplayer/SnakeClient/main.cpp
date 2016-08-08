@@ -33,10 +33,13 @@ int draw(int argc, char * argv[]) {
 		snakeData = data;
 		move = moveSnake(l->direction);
 		mutex.unlock();
-		drawSnake(snakeData, painter,l);
+		if (!snakeData.empty()) {
+			drawSnake(snakeData, painter, l);
+		}
+		
 		l->setPixmap(*pixmap);
 	});
-	timer->start(10);	
+	timer->start(50);	
 	l->setGeometry(300, 300, 50 * 11, 50 * 10);
 	l->show();
 	return a.exec();
