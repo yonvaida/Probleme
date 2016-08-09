@@ -16,8 +16,11 @@ $(document).ready(function () {
             case 40:
                 move = "3";
                 break;
-            default:
+            case 78:
                 move = "5";
+                break;
+            default:
+                move = "4";
                 break;
         }
      }
@@ -32,24 +35,23 @@ $(document).ready(function () {
         ws.send(move);
         c.width = 500;
         c.height = 500;
-        canvasContext.clearRect(0, 0, 500, 500);
-        canvasContext.fillStyle = "red";
-        canvasContext.fillRect(data.snakefood.x*10, data.snakefood.y*10, 10, 10);
-        canvasContext.fillStyle = "green";
-        console.log(data);
-        for (i = 0; i < data.numberofsnakes; i++) {
-            for (j = 0;j<data.snakebody[i].length;j++){
-                canvasContext.fillRect(data.snakebody[i].point[j].x * 10, data.snakebody[i].point[j].y * 10, 10, 10);
+        document.getElementById("game_info").innerHTML = "<p>GAME INFO</p><p> Game Status: " + data.game_status + "</p><P>Score: " + data.game_score + "</p>";
+        if (data.game_status == "GAME OVER") {
+            canvasContext.fillStyle = "yellow";
+            canvasContext.fillText("GAME OVER - Press N key for New Game", 100, 100);
+        } else {
+            canvasContext.clearRect(0, 0, 500, 500);
+            canvasContext.fillStyle = "red";
+            foodimg=document.getElementById("food");
+            canvasContext.drawImage(foodimg,data.snakefood.x * 10, data.snakefood.y * 10, 10, 10);
+            canvasContext.fillStyle = "green";
+            console.log(data);
+            for (i = 0; i < data.numberofsnakes; i++) {
+                for (j = 0; j < data.snakebody[i].length; j++) {
+                    canvasContext.fillRect(data.snakebody[i].point[j].x * 10, data.snakebody[i].point[j].y * 10, 10, 10);
+                }
             }
-           
-
-
-
         }
-       
 
     };
-    
-   
-
 })

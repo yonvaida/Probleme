@@ -16,12 +16,12 @@ std::map<websocketpp::connection_hdl,std::shared_ptr<proxyServer> , std::owner_l
 boost::property_tree::ptree data;
 void on_message(websocketpp::server<websocketpp::config::asio>* webServer,websocketpp::connection_hdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr clientMessage) {
 	tempData.str("");
-	
 	serversList[hdl]->getData(data);
 	boost::property_tree::write_json(tempData,data);
-	std::cout << clientMessage->get_payload() << std::endl;
 	serversList[hdl]->setMove(clientMessage->get_payload());
-	webServer->send(hdl,tempData.str(), clientMessage->get_opcode());
+	if (clientMessage->get_opcode()) {
+		webServer->send(hdl, tempData.str(), clientMessage->get_opcode());
+	}
 }
 
 void on_accept(websocketpp::connection_hdl hdl) {
@@ -32,23 +32,22 @@ void on_accept(websocketpp::connection_hdl hdl) {
 
 }
 void on_close(websocketpp::connection_hdl hdl) {
+	serversList[hdl]->closeConnection();
 	serversList.erase(hdl);
 };
 
 
 int main() {
-	
 	websocketpp::server<websocketpp::config::asio> webServer;
 	webServer.init_asio(&ioService);
 	webServer.listen(1080);
 	webServer.set_open_handler(&on_accept);
-	//webServer.set_close_handler(&on_close);
+	webServer.set_close_handler(&on_close);
 	webServer.set_message_handler(std::bind(&on_message,&webServer,std::placeholders::_1,std::placeholders::_2));
 	boost::system::error_code ec;	
 	webServer.start_accept();
 	std::cout << "new proxy" << std::endl;
 	ioService.run();
-
 }
 
 

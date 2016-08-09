@@ -13,6 +13,7 @@ public:
 	void send();
 	void setMove(std::string snakeMove);
 	void getData(boost::property_tree::ptree &data);
+	void closeConnection();
 private:
 	boost::asio::ip::tcp::socket socket;
 	boost::asio::ip::tcp::resolver resolver;

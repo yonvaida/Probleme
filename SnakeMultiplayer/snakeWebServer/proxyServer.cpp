@@ -33,3 +33,6 @@ void proxyServer::getData(boost::property_tree::ptree &data) {
 void proxyServer::setMove(std::string snakeMove) {
 	move = snakeMove;
 };
+void proxyServer::closeConnection() {
+	socket.close();
+};
