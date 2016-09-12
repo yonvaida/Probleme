@@ -35,5 +35,8 @@
     <ClCompile Include="avlTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="avlTree.test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
