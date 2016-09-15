@@ -47,13 +47,14 @@ avlTree::avlTree() {
 }
 void avlTree::insertNode(node &currentNode,node &parentNode){
 	if (numberofNodes == 0) {
-		rootNode = currentNode;
+		rootNode = &currentNode;
 		numberofNodes++;
 	}
 	else {
 		if (parentNode.getValue() > currentNode.getValue()) {
 			if (parentNode.leftChildNode == nullptr) {
 				parentNode.leftChildNode = &currentNode;
+				currentNode.parentNode = &parentNode;
 			}
 			else {
 				insertNode(currentNode, *parentNode.leftChildNode);
@@ -62,6 +63,7 @@ void avlTree::insertNode(node &currentNode,node &parentNode){
 		else {
 			if (parentNode.rightChildNode == nullptr) {
 				parentNode.rightChildNode = &currentNode;
+				currentNode.parentNode = &parentNode;
 			}
 			else {
 				insertNode(currentNode, *parentNode.rightChildNode);
@@ -70,8 +72,60 @@ void avlTree::insertNode(node &currentNode,node &parentNode){
 	}
 }
 
+void avlTree::balanceTree() {
+	if (!isBalanced()) {};
+}
+bool avlTree::isBalanced() {
+	int height=rootNode->getRightHeight()-rootNode->getLeftHeight();
+	return (height > -2 && height < 2) ? true : false;
+ }
+void avlTree::rotateLeft(node &currentNode) { 
+	node * tempNodeRef = currentNode.rightChildNode;
+	if (currentNode.parentNode==nullptr) {
+		rootNode = currentNode.rightChildNode;
+		currentNode.parentNode = rootNode;
+		currentNode.rightChildNode = rootNode->leftChildNode;
+		rootNode->leftChildNode = &currentNode;
+		
+		
+	}
+	else {
+		currentNode.rightChildNode->parentNode = currentNode.parentNode;
+		currentNode.parentNode->rightChildNode = currentNode.rightChildNode;
+		currentNode.parentNode = currentNode.rightChildNode;
+		currentNode.rightChildNode = currentNode.parentNode->leftChildNode;
+		currentNode.parentNode->leftChildNode = &currentNode;
+	}
+	
+	
+
+};
+
+void avlTree::rotateRight(node &currentNode) {
+	node * tempNodeRef = currentNode.rightChildNode;
+	if (currentNode.parentNode == nullptr) {
+		rootNode = currentNode.leftChildNode;
+		currentNode.parentNode = rootNode;
+		currentNode.leftChildNode = rootNode->rightChildNode;
+		rootNode->rightChildNode = &currentNode;
+
+
+	}
+	else {
+		currentNode.leftChildNode->parentNode = currentNode.parentNode;
+		currentNode.parentNode->leftChildNode = currentNode.leftChildNode;
+		currentNode.parentNode = currentNode.leftChildNode;
+		currentNode.leftChildNode = currentNode.parentNode->rightChildNode;
+		currentNode.parentNode->rightChildNode = &currentNode;
+	}
+
+
+
+};
+
+
 void avlTree::drawNode(node &currentNode) {
-	std::cout << "Current Node: " << currentNode.getValue()<<" Node adress:"<< &currentNode << " Left: " << currentNode.leftChildNode << " Right " << currentNode.rightChildNode <<" Left Height: "<<currentNode.getLeftHeight()<< std::endl;
+	std::cout << "Current Node: " << currentNode.getValue()<<" Node adress:"<< &currentNode << " Left: " << currentNode.leftChildNode << " Right " << currentNode.rightChildNode <<" Parrent node: "<<currentNode.parentNode<< std::endl;
 	if (currentNode.leftChildNode != nullptr)drawNode(*currentNode.leftChildNode);
 	if (currentNode.rightChildNode != nullptr)drawNode(*currentNode.rightChildNode);
 }
@@ -89,14 +143,12 @@ int main(int argc, char* const argv[])
 		std::cout << "New node" << std::endl;
 		std::cin >> temp;
 		newnode->setValue(temp);
-		tree->insertNode(*newnode,tree->rootNode);
-		tree->drawNode(tree->rootNode);
+		tree->insertNode(*newnode,*tree->rootNode);
+		tree->drawNode(*tree->rootNode);
 		std::cout << "Add new node (y/n)" << std::endl;
 		std::cin >> addnew;
 		addNextNode = (addnew == 'y') ? true : false;
 	}
-
-
 	return result;
 }
 

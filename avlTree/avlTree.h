@@ -3,9 +3,7 @@ class node {
 public:
 	node();
 	void setValue(int val);
-	
-	node *leftChildNode;
-	node *rightChildNode;
+	node *leftChildNode,*rightChildNode,*parentNode;
 	int getValue();
 	int getLeftHeight();
 	int getRightHeight();
@@ -25,10 +23,14 @@ public:
 	void setHeight(node &rootnode);
 	void deleteNode(node &currentNode);
 	void insertNode(node &currentNode, node &parentNode);
+	void rotateRight(node &currentNode);
+	void rotateLeft(node &currentNode);
+	void balanceTree();
 	void drawNode(node &currentNode);
-	node rootNode;
+	node  * rootNode;
+	bool isBalanced();
 private:
 	
 	int numberofNodes;
-	bool isBalanced();
+	
 };
