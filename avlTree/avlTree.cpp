@@ -1,5 +1,3 @@
-// avlTree.cpp : Defines the entry point for the console application.
-//
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 #include <iostream>
@@ -7,18 +5,99 @@
 #include <memory>
 #include <algorithm>
 
+/***************************Node Declaration*************************************************/
+
+template<typename T>
+node<T>::node() {
+	leftChildNode = nullptr;
+	rightChildNode = nullptr;
+	parentNode = nullptr;
+};
+
+template<typename T>
+void setValue(T val) {
+	value = val;
+}
+
+template<typename T>
+T node<T>::getValue() {
+	return value;
+}
+
+
+/***************************TREE declaration*************************************************/
+
+template<typename T>
+avlTree<T>::avlTree() {
+	rootNode == nullptr;
+	numberOfNodes = 0;
+};
+
+template<typename T>
+bool avlTree<T>::isEmpty() {
+	return (rootNode.get() == nullptr) ? true : false;
+}
+
+template<typename T>
+void avlTree<T>::insert(T val) {
+	numberOfNodes++;
+	std::unique_ptr<node<T>> newNode(new node<T>());
+	newNode.get()->setValue(val);
+	if (rootNode == nullptr) {
+		rootNode = std::move(newNode);
+		std::cout << "Inserted node with value: " << rootNode.get()->getValue()<<" and adress: "<<rootNode.get() << std::endl;
+	}else{
+		std::cout << "Inserted node with value: " << newNode.get()->getValue() <<" and adress: "<<newNode.get()<< std::endl;
+		
+	}
+}
+
+
+
+
+
+
+
+
+/*
+template<typename T>
+void avlTree<T>::drawTree(node<T> &currentNode) {
+		std::cout << "Node value is: " << currentNode.getValue() << " and adress is: " << std::endl;
+}
+template<typename T>
+void avlTree<T>::drawTree() {
+	std::cout << "Node value is: " << rootNode->getValue() << " and adress is: " << rootNode.get() << " Left child: " << rootNode.get()->leftChildNode << " Right child: " << rootNode.get()->rightChildNode << std::endl;
+	if (rootNode.get()->leftChildNode != nullptr) {
+		std::cout << "left node: " << rootNode.get()->leftChildNode << std::endl;
+		drawTree(*rootNode.get()->leftChildNode);
+}
+	if (rootNode.get()->rightChildNode != nullptr) {
+		drawTree(*rootNode.get()->rightChildNode);
+	}
+}
+
+
+
+
+
+
+template<typename T>
 node::node() {
 	leftChildNode = nullptr;
 	rightChildNode = nullptr;
-	heightLeft = 0;
-	heightRight = 0;
+	parentNode = nullptr;
+}
+
+node::node() {
+	
 }
 void node::setValue(int val) {
-	value = val;
+	
 }
 int node::getValue() {
-	return value;
+	
 }
+
 int node::getLeftHeight() {
 	if (leftChildNode == nullptr) {
 		return 0;
@@ -41,6 +120,10 @@ void node::setLeftHeight(int leftval) {
 void node::setRightHeight(int rightval) {
 	heightRight = rightval;
 }
+
+
+
+
 
 avlTree::avlTree() {
 	numberofNodes = 0;
@@ -129,26 +212,17 @@ void avlTree::drawNode(node &currentNode) {
 	if (currentNode.leftChildNode != nullptr)drawNode(*currentNode.leftChildNode);
 	if (currentNode.rightChildNode != nullptr)drawNode(*currentNode.rightChildNode);
 }
+*/
 
-int main(int argc, char* const argv[])
+int main(int argc, char *argv[])
 {
-	int result = Catch::Session().run(argc, argv);
-	std::unique_ptr<avlTree> tree(new avlTree);
-	bool addNextNode = true;
-	while (addNextNode)
-	{
-		char addnew='n';
-		node * newnode = new node();
-		int temp;
-		std::cout << "New node" << std::endl;
-		std::cin >> temp;
-		newnode->setValue(temp);
-		tree->insertNode(*newnode,*tree->rootNode);
-		tree->drawNode(*tree->rootNode);
-		std::cout << "Add new node (y/n)" << std::endl;
-		std::cin >> addnew;
-		addNextNode = (addnew == 'y') ? true : false;
-	}
-	return result;
-}
 
+	int result = Catch::Session().run(argc, argv);
+
+
+
+
+
+	return result;
+
+}

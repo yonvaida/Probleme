@@ -1,36 +1,27 @@
 #pragma once
+template<typename T>
 class node {
+	//using value_type=T;
 public:
 	node();
-	void setValue(int val);
-	node *leftChildNode,*rightChildNode,*parentNode;
-	int getValue();
+	std::unique_ptr<node<T>> leftChildNode, rightChildNode;
+	node<T>* parentNode;
+	void setValue(T val);
+	T getValue();
 	int getLeftHeight();
 	int getRightHeight();
-	void setLeftHeight(int leftval);
-	void setRightHeight(int rightval);
 private:
-	int heightLeft;
-	int heightRight;
-	int value;
-
+	T value;
 };
 
-
+template<typename T>
 class avlTree {
 public:
 	avlTree();
-	void setHeight(node &rootnode);
-	void deleteNode(node &currentNode);
-	void insertNode(node &currentNode, node &parentNode);
-	void rotateRight(node &currentNode);
-	void rotateLeft(node &currentNode);
-	void balanceTree();
-	void drawNode(node &currentNode);
-	node  * rootNode;
-	bool isBalanced();
+	bool isEmpty();
+	void insert(T value);
+	int numberOfNodes;
 private:
-	
-	int numberofNodes;
-	
+	void insertNode(std::unique_ptr<node<T>> &currentNode, std::unique_ptr<node<T>> & parentNode);
+	std::unique_ptr<node<int>> rootNode;	
 };
