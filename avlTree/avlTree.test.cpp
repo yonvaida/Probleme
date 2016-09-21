@@ -1,8 +1,8 @@
 #include "catch.hpp"
 #include "avlTree.h"
 SCENARIO("Tree") {
-	//avlTree<int> testTree;
-	//testTree.insert(5);
+	avlTree<int> testTree;
+	testTree.insert(5);
 	GIVEN("Create empty tree") {
 		WHEN("Insert value") {
 			THEN("Check if value exist in tree") {

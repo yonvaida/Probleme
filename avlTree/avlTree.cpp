@@ -6,12 +6,19 @@
 #include <algorithm>
 
 /***************************Node Declaration*************************************************/
-
 template<typename T>
 node<T>::node() {
 	leftChildNode = nullptr;
 	rightChildNode = nullptr;
 	parentNode = nullptr;
+	
+};
+template<typename T>
+node<T>::node(T val) {
+	leftChildNode = nullptr;
+	rightChildNode = nullptr;
+	parentNode = nullptr;
+	value = val;
 };
 
 template<typename T>
@@ -29,7 +36,7 @@ T node<T>::getValue() {
 
 template<typename T>
 avlTree<T>::avlTree() {
-	rootNode == nullptr;
+	
 	numberOfNodes = 0;
 };
 
@@ -39,25 +46,50 @@ bool avlTree<T>::isEmpty() {
 }
 
 template<typename T>
-void avlTree<T>::insert(T val) {
-	numberOfNodes++;
-	std::unique_ptr<node<T>> newNode(new node<T>());
-	newNode.get()->setValue(val);
-	if (rootNode == nullptr) {
-		rootNode = std::move(newNode);
-		std::cout << "Inserted node with value: " << rootNode.get()->getValue()<<" and adress: "<<rootNode.get() << std::endl;
-	}else{
-		std::cout << "Inserted node with value: " << newNode.get()->getValue() <<" and adress: "<<newNode.get()<< std::endl;
-		
+void avlTree<T>::insertNode(std::shared_ptr<node<T>> currentNode, node<T>& parentNode){
+	if (parentNode.getValue() > currentNode.get()->getValue()) {
+		if (parentNode.leftChildNode == nullptr) {
+			currentNode.get()->parentNode = &parentNode;
+			parentNode.leftChildNode.swap(currentNode);
+			
+		}
+		else {
+			insertNode(currentNode, *parentNode.leftChildNode);
+		}
+	}
+	else {
+		if (parentNode.rightChildNode == nullptr) {
+			currentNode.get()->parentNode = &parentNode;
+			parentNode.rightChildNode.swap(currentNode);
+		}
+		else {
+			insertNode(currentNode, *parentNode.rightChildNode);
+		}
 	}
 }
 
+template<typename T>
+void avlTree<T>::insert(T val) {
+	numberOfNodes++;
+	std::shared_ptr<node<T>> newNode(new node<T>(val));
+	if (rootNode) {
+		insertNode(std::move(newNode),*rootNode);
+	}else{
+		rootNode.swap(newNode);
+	}
+}
 
+template<typename T>
+void avlTree<T>::draw() {
+	draw(*rootNode);
+}
 
-
-
-
-
+template<typename T>
+void avlTree<T>::draw(node<T> &currentNode) {
+	std::cout << "Node value: " << currentNode.getValue() << " adress: " << &currentNode << " left child: " << currentNode.leftChildNode<<" Right child: "<<currentNode.rightChildNode<<" Parent node: "<<currentNode.parentNode<<std::endl;
+	if (currentNode.leftChildNode != nullptr) draw(*currentNode.leftChildNode);
+	if (currentNode.rightChildNode != nullptr) draw(*currentNode.rightChildNode);
+}
 
 /*
 template<typename T>
@@ -218,9 +250,12 @@ int main(int argc, char *argv[])
 {
 
 	int result = Catch::Session().run(argc, argv);
-
-
-
+	//std::unique_ptr<avlTree<int>> tree(new avlTree<int>);
+	//tree.get()->insert(5);
+	//tree.get()->insert(3);
+	//tree.get()->insert(1);
+	//tree.get()->insert(6);
+	//tree.get()->draw();
 
 
 	return result;

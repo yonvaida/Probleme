@@ -4,8 +4,9 @@ class node {
 	//using value_type=T;
 public:
 	node();
-	std::unique_ptr<node<T>> leftChildNode, rightChildNode;
-	node<T>* parentNode;
+	node(T val);
+	std::shared_ptr<node<int>> leftChildNode,rightChildNode;
+	node<T> * parentNode;
 	void setValue(T val);
 	T getValue();
 	int getLeftHeight();
@@ -21,7 +22,9 @@ public:
 	bool isEmpty();
 	void insert(T value);
 	int numberOfNodes;
+	void draw();
+	void draw(node<T> &currentNode);
 private:
-	void insertNode(std::unique_ptr<node<T>> &currentNode, std::unique_ptr<node<T>> & parentNode);
-	std::unique_ptr<node<int>> rootNode;	
+	void insertNode(std::shared_ptr<node<T>> currentNode, node<T>& parentNode);
+	std::shared_ptr<node<int>> rootNode;	
 };
