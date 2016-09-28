@@ -8,7 +8,7 @@ class node {
 public:
 	node();
 	node(T val);
-	std::shared_ptr<node<int>> leftChildNode,rightChildNode;
+	std::shared_ptr<node<T>> leftChildNode,rightChildNode;
 	node<T> * parentNode;
 	int getNumberofChildren();
 	int getLeftHeight();
@@ -59,10 +59,10 @@ template<typename T>
 int node<T>::getNumberofChildren() {
 	int number = 0;
 	if (leftChildNode) {
-		number += leftChildNode.get()->getNumberofChildren()+1;
+		number += leftChildNode->getNumberofChildren()+1;
 	}
 	if (rightChildNode) {
-		number +=rightChildNode.get()->getNumberofChildren()+1;
+		number +=rightChildNode->getNumberofChildren()+1;
 	}
 	return number;
 }
@@ -78,17 +78,25 @@ int node<T>::getRightHeight() {
 }
 
 template<typename T>
-void node<T>::rotateLeft(){
-	std::shared_ptr<node<T>> temp_ptr;
-	if (rightChildNode)parentNode->rightChildNode.swap(leftChildNode);
-	//leftChildNode.swap(parentNode);
-	parentNode = parentNode->parentNode;
-	
-}
+void node<T>::rotateLeft() {
+	std::shared_ptr<node<T>> temp_ptr(nullptr);
+	temp_ptr.swap(rightChildNode);
+	parentNode->rightChildNode.swap(temp_ptr);
+	parentNode->rightChildNode->parentNode = parentNode;
+	temp_ptr.swap(parentNode->rightChildNode->leftChildNode);
+	this->parentNode = &(*parentNode->rightChildNode);
+	this->rightChildNode.swap(temp_ptr);
+};
 
 template<typename T>
 void node<T>::rotateRight(){
-
+	std::shared_ptr<node<T>> temp_ptr(nullptr);
+	temp_ptr.swap(leftChildNode);
+	parentNode->leftChildNode.swap(temp_ptr);
+	parentNode->leftChildNode->parentNode = parentNode;
+	temp_ptr.swap(parentNode->leftChildNode->rightChildNode);
+	this->parentNode = &(*parentNode->leftChildNode);
+	this->leftChildNode.swap(temp_ptr);
 }
 
 /***************************TREE declaration*************************************************/
@@ -143,7 +151,6 @@ void avlTree<T>::draw() {
 
 template<typename T>
 void avlTree<T>::draw(node<T> &currentNode) {
-	
 	std::cout<< "Node value: " << currentNode.getValue() << " adress: " << &currentNode << " left child: " << currentNode.leftChildNode << " Right child: " << currentNode.rightChildNode << " Parent node: " << currentNode.parentNode << std::endl;
 	std::cout << " Left height: " << currentNode.getLeftHeight() << " Right height: " << currentNode.getRightHeight()<<std::endl;
 	if (currentNode.leftChildNode != nullptr) draw(*currentNode.leftChildNode);
@@ -156,5 +163,5 @@ int avlTree<T>::sizeOf() {
 }
 template<typename T>
 void avlTree<T>::balance() {
-	rootNode->rightChildNode->rotateLeft();
+	rootNode->leftChildNode->rotateRight();
 }
