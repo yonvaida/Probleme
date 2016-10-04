@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SnakeServer", "SnakeServer.vcxproj", "{93C778E7-C740-415D-82A8-42651F9B47CE}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SnakeTests", "..\SnakeTests\SnakeTests.vcxproj", "{BB62FBB6-084C-4DEE-9597-749A69955FF8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "snakeWebServer", "..\snakeWebServer\snakeWebServer.vcxproj", "{32CBC2A2-12A3-4E05-9687-D35FD93E21FF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SnakeClientMFC", "..\SnakeClientMFC\SnakeClientMFC.vcxproj", "{64560657-97CA-42D5-B2E9-50AB117497E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,14 @@ Global
 		{32CBC2A2-12A3-4E05-9687-D35FD93E21FF}.Release|x64.Build.0 = Release|x64
 		{32CBC2A2-12A3-4E05-9687-D35FD93E21FF}.Release|x86.ActiveCfg = Release|Win32
 		{32CBC2A2-12A3-4E05-9687-D35FD93E21FF}.Release|x86.Build.0 = Release|Win32
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Debug|x64.ActiveCfg = Debug|x64
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Debug|x64.Build.0 = Debug|x64
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Debug|x86.ActiveCfg = Debug|Win32
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Debug|x86.Build.0 = Debug|Win32
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Release|x64.ActiveCfg = Release|x64
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Release|x64.Build.0 = Release|x64
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Release|x86.ActiveCfg = Release|Win32
+		{64560657-97CA-42D5-B2E9-50AB117497E8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

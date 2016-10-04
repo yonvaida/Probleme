@@ -75,16 +75,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(IncludePath)</IncludePath>
-    <SourcePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(SourcePath)</SourcePath>
+    <IncludePath>E:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;E:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(IncludePath)</IncludePath>
+    <SourcePath>E:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;E:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(IncludePath)</IncludePath>
-    <SourcePath>D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;D:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;D:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(SourcePath)</SourcePath>
+    <IncludePath>E:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;E:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;E:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(IncludePath)</IncludePath>
+    <SourcePath>E:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeClient;E:\personal\juniormind\Probleme\SnakeMultiplayer\SnakeServer;E:\personal\juniormind\Probleme\SnakeMultiplayer\snakeWebServer;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

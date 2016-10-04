@@ -1,22 +1,24 @@
 #pragma once
+
 #include <memory>
 #include <algorithm>
 #include <iostream>
+
+
+
+
 template<typename T>
 class node {
-	//using value_type=T;
 public:
 	node();
 	node(T val);
-	std::shared_ptr<node<T>> leftChildNode,rightChildNode;
-	node<T> * parentNode;
+	std::shared_ptr<node<T>> parentNode, leftChildNode, rightChildNode;
 	int getNumberofChildren();
+	int getHeight();
+	T getValue();
+private:
 	int getLeftHeight();
 	int getRightHeight();
-	T getValue();
-	void rotateLeft();
-	void rotateRight();
-private:
 	T value;
 };
 
@@ -29,10 +31,13 @@ public:
 	void insert(T value);
 	void draw();
 	void draw(node<T> &currentNode);
-	void balance();
-private:
-	void insertNode(std::shared_ptr<node<T>> currentNode, node<T>& parentNode);
+	void balance(std::shared_ptr<node<T>>& currentNode);
+	void rotateLeft(std::shared_ptr < node<T>>& node);
+	void rotateRight(std::shared_ptr < node<T>>& node);
 	std::shared_ptr<node<int>> rootNode;	
+private:
+	void insertNode(std::shared_ptr<node<T>>& currentNode, std::shared_ptr<node<T>>&  parentNode);
+	
 };
 
 /***************************Node Declaration*************************************************/
@@ -76,27 +81,9 @@ template<typename T>
 int node<T>::getRightHeight() {
 	return (rightChildNode)?std::max(rightChildNode->getRightHeight(), rightChildNode->getLeftHeight()) + 1:0;
 }
-
 template<typename T>
-void node<T>::rotateLeft() {
-	std::shared_ptr<node<T>> temp_ptr(nullptr);
-	temp_ptr.swap(rightChildNode);
-	parentNode->rightChildNode.swap(temp_ptr);
-	parentNode->rightChildNode->parentNode = parentNode;
-	temp_ptr.swap(parentNode->rightChildNode->leftChildNode);
-	this->parentNode = &(*parentNode->rightChildNode);
-	this->rightChildNode.swap(temp_ptr);
-};
-
-template<typename T>
-void node<T>::rotateRight(){
-	std::shared_ptr<node<T>> temp_ptr(nullptr);
-	temp_ptr.swap(leftChildNode);
-	parentNode->leftChildNode.swap(temp_ptr);
-	parentNode->leftChildNode->parentNode = parentNode;
-	temp_ptr.swap(parentNode->leftChildNode->rightChildNode);
-	this->parentNode = &(*parentNode->leftChildNode);
-	this->leftChildNode.swap(temp_ptr);
+int node<T>::getHeight() {
+	return getLeftHeight() - getRightHeight();
 }
 
 /***************************TREE declaration*************************************************/
@@ -111,25 +98,69 @@ bool avlTree<T>::isEmpty() {
 }
 
 template<typename T>
-void avlTree<T>::insertNode(std::shared_ptr<node<T>> currentNode, node<T>& parentNode) {
-	if (parentNode.getValue() > currentNode.get()->getValue()) {
-		if (parentNode.leftChildNode == nullptr) {
-			currentNode.get()->parentNode = &parentNode;
-			parentNode.leftChildNode.swap(currentNode);
+void avlTree<T>::insertNode(std::shared_ptr<node<T>>& currentNode, std::shared_ptr<node<T>>& parentNode) {
+	if (parentNode->getValue() > currentNode->getValue()) {
+		if (parentNode->leftChildNode == nullptr) {
+			currentNode->parentNode = parentNode;
+			parentNode->leftChildNode=currentNode;
+			balance(currentNode);
 
 		}
 		else {
-			insertNode(currentNode, *parentNode.leftChildNode);
+			insertNode(currentNode, parentNode->leftChildNode);
 		}
 	}
 	else {
-		if (parentNode.rightChildNode == nullptr) {
-			currentNode.get()->parentNode = &parentNode;
-			parentNode.rightChildNode.swap(currentNode);
+		if (parentNode->rightChildNode == nullptr) {
+			currentNode->parentNode = parentNode;
+			parentNode->rightChildNode=currentNode;
+			balance(currentNode);
 		}
 		else {
-			insertNode(currentNode, *parentNode.rightChildNode);
+			insertNode(currentNode, parentNode->rightChildNode);
 		}
+	}
+}
+
+template<typename T>
+void avlTree<T>::rotateLeft(std::shared_ptr < node<T>>& rotatenode) {
+	if (rotatenode == rootNode) {
+		auto temp_ptr = rotatenode->rightChildNode->leftChildNode;
+		if(temp_ptr)temp_ptr->parentNode = rotatenode;
+		rotatenode->rightChildNode->parentNode = nullptr;
+		rotatenode->rightChildNode->leftChildNode = rotatenode;
+		rotatenode->parentNode = rotatenode->rightChildNode;
+		rotatenode->rightChildNode = temp_ptr;
+		rootNode = rotatenode->parentNode;
+	}
+	else {
+		auto temp_ptr = rotatenode;
+		rotatenode.swap(rotatenode->rightChildNode);
+		temp_ptr->rightChildNode = rotatenode->leftChildNode;
+		rotatenode->leftChildNode = temp_ptr;
+		rotatenode->parentNode = temp_ptr->parentNode;
+		rotatenode->leftChildNode->parentNode = rotatenode;
+	}
+}
+
+template<typename T>
+void avlTree<T>::rotateRight(std::shared_ptr < node<T>>& rotatenode) {
+	if (rotatenode == rootNode) {
+		auto temp_ptr = rotatenode->leftChildNode->rightChildNode;
+		if(temp_ptr)temp_ptr->parentNode = rotatenode;
+		rotatenode->leftChildNode->parentNode = nullptr;
+		rotatenode->leftChildNode->rightChildNode = rotatenode;
+		rotatenode->parentNode = rotatenode->leftChildNode;
+		rotatenode->leftChildNode = temp_ptr;
+		rootNode = rotatenode->parentNode;
+	}
+	else {
+		auto temp_ptr = rotatenode;
+		rotatenode.swap(rotatenode->leftChildNode);
+		temp_ptr->leftChildNode = rotatenode->rightChildNode;
+		rotatenode->rightChildNode = temp_ptr;
+		rotatenode->parentNode = temp_ptr->parentNode;
+		rotatenode->rightChildNode->parentNode = rotatenode;
 	}
 }
 
@@ -137,8 +168,8 @@ template<typename T>
 void avlTree<T>::insert(T val) {
 	std::shared_ptr<node<T>> newNode(new node<T>(val));
 	if (rootNode) {
-		insertNode(std::move(newNode), *rootNode);
-	}
+		insertNode(newNode, rootNode);
+		}
 	else {
 		rootNode.swap(newNode);
 	}
@@ -152,7 +183,7 @@ void avlTree<T>::draw() {
 template<typename T>
 void avlTree<T>::draw(node<T> &currentNode) {
 	std::cout<< "Node value: " << currentNode.getValue() << " adress: " << &currentNode << " left child: " << currentNode.leftChildNode << " Right child: " << currentNode.rightChildNode << " Parent node: " << currentNode.parentNode << std::endl;
-	std::cout << " Left height: " << currentNode.getLeftHeight() << " Right height: " << currentNode.getRightHeight()<<std::endl;
+	//std::cout << " Left height: " << currentNode.getLeftHeight() << " Right height: " << currentNode.getRightHeight()<<std::endl;
 	if (currentNode.leftChildNode != nullptr) draw(*currentNode.leftChildNode);
 	if (currentNode.rightChildNode != nullptr) draw(*currentNode.rightChildNode);
 }
@@ -162,6 +193,27 @@ int avlTree<T>::sizeOf() {
 	return rootNode.get()->getNumberofChildren()+1;
 }
 template<typename T>
-void avlTree<T>::balance() {
-	rootNode->leftChildNode->rotateRight();
+void avlTree<T>::balance(std::shared_ptr<node<T>>& currentNode) {
+	auto temp_ptr = currentNode;
+	while (temp_ptr != nullptr) {
+		if (temp_ptr->getHeight() < -1 ) {
+			std::cout << "Balancing node: " << temp_ptr->getValue() << std::endl;
+			rotateLeft(temp_ptr);
+			temp_ptr = temp_ptr->parentNode;
+		}
+		else {
+			if (temp_ptr->getHeight() >1 ) {
+			std::cout << "Balancing tree\n" << temp_ptr->getValue();
+			rotateRight(temp_ptr);
+			temp_ptr = temp_ptr->parentNode;
+		}
+		else {
+			temp_ptr = temp_ptr->parentNode;
+		}
+		}
+		
+
+	}
+	//rotateLeft(rootNode->rightChildNode);
+	
 }
