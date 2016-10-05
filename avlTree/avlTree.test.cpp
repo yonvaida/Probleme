@@ -7,16 +7,18 @@ SCENARIO("Testing tree") {
 	GIVEN("New tree object") {
 		std::unique_ptr<avlTree<int>> tree(new avlTree<int>());
 		WHEN("Insert new object") {
+			tree->insert(4);
 			tree->insert(3);
-			tree->insert(2);
-			tree->insert(1);
-			//tree->insert(8);
+			tree->insert(5);
+			tree->insert(6);
 			//tree->draw();
-			//tree->insert(9);
-			//tree.get()->insert(10);
+			//tree->insert(6);
+			tree->insert(7);
+			//tree->draw();
+			//tree->insert(5);
 			//tree.get()->balance();
 			//tree->balance(tree->rootNode);
-			tree->draw();
+			//tree->draw();
 			THEN("Number of objects changed") {
 				CHECK(tree->sizeOf() == 3);
 			}
