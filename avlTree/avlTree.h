@@ -99,15 +99,12 @@ bool avlTree<T>::isEmpty() {
 
 template<typename T>
 void avlTree<T>::insertNode(std::shared_ptr<node<T>>& currentNode, std::shared_ptr<node<T>>& parentNode) {
-	std::cout<<std::endl;
+	
 	
 	if (parentNode->getValue() > currentNode->getValue()) {
 		if (parentNode->leftChildNode == nullptr) {
 			currentNode->parentNode = parentNode;
 			parentNode->leftChildNode=currentNode;
-			draw();
-			balance(currentNode);
-
 		}
 		else {
 			insertNode(currentNode, parentNode->leftChildNode);
@@ -117,8 +114,7 @@ void avlTree<T>::insertNode(std::shared_ptr<node<T>>& currentNode, std::shared_p
 		if (parentNode->rightChildNode == nullptr) {
 			currentNode->parentNode = parentNode;
 			parentNode->rightChildNode=currentNode;
-			draw();
-			balance(currentNode);
+			
 		}
 		else {
 			insertNode(currentNode, parentNode->rightChildNode);
@@ -130,13 +126,14 @@ template<typename T>
 void avlTree<T>::rotateLeft(std::shared_ptr < node<T>>& rotatenode) {
 		auto temp_ptr = rotatenode;
         rotatenode.swap(rotatenode->rightChildNode);
-		rotatenode->parentNode = temp_ptr->parentNode;
+		
 		if (temp_ptr == rootNode) { 
 			temp_ptr->parentNode = rotatenode;
 			rootNode = rotatenode;
 		}
 		else {
-			
+			rotatenode->parentNode = temp_ptr->parentNode;
+			temp_ptr->parentNode->rightChildNode = rotatenode;
 		}
 		(rotatenode->leftChildNode).swap(temp_ptr);
 		if(rotatenode->leftChildNode)rotatenode->leftChildNode->rightChildNode = temp_ptr;
@@ -156,6 +153,7 @@ void avlTree<T>::rotateRight(std::shared_ptr < node<T>>& rotatenode) {
 		}
 		else {
 			rotatenode->parentNode = temp_ptr->parentNode;
+			temp_ptr->parentNode->rightChildNode = rotatenode;
 		}
 		(rotatenode->rightChildNode).swap(temp_ptr);
 		if(rotatenode->rightChildNode)rotatenode->rightChildNode->leftChildNode = temp_ptr;
@@ -169,11 +167,11 @@ void avlTree<T>::insert(T val) {
 	std::shared_ptr<node<T>> newNode(new node<T>(val));
 	if (rootNode) {
 		insertNode(newNode, rootNode);
+		balance(newNode);
 		}
 	else {
 		rootNode.swap(newNode);
 	}
-	
 }
 
 template<typename T>
@@ -188,7 +186,6 @@ void avlTree<T>::draw(std::shared_ptr<node<T>> &currentNode) {
 	auto right = (currentNode->rightChildNode == nullptr) ? 0 : currentNode->rightChildNode->getValue();
 	auto parent = (currentNode->parentNode == nullptr) ? 0 : currentNode->parentNode->getValue();
 	std::cout<< "Node value: " << currentNode->getValue() << " adress: " << currentNode << " left child: " << left<< " Right child: " << right << " Parent node: " << parent << std::endl;
-	//std::cout << " Left height: " << currentNode.getLeftHeight() << " Right height: " << currentNode.getRightHeight()<<std::endl;
 	if (currentNode->leftChildNode != nullptr) draw(currentNode->leftChildNode);
 	if (currentNode->rightChildNode != nullptr) draw(currentNode->rightChildNode);
 }
@@ -199,36 +196,34 @@ int avlTree<T>::sizeOf() {
 }
 template<typename T>
 void avlTree<T>::balance(std::shared_ptr<node<T>>& currentNode) {
-	if (currentNode != nullptr) {
-		switch (currentNode->getHeight())
+	auto temp_ptr = currentNode;
+	if (temp_ptr != nullptr) {
+		switch (temp_ptr->getHeight())
 		{
 		case -2:
-			std::cout << "Balancing node: " << currentNode->getValue() << std::endl;
-			if(currentNode->rightChildNode->getHeight() > 0){
-				rotateRight(currentNode->rightChildNode);
-				rotateLeft(currentNode->parentNode);
+			std::cout << "Balancing node: " << temp_ptr->getValue() << std::endl;
+			if(temp_ptr->rightChildNode->getHeight() > 0){
+				rotateRight(temp_ptr->rightChildNode);
+				rotateLeft(temp_ptr);
 			}
 			else {
-				rotateLeft(currentNode);
-				//draw();
+				rotateLeft(temp_ptr);
 			}
-			
-			//rotateLeft(currentNode);
 			break;
 		case 2:
-			std::cout << "Balancing node\n" << currentNode->getValue();
-			if (currentNode->rightChildNode->getHeight() > 0) {
-				rotateLeft(currentNode->leftChildNode);
-				rotateRight(currentNode->parentNode);
+			std::cout << "Balancing node\n" << temp_ptr->getValue();
+			if (temp_ptr->leftChildNode->getHeight() < 0) {
+				rotateLeft(temp_ptr->leftChildNode);
+				rotateRight(temp_ptr);
 			}
 			else {
-				rotateRight(currentNode);
+				rotateRight(temp_ptr);
 			}
 			break;
 		default:
-			balance(currentNode->parentNode);
+			balance(temp_ptr->parentNode);
 		}
 	}
-	//rotateLeft(rootNode);
+	
 
 }
