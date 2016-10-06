@@ -35,6 +35,7 @@ public:
 	void rotateLeft(std::shared_ptr < node<T>>& node);
 	void rotateRight(std::shared_ptr < node<T>>& node);
 	std::shared_ptr<node<int>> rootNode;	
+	bool isBalanced(std::shared_ptr<node<T>>& currentNode);
 private:
 	void insertNode(std::shared_ptr<node<T>>& currentNode, std::shared_ptr<node<T>>&  parentNode);
 	
@@ -95,6 +96,16 @@ avlTree<T>::avlTree() {
 template<typename T>
 bool avlTree<T>::isEmpty() {
 	return (rootNode.get() == nullptr) ? true : false;
+}
+
+
+
+template<typename T>
+bool avlTree::isBalanced(std::shared_ptr<node<T>>& currentNode) {
+	bool balanced = true;
+	
+
+
 }
 
 template<typename T>
